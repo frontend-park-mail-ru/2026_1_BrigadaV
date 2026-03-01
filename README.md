@@ -5,13 +5,14 @@
  1. [Павлов Егор]()
  2. [Маркарова Юлия](https://github.com/jmark1518)
  3. [Лазунин Артём](https://github.com/cielnumerique)
+ 4. [Степан Бурматов](https://github.com/BurmatovStepan)
 
 
 ### Внешние ссылки
- - [Figma]()
+ - [Figma](https://www.figma.com/design/TuvbJqnQeBLsmuGjyBXAQC/vk?node-id=10-11&p=f&t=ZhmD7aUVjqrpzeNs-0)
  - [Backend]()
  - [Deploy]()
- - [Jira]()
+ - [Jira](https://ru.yougile.com/team/947473cd578d/TripAdvisor#TADV-1)
 
 ### Правила оформления Pull Requests
   1. Ветка создается с названием `TADV-###`, где ### - номер задачи в jira.
