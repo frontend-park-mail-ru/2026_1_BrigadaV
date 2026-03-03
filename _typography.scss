@@ -1,0 +1,61 @@
+@use './mixins' as *;
+
+@font-face {
+    font-style: normal;
+    font-weight: 700;
+    font-family: 'IBM Plex Mono';
+    font-display: swap;
+    src: url("/fonts/IBMPlexMono-Bold.woff2") format("woff2");
+}
+
+@font-face {
+    font-style: normal;
+    font-weight: 400;
+    font-family: 'IBM Plex Mono';
+    font-display: swap;
+    src: url("/fonts/IBMPlexMono-Regular.woff2") format("woff2");
+}
+
+@font-face {
+    font-style: normal;
+    font-weight: 700;
+    font-family: 'Winston';
+    font-display: swap;
+    src: url("/fonts/Winston-Bold.woff2") format("woff2");
+}
+
+@font-face {
+    font-style: normal;
+    font-weight: 400;
+    font-family: 'Winston';
+    font-display: swap;
+    src: url("/fonts/Winston-Regular.woff2") format("woff2");
+}
+
+h1 {
+    @include typo-h1;
+}
+
+h2 {
+    @include typo-h2;
+}
+
+h3 {
+    @include typo-h3;
+}
+
+h4 {
+    @include typo-h4;
+}
+
+h5 {
+    @include typo-h5;
+}
+
+h6 {
+    @include typo-h6;
+}
+
+p {
+    @include typo-p;
+}
