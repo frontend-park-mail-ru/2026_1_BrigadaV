@@ -1,0 +1,9 @@
+export const Header = () => `
+  <header class="header">
+    <a class="header__name" href="#">Guidely</a>
+    <div class="header__account">
+      <button class="header__sign-up">Зарегистрироваться</button>
+      <button class="header__log-in">Войти</button>
+    </div>
+  </header>
+`
