@@ -51,6 +51,12 @@
     line-height: 1.6;
 }
 
+@mixin typo-small {
+    color: $color-text-main;
+    font-size: 0.625rem;
+    font-family: $font-body;
+}
+
 @mixin button-primary {
     @include typo-p;
     padding: 0.5rem 1rem;
@@ -78,13 +84,35 @@
     background-color: transparent;
     border: none;
     border-radius: 8px;
+
+    transition: color $timing-animation-short;
+
+    &[disabled] {
+        color: $color-interactable-disabled;
+    }
+
+    &:not([disabled]):hover {
+        color: $color-interactable-active
+    }
+}
+
+@mixin button-sso-auth {
+    @include typo-p;
+    display: flex;
+    padding: 0.5rem 1rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    border: none;
+    border-radius: 8px;
 }
 
 @mixin form-field {
     @include typo-p;
     width: 100%;
     height: 100%;
+    padding-inline: 1rem;
     background-color: $surface-form-field;
-    border: none;
+    border: 2px solid $color-border-form-field;
     border-radius: 8px;
 }
