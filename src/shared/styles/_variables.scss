@@ -4,11 +4,15 @@ $black: hsl(0 0% 0%);
 $gray-50: hsl(0 0% 98%);
 $gray-100: hsl(0 0% 93%);
 $gray-150: hsl(0 0% 89%);
+$gray-200: hsl(0, 0%, 84%);
 $gray-400: hsl(0, 0%, 61%);
 $gray-900: hsl(0 0% 10%);
 
 $guidely-primary: hsl(241 100% 55%);
 $guidely-secondary: hsl(317 100% 50%);
+
+$vk-primary: hsl(212 100% 50%);
+$yandex-primary: hsl(0 0% 0%);
 
 $color-interactable-idle: $gray-400;
 $color-interactable-active: $guidely-secondary;
@@ -21,7 +25,10 @@ $color-text-main: $gray-900;
 $color-text-contrast: $gray-100;
 
 $color-text-form-field: $black;
+$color-border-form-field: $gray-200;
 $surface-form-field: $white;
+
+$color-status-error: hsl(317 99% 74%);
 
 $font-header: 'IBM Plex Mono', monospace;
 $font-body: 'Winston', sans-serif;
