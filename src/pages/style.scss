@@ -129,32 +129,12 @@ body {
         @include button-sso-auth;
         color: $white;
         background-color: $vk-primary;
-
-        path[fill="white"] {
-            fill: white;
-        }
-
-        path[fill="#0077FF"] {
-            fill: #0077FF;
-        }
-
-        mask path {
-            fill: white;
-        }
     }
 
     &__yandex-auth {
         @include button-sso-auth;
         color: $white;
         background-color: $yandex-primary;
-
-        rect {
-            fill: #FC3F1D;
-        }
-
-        path {
-            fill: white;
-        }
     }
 
     &__vk-auth[disabled],
@@ -191,9 +171,9 @@ body {
         position: absolute;
         top: 50%;
         right: 0.75rem;
-        color: $color-interactable-idle;
         background-color: transparent;
         border: none;
+        opacity: 50%;
         translate: 0 -50%;
     }
 
