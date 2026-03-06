@@ -95,52 +95,6 @@ body {
         gap: 1.25rem;
     }
 
-    &__field {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    &__field--error &__icon,
-    &__field--error &__message-wrapper {
-        visibility: visible;
-    }
-
-    &__label {
-        @include typo-p;
-    }
-
-    &__input-wrapper {
-        position: relative;
-    }
-
-    &__input {
-        @include form-field;
-        min-height: 40px;
-    }
-
-    &__icon {
-        position: absolute;
-        top: 50%;
-        right: 0.75rem;
-        color: $color-interactable-idle;
-        visibility: collapse;
-        translate: 0 -50%;
-    }
-
-    &__message-wrapper {
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-        color: $color-status-error;
-        visibility: collapse;
-    }
-
-    &__message {
-        @include typo-small;
-        color: inherit;
-    }
-
     &__actions {
         display: flex;
         margin-top: 1.5rem;
@@ -175,11 +129,84 @@ body {
         @include button-sso-auth;
         color: $white;
         background-color: $vk-primary;
+
+        path[fill="white"] {
+            fill: white;
+        }
+
+        path[fill="#0077FF"] {
+            fill: #0077FF;
+        }
+
+        mask path {
+            fill: white;
+        }
     }
 
     &__yandex-auth {
         @include button-sso-auth;
         color: $white;
         background-color: $yandex-primary;
+
+        rect {
+            fill: #FC3F1D;
+        }
+
+        path {
+            fill: white;
+        }
+    }
+
+    &__vk-auth[disabled],
+    &__yandex-auth[disabled] {
+        opacity: 50%;
+        filter: grayscale(1);
+        cursor: default;
+    }
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    &--error &__message-wrapper {
+        visibility: visible;
+    }
+
+    &__label {
+        @include typo-p;
+    }
+
+    &__input-wrapper {
+        position: relative;
+    }
+
+    &__input {
+        @include form-field;
+        min-height: 40px;
+    }
+
+    &__icon {
+        position: absolute;
+        top: 50%;
+        right: 0.75rem;
+        color: $color-interactable-idle;
+        background-color: transparent;
+        border: none;
+        translate: 0 -50%;
+    }
+
+    &__message-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        color: $color-status-error;
+        visibility: collapse;
+    }
+
+    &__message {
+        @include typo-small;
+        color: inherit;
     }
 }

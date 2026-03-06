@@ -70,6 +70,7 @@
     &[disabled] {
         color: $guidely-primary;
         background-color: $color-interactable-disabled;
+        cursor: default;
     }
 
     &:not([disabled]):hover {
@@ -89,6 +90,7 @@
 
     &[disabled] {
         color: $color-interactable-disabled;
+        cursor: default;
     }
 
     &:not([disabled]):hover {
