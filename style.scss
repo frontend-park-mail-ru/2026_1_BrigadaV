@@ -14,14 +14,6 @@ body {
     background-color: $surface-0;
 }
 
-header {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    grid-area: header;
-    background-color: $surface-0;
-}
-
 .main {
     display: flex;
     padding: 1rem 2.5rem;
@@ -35,9 +27,15 @@ header {
 }
 
 .header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
     display: flex;
-    padding: 1.25rem 2.5rem 0 2.5rem;
+    padding: 0.75rem 2.5rem;
+    grid-area: header;
+    align-items: center;
     justify-content: space-between;
+    background-color: $surface-0;
 
     &__name {
         @include typo-h2;
@@ -47,6 +45,9 @@ header {
 
     &__account {
         @include typo-p;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
     &__log-in {
@@ -123,7 +124,6 @@ header {
 
     &__input {
         @include form-field;
-        padding-inline: 1rem;
     }
 
     &__button {
@@ -134,7 +134,7 @@ header {
         position: absolute;
         top: 50%;
         right: 0.75rem;
-        color: #9B9B9B;
+        opacity: 50%;
         translate: 0 -50%;
     }
 }
