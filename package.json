@@ -1,20 +1,21 @@
 {
-  "name": "lmao",
+  "name": "guidely",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "dev": "vite"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "devDependencies": {
     "@types/node": "^25.3.3",
     "handlebars": "^4.7.8",
     "sass-embedded": "^1.97.3",
-    "vite": "^7.3.1",
-    "vite-plugin-handlebars": "^2.0.0"
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "vite-plugin-handlebars-precompile": "^1.0.1"
   }
 }
