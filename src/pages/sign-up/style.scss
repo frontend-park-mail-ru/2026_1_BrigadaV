@@ -12,7 +12,7 @@ body {
         "header"
         "main";
     grid-template-rows: max-content 1fr;
-    background-color: $surface-0
+    background-color: $surface-0;
 }
 
 .main {
@@ -47,17 +47,17 @@ body {
         color: $guidely-primary;
     }
 
-    &__sign-up {
+    &__log-in {
         @include button-primary;
     }
 }
 
-.log-in {
+.sign-up {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url("/assets/log-in-bg.png");
+    background-image: url("/assets/sign-up-bg.png");
     background-position: center 75%;
     background-size: cover;
     background-repeat: no-repeat;
@@ -75,7 +75,7 @@ body {
     }
 }
 
-.log-in-box {
+.sign-up-box {
     display: flex;
     width: 33vw;
     padding: 2rem;
@@ -83,6 +83,10 @@ body {
 
     background-color: $surface-0;
     border-radius: 16px;
+
+    @media (max-height: 768px) {
+        padding-block: 1rem;
+    }
 
     &__title {
         text-align: center;
@@ -93,6 +97,11 @@ body {
         margin-top: 1rem;
         flex-direction: column;
         gap: 1.25rem;
+
+        @media (max-height: 768px) {
+            margin-top: 0.5rem;
+            gap: 1rem;
+        }
     }
 
     &__actions {
@@ -100,15 +109,23 @@ body {
         margin-top: 1.5rem;
         flex-direction: column;
         gap: 0.5rem;
-    }
 
-    &__log-in {
-        @include button-primary;
+        @media (max-height: 768px) {
+            margin-top: 1.25rem;
+        }
     }
 
     &__sign-up {
+        @include button-primary;
+    }
+
+    &__log-in {
         @include button-secondary;
         margin-bottom: -1rem;
+
+        @media (max-height: 768px) {
+            display: none;
+        }
     }
 
     &__separator {
@@ -117,22 +134,32 @@ body {
         margin-block: 2rem;
         color: color.mix($guidely-primary, transparent, 30%);
         background-color: $surface-1;
+
+        @media (max-height: 768px) {
+            margin-block: 1.5rem;
+        }
     }
 
     &__sso-auth {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
+
+        @media (max-height: 768px) {
+            flex-direction: row;
+        }
     }
 
     &__vk-auth {
-        @include button-sso-auth;
+        @include button-oauth;
+        flex-grow: 1;
         color: $white;
         background-color: $vk-primary;
     }
 
     &__yandex-auth {
-        @include button-sso-auth;
+        @include button-oauth;
+        flex-grow: 1;
         color: $white;
         background-color: $yandex-primary;
     }
@@ -150,8 +177,12 @@ body {
     flex-direction: column;
     gap: 0.5rem;
 
-    &--error &__message-wrapper {
-        visibility: visible;
+    @media (max-height: 768px) {
+        gap: 0.25rem;
+    }
+
+    &--error &__error-wrapper {
+        display: flex;
     }
 
     &__label {
@@ -177,12 +208,17 @@ body {
         translate: 0 -50%;
     }
 
-    &__message-wrapper {
-        display: flex;
+    &__note-wrapper {
+        @include typo-small;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    &__error-wrapper {
+        display: none;
         align-items: center;
         gap: 0.25rem;
         color: $color-status-error;
-        visibility: collapse;
     }
 
     &__message {
