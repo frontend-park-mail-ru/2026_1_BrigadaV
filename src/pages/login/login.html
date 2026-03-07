@@ -1,0 +1,71 @@
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guidely | Вход</title>
+
+  <link rel="stylesheet" href="./style.scss">
+  <meta name="color-scheme" content="light">
+</head>
+
+<body id="root">
+  <header class="header">
+    <a class="header__name" href="#">Guidely</a>
+    <div class="header__account">
+      <label for="sign-up-button" class="header__prompt">Ещё нет аккаунта?</label>
+      <button id="sign-up-button" class="header__sign-up">Регистрация</button>
+    </div>
+  </header>
+
+  <main class="main log-in">
+    <form class="log-in__widget log-in-box">
+      <h4 class="log-in-box__title">Вход в аккаунт</h4>
+
+      <div class="log-in-box__fields">
+        <div class="log-in-box__field form-field">
+          <label class="form-field__label" for="login-input">Введите логин</label>
+          <input type="email" id="login-input" class="form-field__input" placeholder="Логин" autocomplete="email">
+        </div>
+
+        <div class="log-in-box__field form-field">
+          <label class="form-field__label" for="password-input">Введите пароль</label>
+          <div class="form-field__input-wrapper">
+            <input type="password" id="password-input" class="form-field__input" placeholder="Пароль" minlength="8"
+              autocomplete="current-password">
+            <button type="button" class="form-field__icon">
+              <img src="/icons/eye.svg">
+            </button>
+          </div>
+          <div class="form-field__error-wrapper">
+            <img src="/icons/alert-error.svg">
+            <span class="form-field__message">Пароль неверный</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="log-in-box__actions">
+        <button class="log-in-box__log-in">Войти</button>
+        <button class="log-in-box__sign-up">Создать аккаунт</button>
+      </div>
+
+      <hr class="log-in-box__separator">
+
+      <div class="log-in-box__sso-auth">
+
+        <button class="log-in-box__vk-auth button-oauth" disabled>
+          <img src="/icons/vk.svg" class="button-oauth__icon">
+          <span class="button-oauth__text">Войти через VK</span>
+        </button>
+
+        <button class="log-in-box__yandex-auth button-oauth" disabled>
+          <img src="/icons/yandex.svg" class="button-oauth__icon">
+          <span class="button-oauth__text">Войти с Яндекс ID</span>
+        </button>
+      </div>
+    </form>
+  </main>
+
+</body>
+
+</html>
