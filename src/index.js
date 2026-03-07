@@ -9,9 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
             appState.currentPath = new URL(event.target.href).pathname;
 
             window.history.pushState(appState, '', appState.currentPath);
-            router(appState);
+            router(appState.currentPath);
         }
     })
 
-    router(appState);
+    appState.currentPath = window.location.pathname;
+    router(appState.currentPath);
 })
