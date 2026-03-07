@@ -1,0 +1,228 @@
+@use 'sass:color';
+
+@use '@/app/styles/typography' as *;
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+@use '@/app/styles/base';
+@use '@/app/styles/reset';
+
+body {
+    display: grid;
+    grid-template-areas:
+        "header"
+        "main";
+    grid-template-rows: max-content 1fr;
+    background-color: $surface-0;
+}
+
+.main {
+    grid-area: main;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    padding: 0.75rem 2.5rem;
+    grid-area: header;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $surface-0;
+
+    &__name {
+        @include typo-h2;
+        color: $guidely-primary;
+        font-weight: bold;
+    }
+
+    &__account {
+        @include typo-p;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    &__prompt {
+        color: $guidely-primary;
+    }
+
+    &__log-in {
+        @include button-primary;
+    }
+}
+
+.sign-up {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("/assets/sign-up-bg.png");
+    background-position: center 75%;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    &__widget {
+        z-index: 10;
+    }
+
+    &::before {
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        background-color: hsl(0 0% 0% / 0.3);
+        content: "";
+    }
+}
+
+.sign-up-box {
+    display: flex;
+    width: 450px;
+    padding: 2rem;
+    flex-direction: column;
+
+    background-color: $surface-0;
+    border-radius: 16px;
+
+    @media (max-height: 768px) {
+        padding-block: 1rem;
+    }
+
+    &__title {
+        text-align: center;
+    }
+
+    &__fields {
+        display: flex;
+        margin-top: 1rem;
+        flex-direction: column;
+        gap: 1.25rem;
+
+        @media (max-height: 768px) {
+            margin-top: 0.5rem;
+            gap: 1rem;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        margin-top: 1.5rem;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        @media (max-height: 768px) {
+            margin-top: 1.25rem;
+        }
+    }
+
+    &__sign-up {
+        @include button-primary;
+    }
+
+    &__log-in {
+        @include button-secondary;
+        margin-bottom: -1rem;
+
+        @media (max-height: 768px) {
+            display: none;
+        }
+    }
+
+    &__separator {
+        width: 100%;
+        height: 1px;
+        margin-block: 2rem;
+        color: color.mix($guidely-primary, transparent, 30%);
+        background-color: $surface-1;
+
+        @media (max-height: 768px) {
+            margin-block: 1.5rem;
+        }
+    }
+
+    &__sso-auth {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        @media (max-height: 768px) {
+            flex-direction: row;
+        }
+    }
+
+    &__vk-auth {
+        @include button-oauth;
+        flex-grow: 1;
+        color: $white;
+        background-color: $vk-primary;
+    }
+
+    &__yandex-auth {
+        @include button-oauth;
+        flex-grow: 1;
+        color: $white;
+        background-color: $yandex-primary;
+    }
+
+    &__vk-auth[disabled],
+    &__yandex-auth[disabled] {
+        opacity: 50%;
+        filter: grayscale(1);
+        cursor: default;
+    }
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    @media (max-height: 768px) {
+        gap: 0.25rem;
+    }
+
+    &--error &__error-wrapper {
+        display: flex;
+    }
+
+    &__label {
+        @include typo-p;
+    }
+
+    &__input-wrapper {
+        position: relative;
+    }
+
+    &__input {
+        @include form-field;
+        min-height: 40px;
+    }
+
+    &__icon {
+        position: absolute;
+        top: 50%;
+        right: 0.75rem;
+        background-color: transparent;
+        border: none;
+        opacity: 50%;
+        translate: 0 -50%;
+    }
+
+    &__note-wrapper {
+        @include typo-small;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    &__error-wrapper {
+        display: none;
+        align-items: center;
+        gap: 0.25rem;
+        color: $color-status-error;
+    }
+
+    &__message {
+        @include typo-small;
+        color: inherit;
+    }
+}

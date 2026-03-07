@@ -28,7 +28,7 @@
           <input type="email" id="login-input" class="form-field__input" placeholder="Логин" autocomplete="email">
         </div>
 
-        <div class="log-in-box__field form-field form-field--error">
+        <div class="log-in-box__field form-field">
           <label class="form-field__label" for="password-input">Введите пароль</label>
           <div class="form-field__input-wrapper">
             <input type="password" id="password-input" class="form-field__input" placeholder="Пароль" minlength="8"
@@ -37,7 +37,7 @@
               <img src="/icons/eye.svg">
             </button>
           </div>
-          <div class="form-field__message-wrapper">
+          <div class="form-field__error-wrapper">
             <img src="/icons/alert-error.svg">
             <span class="form-field__message">Пароль неверный</span>
           </div>
@@ -53,14 +53,14 @@
 
       <div class="log-in-box__sso-auth">
 
-        <button class="log-in-box__vk-auth" disabled>
-          <img src="/icons/vk.svg">
-          Войти через VK
+        <button class="log-in-box__vk-auth button-oauth" disabled>
+          <img src="/icons/vk.svg" class="button-oauth__icon">
+          <span class="button-oauth__text">Войти через VK</span>
         </button>
 
-        <button class="log-in-box__yandex-auth" disabled>
-          <img src="/icons/yandex.svg">
-          Войти с Яндекс ID
+        <button class="log-in-box__yandex-auth button-oauth" disabled>
+          <img src="/icons/yandex.svg" class="button-oauth__icon">
+          <span class="button-oauth__text">Войти с Яндекс ID</span>
         </button>
       </div>
     </form>

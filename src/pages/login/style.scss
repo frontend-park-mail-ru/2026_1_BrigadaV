@@ -12,7 +12,7 @@ body {
         "header"
         "main";
     grid-template-rows: max-content 1fr;
-    background-color: $surface-0
+    background-color: $surface-0;
 }
 
 .main {
@@ -77,7 +77,7 @@ body {
 
 .log-in-box {
     display: flex;
-    width: 33vw;
+    width: 450px;
     padding: 2rem;
     flex-direction: column;
 
@@ -109,6 +109,10 @@ body {
     &__sign-up {
         @include button-secondary;
         margin-bottom: -1rem;
+
+        @media (max-height: 768px) {
+            display: none;
+        }
     }
 
     &__separator {
@@ -123,16 +127,22 @@ body {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
+
+        @media (max-height: 768px) {
+            flex-direction: row;
+        }
     }
 
     &__vk-auth {
-        @include button-sso-auth;
+        @include button-oauth;
+        flex-grow: 1;
         color: $white;
         background-color: $vk-primary;
     }
 
     &__yandex-auth {
-        @include button-sso-auth;
+        @include button-oauth;
+        flex-grow: 1;
         color: $white;
         background-color: $yandex-primary;
     }
@@ -150,8 +160,8 @@ body {
     flex-direction: column;
     gap: 0.5rem;
 
-    &--error &__message-wrapper {
-        visibility: visible;
+    &--error &__error-wrapper {
+        display: flex;
     }
 
     &__label {
@@ -177,12 +187,11 @@ body {
         translate: 0 -50%;
     }
 
-    &__message-wrapper {
-        display: flex;
+    &__error-wrapper {
+        display: none;
         align-items: center;
         gap: 0.25rem;
         color: $color-status-error;
-        visibility: collapse;
     }
 
     &__message {
