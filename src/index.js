@@ -1,13 +1,17 @@
 import { router } from '@/shared/router/router.js';
+import { appState } from '@/shared/config/router.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.addEventListener('click', (e) => {
-        if (e.target.closest('[data-link]')) {
-            e.preventDefault();
-            window.history.pushState(null, '', e.target.href);
-            router();
+    document.addEventListener('click', (event) => {
+        if (event.target.closest('[data-link]')) {
+            event.preventDefault();
+
+            appState.currentPath = new URL(event.target.href).pathname;
+
+            window.history.pushState(appState, '', appState.currentPath);
+            router(appState);
         }
     })
 
-    router();
+    router(appState);
 })
