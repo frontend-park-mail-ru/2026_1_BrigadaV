@@ -9,9 +9,8 @@ export const config = {
 
 export const appState = {
     currentPath: '/',
-    currentUser: null,
-    // currentUser: {
-    //     name: "Somename",
-    //     avatar: "/mock/user-avatar/somename.jpg"
-    // }
+    currentUser: {
+        name: "Somename",
+        avatar: "/mock/user-avatar/somename.jpg"
+    }
 };
