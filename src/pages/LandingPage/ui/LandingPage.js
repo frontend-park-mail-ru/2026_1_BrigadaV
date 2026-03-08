@@ -7,56 +7,56 @@ import { RecommendedList } from '@/widgets/RecommendedList';
 
 const placesData = [
     {
-        image: '/mock/rcmd1.png',
+        image: '/mock/place/rcmd1.png',
         location: 'Грамаду, Бразилия',
         name: 'Hotel Estalagem St Hubertus',
         price: '23 700',
         isLiked: false
     },
     {
-        image: '/mock/rcmd2.png',
+        image: '/mock/place/rcmd2.png',
         location: 'Грамаду, Бразилия',
         name: 'Hotel Ritta Höppner',
         price: '11 381',
         isLiked: false
     },
     {
-        image: '/mock/rcmd3.png',
+        image: '/mock/place/rcmd3.png',
         location: 'Париж, Франция',
         name: 'Rodin Musée',
         price: '1 269',
         isLiked: false
     },
     {
-        image: '/mock/rcmd4.png',
+        image: '/mock/place/rcmd4.png',
         location: 'Рим, Италия',
         name: 'Roman Forum',
         price: '1 269',
         isLiked: false
     },
     {
-        image: '/mock/rcmd5.png',
+        image: '/mock/place/rcmd5.png',
         location: 'Барселона, Испания',
         name: 'Basilica de Santa Maria del Pi',
         price: '1 994',
         isLiked: true
     },
     {
-        image: '/mock/rcmd6.png',
+        image: '/mock/place/rcmd6.png',
         location: 'Амстердам, Нидерланды',
         name: 'De Hallen Amsterdan',
         price: '33 988',
         isLiked: false
     },
     {
-        image: '/mock/rcmd7.png',
+        image: '/mock/place/rcmd7.png',
         location: 'Бали, Индонезия',
         name: 'Amnaya Resort Kuta',
         price: '5 844',
         isLiked: true
     },
     {
-        image: '/mock/rcmd8.png',
+        image: '/mock/place/rcmd8.png',
         location: 'Барселона, Испания',
         name: 'Plaça Reial',
         price: '12 369',
