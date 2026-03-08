@@ -1,0 +1,31 @@
+<div class="field {{className}} {{#if error}}field--error{{/if}}">
+  {{#if label}}
+  <label class="field__label" for="{{id}}">{{label}}</label>
+  {{/if}}
+
+  <div class="field__input-wrapper">
+    <input type="{{type}}" id="{{id}}" class="field__input"
+      placeholder="{{placeholder}}" autocomplete="{{autocomplete}}" {{attributes}}>
+
+    {{#if hasIcon}}
+    <button type="button" class="field__icon">
+      <img src="{{iconPath}}">
+    </button>
+    {{/if}}
+  </div>
+
+  {{#if note}}
+  <div class="field__note-wrapper">
+    <span class="field__note">{{note}}</span>
+  </div>
+  {{/if}}
+
+  {{#if error}}
+  <div class="field__error-wrapper">
+    {{#if errorIconSvg}}
+    <span class="field__message-icon-box">{{{errorIconSvg}}}</span>
+    {{/if}}
+    <span class="field__message">{{error}}</span>
+  </div>
+  {{/if}}
+</div>

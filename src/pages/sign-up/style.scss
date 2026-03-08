@@ -194,7 +194,7 @@ body {
     }
 
     &__input {
-        @include form-field;
+        @include field;
         min-height: 40px;
     }
 

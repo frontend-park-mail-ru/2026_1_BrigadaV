@@ -1,0 +1,17 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
+.search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &__field-wrapper {
+        position: relative;
+        flex-grow: 1;
+    }
+
+    &__button {
+        @include button-primary;
+    }
+}

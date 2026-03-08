@@ -1,0 +1,29 @@
+@use '@/shared/styles/variables' as *;
+@use '@/app/styles/typography' as *;
+@use '@/app/styles/base';
+@use '@/app/styles/reset';
+
+body {
+    display: grid;
+    grid-template-areas:
+        "header"
+        "main";
+    grid-template-rows: max-content 1fr;
+    background-color: $surface-0;
+}
+
+.header {
+    grid-area: header;
+}
+
+.main {
+    display: flex;
+    padding: 1rem 2.5rem;
+    flex-direction: column;
+    grid-area: main;
+    gap: 4.5rem;
+
+    &>section {
+        min-height: calc(100vh - 5rem - 2rem); // <available space> - <header>, and make little gap
+    }
+}

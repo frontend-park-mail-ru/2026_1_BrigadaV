@@ -1,0 +1,16 @@
+@use '@/shared/styles/mixins' as *;
+
+.session-actions {
+    @include typo-p;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &__log-in {
+        @include button-primary;
+    }
+
+    &__sign-up {
+        @include button-secondary;
+    }
+}
