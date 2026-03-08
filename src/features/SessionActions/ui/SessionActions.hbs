@@ -1,6 +1,9 @@
 <div class="session-actions {{className}}">
   {{#if user}}
-  <span>I forgor</span>
+  <label for="user-avatar" class="session-actions__user-name">{{user.name}}</label>
+  <button id="user-avatar" class="session-actions__avatar">
+    <img src="{{user.avatar}}" class="session-actions__avatar-image">
+  </button>
 
   {{else}}
   <button class="session-actions__sign-up">Зарегистрироваться</button>
