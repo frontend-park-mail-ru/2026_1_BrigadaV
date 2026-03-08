@@ -1,0 +1,16 @@
+.recommended {
+    display: flex;
+    flex-direction: column;
+    gap: 4.5rem;
+
+    &__title {
+        text-align: center;
+    }
+
+    &__list {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem 2rem;
+        list-style: none;
+    }
+}

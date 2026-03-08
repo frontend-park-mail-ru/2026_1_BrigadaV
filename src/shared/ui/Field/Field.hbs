@@ -1,31 +1,31 @@
-<div class="form-field {{modifier_classes}} {{#if error}}form-field--error{{/if}}">
+<div class="field {{className}} {{#if error}}field--error{{/if}}">
   {{#if label}}
-  <label class="form-field__label" for="{{id}}">{{label}}</label>
+  <label class="field__label" for="{{id}}">{{label}}</label>
   {{/if}}
 
-  <div class="form-field__input-wrapper">
-    <input type="{{type}}" id="{{id}}" class="form-field__input"
+  <div class="field__input-wrapper">
+    <input type="{{type}}" id="{{id}}" class="field__input"
       placeholder="{{placeholder}}" autocomplete="{{autocomplete}}" {{attributes}}>
 
     {{#if hasIcon}}
-    <button type="button" class="form-field__icon">
-      {{{iconSvg}}}
+    <button type="button" class="field__icon">
+      <img src="{{iconPath}}">
     </button>
     {{/if}}
   </div>
 
   {{#if note}}
-  <div class="form-field__note-wrapper">
-    <span class="form-field__note">{{note}}</span>
+  <div class="field__note-wrapper">
+    <span class="field__note">{{note}}</span>
   </div>
   {{/if}}
 
   {{#if error}}
-  <div class="form-field__error-wrapper">
+  <div class="field__error-wrapper">
     {{#if errorIconSvg}}
-    <span class="form-field__message-icon-box">{{{errorIconSvg}}}</span>
+    <span class="field__message-icon-box">{{{errorIconSvg}}}</span>
     {{/if}}
-    <span class="form-field__message">{{error}}</span>
+    <span class="field__message">{{error}}</span>
   </div>
   {{/if}}
 </div>

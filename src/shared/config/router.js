@@ -9,4 +9,5 @@ export const config = {
 
 export const appState = {
     currentPath: '/',
+    currentUser: null,
 };
