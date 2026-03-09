@@ -1,0 +1,84 @@
+@use 'sass:color';
+
+@use '@/shared/styles/mixins' as *;
+@use '@/shared/styles/variables' as *;
+
+.auth-form {
+    display: flex;
+    width: 450px;
+    padding: 2rem;
+    flex-direction: column;
+
+    background-color: $surface-0;
+    border-radius: 16px;
+
+    &__title {
+        text-align: center;
+    }
+
+    &__fields {
+        display: flex;
+        margin-top: 1rem;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    &__actions {
+        display: flex;
+        margin-top: 1.5rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    &__log-in {
+        @include button-primary;
+    }
+
+    &__sign-up {
+        @include button-secondary;
+        margin-bottom: -1rem;
+
+        @media (max-height: 768px) {
+            display: none;
+        }
+    }
+
+    &__separator {
+        width: 100%;
+        height: 1px;
+        margin-block: 2rem;
+        color: color.mix($guidely-primary, transparent, 30%);
+        background-color: $surface-1;
+    }
+
+    &__sso-auth {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        @media (max-height: 768px) {
+            flex-direction: row;
+        }
+    }
+
+    &__vk-auth {
+        @include button-oauth;
+        flex-grow: 1;
+        color: $white;
+        background-color: $vk-primary;
+    }
+
+    &__yandex-auth {
+        @include button-oauth;
+        flex-grow: 1;
+        color: $white;
+        background-color: $yandex-primary;
+    }
+
+    &__vk-auth[disabled],
+    &__yandex-auth[disabled] {
+        opacity: 50%;
+        filter: grayscale(1);
+        cursor: default;
+    }
+}

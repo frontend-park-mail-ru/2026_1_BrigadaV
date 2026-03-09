@@ -1,0 +1,30 @@
+import template from './AuthForm.hbs?compiled';
+import './style.scss';
+
+import { Field } from '@/shared/ui/Field';
+
+
+export const AuthForm = async (props) => {
+    return template({
+        loginField: Field({
+            className: 'auth-form__field',
+            id: 'login-input',
+            label: 'Введите логин',
+            type: 'email',
+            placeholder: 'Логин',
+            autocomplete: 'email',
+            hasIcon: false,
+        }),
+        passwordField: Field({
+            className: 'auth-form__field',
+            id: 'password-input',
+            label: 'Введите пароль',
+            type: 'password',
+            placeholder: 'Пароль',
+            autocomplete: 'current-password',
+            hasIcon: true,
+            iconPath: '/icons/eye.svg'
+        }),
+        ...props
+    });
+}
