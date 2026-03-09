@@ -66,8 +66,8 @@
     border-radius: 8px;
 
     transition:
-        background-color $timing-animation-short,
-        scale $timing-animation-short;
+        background-color $timing-animation-medium,
+        scale $timing-animation-medium;
 
     &[disabled] {
         color: $guidely-primary;
@@ -90,8 +90,8 @@
     border-radius: 8px;
 
     transition:
-        color $timing-animation-short,
-        scale $timing-animation-short;
+        color $timing-animation-medium,
+        scale $timing-animation-medium;
 
     &[disabled] {
         color: $color-interactable-disabled;

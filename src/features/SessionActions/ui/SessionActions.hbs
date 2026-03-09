@@ -1,9 +1,19 @@
 <div class="session-actions {{className}}">
   {{#if user}}
   <label for="user-avatar" class="session-actions__user-name">{{user.name}}</label>
-  <button id="user-avatar" class="session-actions__avatar">
+  <button id="user-avatar" class="session-actions__avatar js-session-toggle">
     <img src="{{user.avatar}}" class="session-actions__avatar-image">
   </button>
+
+  <div class="session-actions__menu session-menu js-session-menu">
+    <ul class="session-menu__list">
+      <li class="session-menu__item">
+        <button type="button" class="session-menu__link session-menu__link--logout js-logout">
+          Выйти
+        </button>
+      </li>
+    </ul>
+  </div>
 
   {{else if authPrompt}}
   <span class="session-actions__prompt">{{authPrompt.prompt}}</span>

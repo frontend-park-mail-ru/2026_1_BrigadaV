@@ -37,7 +37,7 @@
         background-color: $surface-0;
         border: none;
         border-radius: 50%;
-        transition: transform $timing-animation-short;
+        transition: transform $timing-animation-medium;
 
         &::before {
             width: 24px;
@@ -47,7 +47,7 @@
             mask-position: center;
             mask-repeat: no-repeat;
             mask-size: contain;
-            transition: background-color $timing-animation-short;
+            transition: background-color $timing-animation-medium;
             content: "";
         }
 
