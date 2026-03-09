@@ -16,10 +16,12 @@ document.addEventListener('click', async (event) => {
     }
 
     if (logoutButton) {
-        appState.currentUser = null;
-        await API.logout();
+        try {
+            await API.logout();
+            appState.currentUser = null;
+            navigate(window.location.pathname);
+        } catch (error) {}
 
-        navigate(window.location.pathname);
         return;
     }
 
