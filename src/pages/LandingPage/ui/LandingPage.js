@@ -4,6 +4,7 @@ import './style.scss';
 import { Header } from '@/widgets/header';
 import { Hero } from '@/widgets/hero';
 import { RecommendedList } from '@/widgets/RecommendedList';
+import { initLikeHandler } from '@/features/LikeButton';
 
 export const LandingPage = async (appState) => {
     const page = document.createElement('div');
@@ -16,6 +17,8 @@ export const LandingPage = async (appState) => {
 
     page.classList.add('page-wrapper');
     page.innerHTML = html;
+
+    initLikeHandler(page);
 
     return page;
 };
