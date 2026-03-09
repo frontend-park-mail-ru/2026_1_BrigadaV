@@ -18,7 +18,7 @@ export const SignupPage = async (appState) => {
             }
         }),
         registrationForm: await RegistrationForm({
-            className: 'log-in__form',
+            className: 'sign-up__form',
             submitText: 'Создать аккаунт',
             redirectText: 'Войти',
             redirectHref: '/login'

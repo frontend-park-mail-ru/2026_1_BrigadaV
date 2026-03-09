@@ -6,14 +6,25 @@ import { Field } from '@/shared/ui/Field';
 
 export const RegistrationForm = async (props) => {
     return template({
+        nicknameField: Field({
+            className: 'registration-form__field',
+            id: 'nickname-input',
+            label: 'Введите ник',
+            type: 'login',
+            attributes: {
+                name: 'nickname',
+                placeholder: 'Ник',
+            },
+            hasIcon: false,
+        }),
         loginField: Field({
             className: 'registration-form__field',
             id: 'login-input',
-            label: 'Введите логин',
+            label: 'Введите почту',
             type: 'email',
             attributes: {
                 name: 'login',
-                placeholder: 'Логин',
+                placeholder: 'Почта',
             },
             hasIcon: false,
         }),

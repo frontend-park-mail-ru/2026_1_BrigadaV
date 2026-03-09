@@ -9,11 +9,11 @@ export const AuthForm = async (props) => {
         loginField: Field({
             className: 'auth-form__field',
             id: 'login-input',
-            label: 'Введите логин',
+            label: 'Введите почту',
             type: 'email',
             attributes: {
                 name: 'login',
-                placeholder: 'Логин',
+                placeholder: 'Почта',
                 autocomplete: 'email',
             },
             hasIcon: false,
