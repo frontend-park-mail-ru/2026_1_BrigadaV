@@ -11,8 +11,11 @@ export const AuthForm = async (props) => {
             id: 'login-input',
             label: 'Введите логин',
             type: 'email',
-            placeholder: 'Логин',
-            autocomplete: 'email',
+            attributes: {
+                name: 'login',
+                placeholder: 'Логин',
+                autocomplete: 'email',
+            },
             hasIcon: false,
         }),
         passwordField: Field({
@@ -20,8 +23,11 @@ export const AuthForm = async (props) => {
             id: 'password-input',
             label: 'Введите пароль',
             type: 'password',
-            placeholder: 'Пароль',
-            autocomplete: 'current-password',
+            attributes: {
+                name: 'password',
+                placeholder: 'Пароль',
+                autocomplete: 'current-password',
+            },
             hasIcon: true,
             iconPath: '/icons/eye.svg'
         }),

@@ -12,6 +12,10 @@
     background-color: $surface-0;
     border-radius: 16px;
 
+    @media (max-height: 768px) {
+        padding-block: 1rem;
+    }
+
     &__title {
         text-align: center;
     }
@@ -21,6 +25,11 @@
         margin-top: 1rem;
         flex-direction: column;
         gap: 1.25rem;
+
+        @media (max-height: 768px) {
+            margin-top: 0.5rem;
+            gap: 1rem;
+        }
     }
 
     &__actions {
@@ -28,15 +37,19 @@
         margin-top: 1.5rem;
         flex-direction: column;
         gap: 0.5rem;
+        @media (max-height: 768px) {
+            margin-top: 1.25rem;
+        }
     }
 
-    &__log-in {
+    &__submit {
         @include button-primary;
     }
 
-    &__sign-up {
+    &__redirect {
         @include button-secondary;
         margin-bottom: -1rem;
+        justify-content: center;
 
         @media (max-height: 768px) {
             display: none;
@@ -49,6 +62,9 @@
         margin-block: 2rem;
         color: color.mix($guidely-primary, transparent, 30%);
         background-color: $surface-1;
+        @media (max-height: 768px) {
+            margin-block: 1.5rem;
+        }
     }
 
     &__sso-auth {

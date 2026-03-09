@@ -6,8 +6,8 @@ import { SessionActions } from '@/features/sessionActions';
 export const Header = (props) => {
     return template({
         sessionActions: SessionActions({
-            user: props.user,
-            className: "header__account"
+            className: "header__account",
+            ...props
         })
     });
 }

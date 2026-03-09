@@ -32,20 +32,20 @@ const request = async (path, options) => {
 }
 
 export const API = {
-    login: (login, password) => {
+    login: async (login, password) => {
         return request('/login', {
             method: 'POST',
             body: JSON.stringify({ login, password }),
         });
     },
 
-    logout: () => {
+    logout: async () => {
         return request('/logout', {
             method: 'POST',
         });
     },
 
-    getPlaces: () => {
+    getPlaces: async () => {
         return request('/places', {
             method: 'GET',
         });

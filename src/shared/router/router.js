@@ -11,4 +11,14 @@ export const router = async (path = '/') => {
     root.appendChild(await view(appState));
 }
 
-window.addEventListener('popstate', (event) => router(event.state.currentPath));
+export const navigate = async (path) => {
+    appState.currentPath = path;
+    window.history.pushState(appState, '', path);
+
+    await router(path);
+}
+
+window.addEventListener('popstate', (event) => {
+    const path = event.state?.currentPath || window.location.pathname;
+    router(path);
+});
