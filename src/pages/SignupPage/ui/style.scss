@@ -1,0 +1,44 @@
+@use '@/shared/styles/variables' as *;
+@use '@/app/styles/typography' as *;
+@use '@/app/styles/base';
+@use '@/app/styles/reset';
+
+.page-wrapper {
+    display: grid;
+    grid-template-areas:
+        "header"
+        "main";
+    grid-template-rows: max-content 1fr;
+    background-color: $surface-0;
+}
+
+.header {
+    grid-area: header;
+}
+
+.main {
+    grid-area: main;
+}
+
+.sign-up {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("/assets/sign-up-bg.png");
+    background-position: center 75%;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    &__form {
+        z-index: 10;
+    }
+
+    &::before {
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        background-color: hsl(0 0% 0% / 0.3);
+        content: "";
+    }
+}

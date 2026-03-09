@@ -1,5 +1,6 @@
 import { LandingPage } from '@/pages/LandingPage';
 import { LoginPage } from '@/pages/LoginPage';
+import { SignupPage } from '@/pages/SignupPage';
 
 export const config = {
     landing: {
@@ -9,6 +10,10 @@ export const config = {
     login: {
         href: '/login',
         view: LoginPage
+    },
+    signup: {
+        href: '/sign-up',
+        view: SignupPage
     }
 };
 
