@@ -13,7 +13,7 @@ export const RegistrationForm = async (props) => {
             type: 'login',
             attributes: {
                 name: 'nickname',
-                placeholder: 'Ник',
+                placeholder: 'Никнейм',
             },
             hasIcon: false,
         }),
