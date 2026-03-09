@@ -22,7 +22,6 @@ export const LoginPage = async (appState) => {
             submitText: 'Войти',
             redirectText: 'Создать аккаунт',
             redirectHref: '/sign-up'
-
         })
     });
 

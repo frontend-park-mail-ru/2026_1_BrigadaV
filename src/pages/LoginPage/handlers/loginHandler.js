@@ -10,7 +10,8 @@ export const handleLogin = async (event, appState) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(data.login)) {
-        console.error('Invalid email format');
+        // TODO Сделать вывод ошибок в поля
+        // console.error('Invalid email format');
         return;
     }
 
@@ -20,6 +21,7 @@ export const handleLogin = async (event, appState) => {
         navigate('/');
 
     } catch (error) {
-        console.error('Network error during login:', error);
+        // TODO Сделать вывод ошибок в поля
+        // console.error('Network error during login:', error);
     }
 };

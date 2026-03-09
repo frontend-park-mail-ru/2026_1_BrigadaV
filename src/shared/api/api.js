@@ -26,7 +26,8 @@ const request = async (path, options) => {
 
         return data;
     } catch (error) {
-        console.error(`API Error (${path}):`, error.message);
+        // TODO Сделать вывод ошибок тост сообщением
+        // console.error(`API Error (${path}):`, error.message);
         throw error;
     }
 }
