@@ -9,11 +9,11 @@ export const RegistrationForm = async (props) => {
         nicknameField: Field({
             className: 'registration-form__field',
             id: 'nickname-input',
-            label: 'Введите ник',
+            label: 'Введите никнейм',
             type: 'login',
             attributes: {
                 name: 'nickname',
-                placeholder: 'Ник',
+                placeholder: 'Никнейм',
             },
             hasIcon: false,
         }),
