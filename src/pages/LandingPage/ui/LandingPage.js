@@ -64,13 +64,13 @@ const placesData = [
     }
 ];
 
-export const LandingPage = (appState) => {
+export const LandingPage = async (appState) => {
     const page = document.createElement('div');
 
     const html = template({
         header: Header({ user: appState.currentUser }),
         hero: Hero(),
-        recommendedList: RecommendedList(placesData)
+        recommendedList: await RecommendedList(placesData)
     });
 
     page.classList.add('page-wrapper');
