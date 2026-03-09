@@ -1,0 +1,43 @@
+@use '@/shared/styles/variables' as *;
+
+.like {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    background-color: $surface-0;
+    border: none;
+    border-radius: 50%;
+    transition: transform $timing-animation-medium;
+
+    &::before {
+        width: 24px;
+        height: 24px;
+        background-color: $color-interactable-idle;
+        mask-image: url("/icons/like-outline.svg");
+        mask-position: center;
+        mask-repeat: no-repeat;
+        mask-size: contain;
+        transition: background-color $timing-animation-medium;
+        content: "";
+    }
+
+    &:hover {
+        &::before {
+            background-color: $color-interactable-active;
+        }
+    }
+
+    &--active {
+        &::before {
+            background-color: $color-interactable-active;
+            mask-image: url("/icons/like-solid.svg");
+            content: "";
+        }
+    }
+}
