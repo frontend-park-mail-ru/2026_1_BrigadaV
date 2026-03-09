@@ -11,6 +11,7 @@ export const RegistrationForm = async (props) => {
             id: 'login-input',
             label: 'Введите логин',
             type: 'email',
+            autocomplete: 'email',
             attributes: {
                 name: 'login',
                 placeholder: 'Логин',
@@ -22,6 +23,7 @@ export const RegistrationForm = async (props) => {
             id: 'password-input',
             label: 'Введите пароль',
             type: 'password',
+            autocomplete: 'current-password',
             attributes: {
                 name: 'password',
                 placeholder: 'Пароль',
@@ -33,7 +35,8 @@ export const RegistrationForm = async (props) => {
             className: 'registration-form__field',
             id: 'password-input',
             label: 'Повторите пароль',
-            type: 'password',
+            type: 'current-password',
+            autocomplete: 'email',
             attributes: {
                 name: 'password',
                 placeholder: 'Пароль',
