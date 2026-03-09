@@ -1,0 +1,31 @@
+<form class="{{className}} registration-form">
+  <h4 class="registration-form__title">Регистрация</h4>
+
+  <div class="registration-form__fields">
+    {{{loginField}}}
+    {{{passwordField}}}
+    {{{password_repeatField}}}
+
+    <div class="registration-form__actions">
+      <button class="registration-form__submit" type="submit">{{submitText}}</button>
+
+      <a href="{{redirectHref}}" class="registration-form__redirect" data-link>
+        {{redirectText}}
+      </a>
+    </div>
+
+    <hr class="registration-form__separator">
+
+    <div class="registration-form__sso-auth">
+
+      <button class="registration-form__vk-auth button-oauth" disabled>
+        <img src="/icons/vk.svg" class="button-oauth__icon">
+        <span class="button-oauth__text">Зарегистрироваться через VK</span>
+      </button>
+
+      <button class="registration-form__yandex-auth button-oauth" disabled>
+        <img src="/icons/yandex.svg" class="button-oauth__icon">
+        <span class="button-oauth__text">Зарегистрироваться с Яндекс ID</span>
+      </button>
+    </div>
+</form>
