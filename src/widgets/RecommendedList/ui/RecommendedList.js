@@ -13,6 +13,7 @@ export const RecommendedList = async (props) => {
         location: `${place.locality.city}, ${place.locality.country}`,
         price: place.price / 100,
         image: place.photos?.[0]?.file_path,
+        isLiked: props.user?.liked_ids?.includes(place.id)
     }));
 
     const cards = cleanedPlaces.map(place => PlaceCard(place));
