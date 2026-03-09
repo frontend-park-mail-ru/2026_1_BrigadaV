@@ -30,7 +30,7 @@ export const SignupPage = async (appState) => {
 
     const form = page.querySelector('.sign-up__form');
     if (form) {
-        form.addEventListener('submit', (event) => handleSignup(event, appState));
+        form?.addEventListener('submit', (event) => handleSignup(event, appState));
     }
 
     return page;
