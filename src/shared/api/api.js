@@ -26,26 +26,27 @@ const request = async (path, options) => {
 
         return data;
     } catch (error) {
-        console.error(`API Error (${path}):`, error.message);
+        // TODO Сделать вывод ошибок тост сообщением
+        // console.error(`API Error (${path}):`, error.message);
         throw error;
     }
 }
 
 export const API = {
-    login: (login, password) => {
+    login: async (login, password) => {
         return request('/login', {
             method: 'POST',
             body: JSON.stringify({ login, password }),
         });
     },
 
-    logout: () => {
+    logout: async () => {
         return request('/logout', {
             method: 'POST',
         });
     },
 
-    getPlaces: () => {
+    getPlaces: async () => {
         return request('/places', {
             method: 'GET',
         });

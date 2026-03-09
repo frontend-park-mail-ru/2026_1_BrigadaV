@@ -1,18 +1,17 @@
-import { router } from '@/shared/router/router.js';
 import { appState } from '@/shared/config/router.js';
+import { navigate } from '@/shared/router/router';
 
 document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', (event) => {
-        if (event.target.closest('[data-link]')) {
+        const link = event.target.closest('[data-link]');
+
+        if (link) {
             event.preventDefault();
 
-            appState.currentPath = new URL(event.target.href).pathname;
-
-            window.history.pushState(appState, '', appState.currentPath);
-            router(appState.currentPath);
+            const path = new URL(link.href).pathname;
+            navigate(path);
         }
     })
 
-    appState.currentPath = window.location.pathname;
-    router(appState.currentPath);
+    navigate('/');
 })

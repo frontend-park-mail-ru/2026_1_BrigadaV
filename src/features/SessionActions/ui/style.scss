@@ -33,4 +33,12 @@
         object-fit: cover;
         object-position: center;
     }
+
+    &__prompt {
+        color: $guidely-primary;
+    }
+
+    &__action {
+        @include button-primary;
+    }
 }

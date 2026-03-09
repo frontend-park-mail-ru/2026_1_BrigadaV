@@ -1,0 +1,30 @@
+<form class="{{className}} auth-form">
+  <h4 class="auth-form__title">Вход в аккаунт</h4>
+
+  <div class="auth-form__fields">
+    {{{loginField}}}
+    {{{passwordField}}}
+
+    <div class="auth-form__actions">
+      <button class="auth-form__submit" type="submit">{{submitText}}</button>
+
+      <a href="{{redirectHref}}" class="auth-form__redirect" data-link>
+        {{redirectText}}
+      </a>
+    </div>
+
+    <hr class="auth-form__separator">
+
+    <div class="auth-form__sso-auth">
+
+      <button class="auth-form__vk-auth button-oauth" disabled>
+        <img src="/icons/vk.svg" class="button-oauth__icon">
+        <span class="button-oauth__text">Войти через VK</span>
+      </button>
+
+      <button class="auth-form__yandex-auth button-oauth" disabled>
+        <img src="/icons/yandex.svg" class="button-oauth__icon">
+        <span class="button-oauth__text">Войти с Яндекс ID</span>
+      </button>
+    </div>
+</form>

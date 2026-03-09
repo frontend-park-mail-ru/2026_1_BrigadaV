@@ -4,8 +4,8 @@
   {{/if}}
 
   <div class="field__input-wrapper">
-    <input type="{{type}}" id="{{id}}" class="field__input"
-      placeholder="{{placeholder}}" autocomplete="{{autocomplete}}" {{attributes}}>
+    <input type="{{type}}" id="{{id}}" class="field__input" {{#each attributes}} {{@key}}="{{this}}"
+      {{/each}}>
 
     {{#if hasIcon}}
     <button type="button" class="field__icon">

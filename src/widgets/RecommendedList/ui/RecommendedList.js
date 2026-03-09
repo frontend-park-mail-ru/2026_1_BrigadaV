@@ -10,7 +10,7 @@ export const RecommendedList = async (props) => {
     const cleanedPlaces = placesData.map(place => ({
         id: place.id,
         name: place.name,
-        location: `${place.locality.city}, ${place.locality.country}`,
+        location: `${place.locality.name}, ${place.locality.country}`,
         price: place.price / 100,
         image: place.photos?.[0]?.file_path,
         isLiked: props.user?.liked_ids?.includes(place.id)

@@ -5,9 +5,15 @@
     <img src="{{user.avatar}}" class="session-actions__avatar-image">
   </button>
 
+  {{else if authPrompt}}
+  <span class="session-actions__prompt">{{authPrompt.prompt}}</span>
+  <a href="{{authPrompt.href}}" class="session-actions__action" data-link>
+    {{authPrompt.buttonText}}
+  </a>
+
   {{else}}
-  <button class="session-actions__sign-up">Зарегистрироваться</button>
-  <button class="session-actions__log-in">Войти</button>
+  <a href="/sign-up" class="session-actions__sign-up" data-link>Зарегистрироваться</a>
+  <a class="session-actions__log-in" href="/login" data-link>Войти</a>
 
   {{/if}}
 </div>

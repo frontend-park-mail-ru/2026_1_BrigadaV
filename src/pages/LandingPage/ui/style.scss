@@ -3,7 +3,7 @@
 @use '@/app/styles/base';
 @use '@/app/styles/reset';
 
-body {
+.page-wrapper {
     display: grid;
     grid-template-areas:
         "header"
