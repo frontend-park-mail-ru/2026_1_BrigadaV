@@ -68,7 +68,7 @@ export const API = {
     },
 
     getPlaces: async () => {
-        return request('/places', {
+        return request('/', {
             method: 'GET',
         });
     }

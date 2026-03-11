@@ -1,4 +1,4 @@
-import template from './registerForm.hbs?compiled';
+import template from './RegisterForm.hbs?compiled';
 import './style.scss';
 
 import { Field } from '@/shared/ui/Field';

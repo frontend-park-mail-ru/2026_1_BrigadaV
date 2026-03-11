@@ -1,8 +1,8 @@
 import template from './LandingPage.hbs?compiled';
 import './style.scss';
 
-import { Header } from '@/widgets/header';
-import { Hero } from '@/widgets/hero';
+import { Header } from '@/widgets/Header';
+import { Hero } from '@/widgets/Hero';
 import { RecommendedList } from '@/widgets/RecommendedList';
 
 export class LandingPage {
