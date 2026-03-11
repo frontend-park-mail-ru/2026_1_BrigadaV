@@ -3,35 +3,39 @@ import './style.scss';
 
 import { Header } from '@/widgets/Header';
 import { AuthForm } from '@/widgets/AuthForm';
-import { handleLogin } from '../handlers/loginHandler';
 
-export const LoginPage = async (appState) => {
-    const page = document.createElement('div');
+export class LoginPage {
+    constructor(appState) {
+        this.element = document.createElement('div');
+        const html = template();
 
-    const html = template({
-        header: Header({
+        this.element.classList.add('page-wrapper');
+        this.element.innerHTML = html;
+
+        this.header = new Header({
             user: appState.currentUser,
             authPrompt: {
                 prompt: 'Ещё нет аккаунта?',
                 href: '/sign-up',
                 buttonText: 'Регистрация'
             }
-        }),
-        authForm: await AuthForm({
+        })
+
+        this.authForm = new AuthForm({
             className: 'log-in__form',
             submitText: 'Войти',
             redirectText: 'Создать аккаунт',
             redirectHref: '/sign-up'
-        })
-    });
+        });
 
-    page.classList.add('page-wrapper');
-    page.innerHTML = html;
+        this.element.querySelector('[data-slot="header"]')
+            .replaceWith(this.header.render());
 
-    const form = page.querySelector('.log-in__form');
-    if (form) {
-        form.addEventListener('submit', (event) => handleLogin(event, appState));
+        this.element.querySelector('[data-slot="auth-form"]')
+            .replaceWith(this.authForm.render());
     }
 
-    return page;
+    render() {
+        return this.element;
+    }
 }

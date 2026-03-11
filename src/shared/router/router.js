@@ -5,10 +5,11 @@ import { appState } from '@/shared/config/router';
 export const router = async (path = '/') => {
     const root = document.getElementById('root');
 
-    const view = findMatch(path) || LandingPage;
+    const ViewClass = findMatch(path) || LandingPage;
+    const pageInstance = new ViewClass(appState);
 
     root.innerHTML = '';
-    root.appendChild(await view(appState));
+    root.appendChild(pageInstance.render());
 }
 
 export const navigate = async (path) => {

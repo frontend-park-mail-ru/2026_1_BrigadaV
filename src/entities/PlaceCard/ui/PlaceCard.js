@@ -1,14 +1,14 @@
 import template from './PlaceCard.hbs?compiled';
 import './style.scss';
+import { stringToElement } from '@/shared/utils';
 
-import { LikeButton } from '@/features/LikeButton';
+export class PlaceCard {
+    constructor(props) {
+        this.props = props;
+        this.element = stringToElement(template(this.props));
+    }
 
-export const PlaceCard = (props) => {
-    return template({
-        likeButton: LikeButton({
-            className: "card__like",
-            isLiked: props.isLiked
-        }),
-        ...props
-    });
+    render() {
+        return this.element;
+    }
 }

@@ -1,0 +1,20 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
+.auth-links {
+    @include typo-p;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &__log-in {
+        @include button-primary;
+        min-width: 100px;
+        justify-content: center;
+    }
+
+    &__sign-up {
+        @include button-secondary;
+    }
+}

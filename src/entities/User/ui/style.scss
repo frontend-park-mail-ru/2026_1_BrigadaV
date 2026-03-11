@@ -1,0 +1,30 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
+.user-profile {
+    @include typo-p;
+    position: relative;
+    display: flex;
+
+    padding: 0;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: transparent;
+    border: none;
+
+    &__nickname {
+        color: $guidely-primary;
+    }
+
+    &__avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: center;
+
+        &--default {
+            opacity: 50%;
+        }
+    }
+}

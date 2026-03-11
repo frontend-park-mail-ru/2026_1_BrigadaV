@@ -2,35 +2,41 @@ import template from './SignupPage.hbs?compiled';
 import './style.scss';
 
 import { Header } from '@/widgets/Header';
-import { RegistrationForm } from '@/widgets/RegistrationForm';
-import { handleSignup } from '../handlers/signupHandler';
+import { RegisterForm } from '@/widgets/RegisterForm';
 
-export const SignupPage = async (appState) => {
-    const page = document.createElement('div');
 
-    const html = template({
-        header: Header({
+export class SignupPage {
+    constructor(appState) {
+        this.element = document.createElement('div');
+        const html = template();
+
+        this.element.classList.add('page-wrapper');
+        this.element.innerHTML = html;
+
+        this.header = new Header({
             user: appState.currentUser,
             authPrompt: {
                 prompt: 'Уже есть аккаунт?',
                 href: '/login',
                 buttonText: 'Войдите'
             }
-        }),
-        registrationForm: await RegistrationForm({
+        })
+
+        this.registerForm = new RegisterForm({
             className: 'sign-up__form',
             submitText: 'Создать аккаунт',
             redirectText: 'Войти',
             redirectHref: '/login'
         })
-    });
 
-    page.classList.add('page-wrapper');
-    page.innerHTML = html;
+        this.element.querySelector('[data-slot="header"]')
+            .replaceWith(this.header.render());
 
-    const form = page.querySelector('.sign-up__form');
-    
-    form?.addEventListener('submit', (event) => handleSignup(event, appState));
+        this.element.querySelector('[data-slot="register-form"]')
+            .replaceWith(this.registerForm.render());
+    }
 
-    return page;
+    render() {
+        return this.element;
+    }
 }

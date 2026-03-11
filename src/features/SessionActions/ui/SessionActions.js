@@ -1,35 +1,37 @@
 import template from './SessionActions.hbs?compiled';
 import './style.scss';
 
-import { appState } from '@/shared/config/router';
-import { API } from '@/shared/api/api';
-import { navigate } from '@/shared/router/router';
+import { stringToElement } from '@/shared/utils';
 
-document.addEventListener('click', async (event) => {
-    const toggleButton = event.target.closest('.js-session-toggle');
-    const logoutButton = event.target.closest('.js-logout');
-    const menu = document.querySelector('.js-session-menu');
+import { UserMenu } from '@/widgets/UserMenu';
 
-    if (toggleButton) {
-        menu?.classList.toggle('session-menu--active');
-        return;
+export class SessionActions {
+    constructor(props) {
+        this.element = stringToElement(template(props));
+
+        this.userMenu = new UserMenu({
+            className: 'session-actions__user-menu'
+        })
+
+        this.element.querySelector('[data-slot="user-menu"]')
+            .replaceWith(this.userMenu.render());
+
+        this.initMenuListeners();
     }
 
-    if (logoutButton) {
-        try {
-            await API.logout();
-            appState.currentUser = null;
-            navigate(window.location.pathname);
-        } catch (error) {}
+    initMenuListeners() {
+        document.addEventListener('click', async (event) => {
+            const toggleButton = event.target.closest('.js-session-toggle');
 
-        return;
+            if (toggleButton) {
+                this.userMenu.show();
+            } else {
+                this.userMenu.hide();
+            }
+        });
     }
 
-    if (menu && !event.target.closest('.session-actions__container')) {
-        menu.classList.remove('session-menu--active');
+    render() {
+        return this.element;
     }
-});
-
-export const SessionActions = (props) => {
-    return template(props);
 }

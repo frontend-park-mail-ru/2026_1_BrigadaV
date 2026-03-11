@@ -4,21 +4,36 @@ import './style.scss';
 import { Header } from '@/widgets/header';
 import { Hero } from '@/widgets/hero';
 import { RecommendedList } from '@/widgets/RecommendedList';
-import { initLikeHandler } from '@/features/LikeButton';
 
-export const LandingPage = async (appState) => {
-    const page = document.createElement('div');
+export class LandingPage {
+    constructor(appState) {
+        this.element = document.createElement('div');
+        const html = template();
 
-    const html = template({
-        header: Header({ user: appState.currentUser }),
-        hero: Hero(),
-        recommendedList: await RecommendedList({ user: appState.currentUser })
-    });
+        this.element.classList.add('page-wrapper');
+        this.element.innerHTML = html;
 
-    page.classList.add('page-wrapper');
-    page.innerHTML = html;
+        this.header = new Header({
+            user: appState.currentUser
+        })
 
-    initLikeHandler(page);
+        this.hero = new Hero();
 
-    return page;
-};
+        this.recommendedList = new RecommendedList({
+            user: appState.currentUser
+        });
+
+        this.element.querySelector('[data-slot="header"]')
+            .replaceWith(this.header.render());
+
+        this.element.querySelector('[data-slot="hero"]')
+            .replaceWith(this.hero.render());
+
+        this.element.querySelector('[data-slot="recommended-list"]')
+            .replaceWith(this.recommendedList.render());
+    }
+
+    render() {
+        return this.element;
+    }
+}

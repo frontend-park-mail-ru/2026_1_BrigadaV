@@ -14,4 +14,9 @@
     &__button {
         @include button-primary;
     }
+
+    &__input {
+       opacity: 50%;
+       pointer-events: none;
+    }
 }

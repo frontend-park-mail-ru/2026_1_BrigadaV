@@ -1,0 +1,12 @@
+@use '@/shared/styles/mixins' as *;
+@use '@/shared/styles/variables' as *;
+
+.user-session {
+    @include typo-p;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+
+}
