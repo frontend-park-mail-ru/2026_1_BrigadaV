@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8081/api';
+const API_URL = 'http://212.233.96.48:8080/api';
 
 const request = async (path, options) => {
     const url = `${API_URL}${path}`;
