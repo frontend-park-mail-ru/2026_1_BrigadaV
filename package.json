@@ -1,22 +1,27 @@
 {
-  "name": "guidely",
-  "version": "1.0.0",
-  "description": "",
-  "scripts": {
-    "dev": "vite"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
-  "devDependencies": {
-    "@types/node": "^25.3.3",
-    "handlebars": "^4.7.8",
-    "sass-embedded": "^1.97.3",
-    "vite": "^6.0.0",
-    "vite-plugin-handlebars-precompile": "^1.0.1"
-  },
-  "dependencies": {
-    "express": "^5.2.1"
-  }
+    "name": "guidely",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "dev": "vite",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "module",
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "@types/node": "^25.3.3",
+        "eslint": "^10.0.3",
+        "globals": "^17.4.0",
+        "handlebars": "^4.7.8",
+        "sass-embedded": "^1.97.3",
+        "vite": "^6.0.0",
+        "vite-plugin-handlebars-precompile": "^1.0.1"
+    },
+    "dependencies": {
+        "express": "^5.2.1"
+    }
 }
