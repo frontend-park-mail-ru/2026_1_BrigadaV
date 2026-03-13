@@ -1,50 +1,8 @@
-@use '@/shared/styles/mixins' as *;
 @use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
 
-.session-actions {
-    @include typo-p;
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
 
-    &__log-in {
-        @include button-primary;
-    }
-
-    &__sign-up {
-        @include button-secondary;
-    }
-
-    &__user-name {
-        color: $guidely-primary;
-    }
-
-    &__avatar {
-        width: 40px;
-        height: 40px;
-        padding: 0;
-        background-color: transparent;
-        border: none;
-        border-radius: 50%;
-        overflow: hidden;
-    }
-
-    &__avatar-image {
-        object-fit: cover;
-        object-position: center;
-    }
-
-    &__prompt {
-        color: $guidely-primary;
-    }
-
-    &__action {
-        @include button-primary;
-    }
-}
-
-.session-menu {
+.user-menu {
     position: absolute;
     top: calc(100% + 10px);
     right: 0;
@@ -62,6 +20,8 @@
 
     &__link {
         --color-active: #{$guidely-primary};
+
+        @include typo-p;
 
         width: 100%;
         padding: 8px 16px;

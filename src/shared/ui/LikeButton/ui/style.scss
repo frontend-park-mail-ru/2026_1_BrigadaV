@@ -37,7 +37,6 @@
         &::before {
             background-color: $color-interactable-active;
             mask-image: url("/icons/like-solid.svg");
-            content: "";
         }
     }
 }

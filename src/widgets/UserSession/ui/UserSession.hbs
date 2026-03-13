@@ -1,0 +1,25 @@
+<div class="user-session {{className}}">
+  {{#if user}}
+  <button class="user-profile js-session-toggle">
+    <span class="user-profile__nickname">{{user.nickname}}</span>
+
+    {{#if user.avatar}}
+    <img src="{{user.avatar}}" class="user-profile__avatar" alt="{{user.nickname}}">
+    {{else}}
+    <img src="/icons/avatar.svg" class="user-profile__avatar user-profile__avatar--default">
+    {{/if}}
+    
+    <div data-slot="user-menu"></div>
+  </button>
+  {{else if authPrompt}}
+  <div class="auth-prompt">
+    <span class="auth-prompt__prompt">{{authPrompt.prompt}}</span>
+    <a href="{{authPrompt.href}}" class="auth-prompt__link" data-link>{{authPrompt.buttonText}}</a>
+  </div>
+  {{else}}
+  <div class="auth-links">
+    <a href="/sign-up" class="auth-links__sign-up" data-link>Зарегистрироваться</a>
+    <a href="/login" class="auth-links__log-in" data-link>Войти</a>
+  </div>
+  {{/if}}
+</div>

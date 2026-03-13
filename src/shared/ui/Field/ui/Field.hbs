@@ -20,12 +20,8 @@
   </div>
   {{/if}}
 
-  {{#if error}}
   <div class="field__error-wrapper">
-    {{#if errorIconSvg}}
-    <span class="field__message-icon-box">{{{errorIconSvg}}}</span>
-    {{/if}}
-    <span class="field__message">{{error}}</span>
+    <span class="field__message-icon-box"><img src="/icons/alert-error.svg"></span>
+    <span class="field__message"></span>
   </div>
-  {{/if}}
 </div>

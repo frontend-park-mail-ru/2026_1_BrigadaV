@@ -1,13 +1,31 @@
+import { stringToElement } from '@/shared/utils';
 import template from './Header.hbs?compiled';
 import './style.scss';
 
-import { SessionActions } from '@/features/sessionActions';
+import { UserSession } from '@/widgets/UserSession';
 
-export const Header = (props) => {
-    return template({
-        sessionActions: SessionActions({
-            className: "header__account",
+export class Header {
+    constructor(props) {
+        this.props = props;
+
+        this.userSession = new UserSession({
+            className: 'header__account',
             ...props
-        })
-    });
+        });
+
+    }
+
+    render() {
+        this.element = stringToElement(template());
+
+        this.userSessionSlot = this.element.querySelector('[data-slot="user-session"]');
+        this.element.querySelector('[data-slot="user-session"]')
+            .replaceWith(this.userSession.render());
+
+        return this.element;
+    }
+
+    destroy() {
+        this.userSession.destroy();
+    }
 }

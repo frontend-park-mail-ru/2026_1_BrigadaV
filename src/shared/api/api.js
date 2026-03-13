@@ -11,6 +11,7 @@ const request = async (path, options) => {
         ...options,
     };
 
+    // eslint-disable-next-line no-useless-catch
     try {
         const response = await fetch(url, defaultOptions);
 
@@ -21,22 +22,43 @@ const request = async (path, options) => {
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data.message || 'Something went wrong');
+            const error = new Error(data.message || 'Something went wrong');
+
+            error.field = data.field;
+            error.errorCode = data.error;
+
+            throw error;
         }
 
         return data;
     } catch (error) {
         // TODO Сделать вывод ошибок тост сообщением
-        // console.error(`API Error (${path}):`, error.message);
         throw error;
     }
-}
+};
 
 export const API = {
+    register: async (name, login, password) => {
+        return request('/register', {
+            method: 'POST',
+            body: JSON.stringify({
+                login: login,
+                password: password,
+                nickname: name
+            })
+        });
+    },
+
     login: async (login, password) => {
         return request('/login', {
             method: 'POST',
             body: JSON.stringify({ login, password }),
+        });
+    },
+
+    me: async () => {
+        return request('/user/me', {
+            method: 'GET'
         });
     },
 
@@ -47,7 +69,7 @@ export const API = {
     },
 
     getPlaces: async () => {
-        return request('/places', {
+        return request('/', {
             method: 'GET',
         });
     }

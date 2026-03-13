@@ -2,24 +2,29 @@ import template from './AuthForm.hbs?compiled';
 import './style.scss';
 
 import { Field } from '@/shared/ui/Field';
+import { stringToElement } from '@/shared/utils';
+import { handleSubmit } from '../handlers/handleSubmit';
 
+export class AuthForm {
+    constructor(props) {
+        this.props = props;
 
-export const AuthForm = async (props) => {
-    return template({
-        loginField: Field({
-            className: 'auth-form__field',
+        this.loginField = new Field({
+            className: 'auth-form__login-field',
             id: 'login-input',
             label: 'Введите почту',
-            type: 'email',
+            type: 'text',
             attributes: {
                 name: 'login',
-                placeholder: 'Почта',
+                placeholder: 'мояпочта@gmail.com',
                 autocomplete: 'email',
+                maxlength: 50,
             },
             hasIcon: false,
-        }),
-        passwordField: Field({
-            className: 'auth-form__field',
+        });
+
+        this.passwordField = new Field({
+            className: 'auth-form__password-field',
             id: 'password-input',
             label: 'Введите пароль',
             type: 'password',
@@ -27,10 +32,32 @@ export const AuthForm = async (props) => {
                 name: 'password',
                 placeholder: 'Пароль',
                 autocomplete: 'current-password',
+                maxlength: 50,
             },
             hasIcon: true,
             iconPath: '/icons/eye.svg'
-        }),
-        ...props
-    });
+        });
+    }
+
+    initSubmit() {
+        this.element.addEventListener('submit', async (event) => handleSubmit(this, event));
+    }
+
+    clearErrors() {
+        this.loginField.clearError();
+        this.passwordField.clearError();
+    }
+
+    render() {
+        this.element = stringToElement(template(this.props));
+
+        this.element.querySelector('[data-slot="login"]')
+            .replaceWith(this.loginField.render());
+        this.element.querySelector('[data-slot="password"]')
+            .replaceWith(this.passwordField.render());
+
+        this.initSubmit();
+
+        return this.element;
+    }
 }
