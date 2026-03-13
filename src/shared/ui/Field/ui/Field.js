@@ -1,14 +1,12 @@
-import template from "./Field.hbs?compiled";
+import template from './Field.hbs?compiled';
 import './style.scss';
 
-import { togglePasswordVisibility } from "../handlers/togglePasswordVisibility";
-import { stringToElement } from "@/shared/utils";
+import { togglePasswordVisibility } from '../handlers/togglePasswordVisibility';
+import { stringToElement } from '@/shared/utils';
 
 export class Field {
     constructor(props) {
         this.props = props;
-        this.element = stringToElement(template(this.props));
-        this.initListeners();
     }
 
     initListeners() {
@@ -37,6 +35,8 @@ export class Field {
     }
 
     render() {
+        this.element = stringToElement(template(this.props));
+        this.initListeners();
         return this.element;
     }
 }

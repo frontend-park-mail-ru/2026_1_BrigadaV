@@ -11,6 +11,7 @@ const request = async (path, options) => {
         ...options,
     };
 
+    // eslint-disable-next-line no-useless-catch
     try {
         const response = await fetch(url, defaultOptions);
 
@@ -34,7 +35,7 @@ const request = async (path, options) => {
         // TODO Сделать вывод ошибок тост сообщением
         throw error;
     }
-}
+};
 
 export const API = {
     register: async (name, login, password) => {
@@ -58,7 +59,7 @@ export const API = {
     me: async () => {
         return request('/user/me', {
             method: 'GET'
-        })
+        });
     },
 
     logout: async () => {

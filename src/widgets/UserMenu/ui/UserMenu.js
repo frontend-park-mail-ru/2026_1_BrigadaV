@@ -9,9 +9,7 @@ import { navigate } from '@/shared/router/router';
 
 export class UserMenu {
     constructor(props) {
-        this.element = stringToElement(template(props));
-
-        this.initListeners();
+        this.props = props;
     }
 
     initListeners() {
@@ -24,25 +22,27 @@ export class UserMenu {
                     appState.currentUser = null;
                     navigate(window.location.pathname);
                 } catch {
-
+                    // TODO Сделать вывод ошибок тост сообщением
                 }
             }
-        })
+        });
     }
 
     hide() {
-        this.element.classList.remove("user-menu--active");
+        this.element.classList.remove('user-menu--active');
     }
 
     show() {
-        this.element.classList.add("user-menu--active");
+        this.element.classList.add('user-menu--active');
     }
 
     toggle() {
-        this.element.classList.toggle("user-menu--active");
+        this.element.classList.toggle('user-menu--active');
     }
 
     render() {
+        this.element = stringToElement(template(this.props));
+        this.initListeners();
         return this.element;
     }
 }

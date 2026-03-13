@@ -6,12 +6,6 @@ import { AuthForm } from '@/widgets/AuthForm';
 
 export class LoginPage {
     constructor(appState) {
-        this.element = document.createElement('div');
-        const html = template();
-
-        this.element.classList.add('page-wrapper');
-        this.element.innerHTML = html;
-
         this.header = new Header({
             user: appState.currentUser,
             authPrompt: {
@@ -19,7 +13,7 @@ export class LoginPage {
                 href: '/sign-up',
                 buttonText: 'Регистрация'
             }
-        })
+        });
 
         this.authForm = new AuthForm({
             className: 'log-in__form',
@@ -27,15 +21,26 @@ export class LoginPage {
             redirectText: 'Создать аккаунт',
             redirectHref: '/sign-up'
         });
-
-        this.element.querySelector('[data-slot="header"]')
-            .replaceWith(this.header.render());
-
-        this.element.querySelector('[data-slot="auth-form"]')
-            .replaceWith(this.authForm.render());
     }
 
     render() {
+        this.element = document.createElement('div');
+        const html = template();
+
+        this.element.classList.add('page-wrapper');
+        this.element.innerHTML = html;
+
+        this.element.querySelector('[data-slot="header"]')
+            .replaceWith(this.header.render());
+        this.element.querySelector('[data-slot="auth-form"]')
+            .replaceWith(this.authForm.render());
+
         return this.element;
+    }
+
+    destroy() {
+        if (this.header) {
+            this.header.destroy();
+        }
     }
 }

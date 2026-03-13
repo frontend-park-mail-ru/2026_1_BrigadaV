@@ -2,18 +2,12 @@ import template from './RecommendedList.hbs?compiled';
 import './style.scss';
 
 import { PlaceCard } from '@/entities/PlaceCard';
-import { LikeButton } from '@/features/LikeButton/ui/LikeButton';
 import { API } from '@/shared/api/api.js';
 import { stringToElement } from '@/shared/utils';
 
 export class RecommendedList {
     constructor(props) {
         this.props = props;
-
-        this.element = stringToElement(template());
-        this.listContainer = this.element.querySelector('[data-slot="list-container"]');
-
-        this.loadPlaces();
     }
 
     async loadPlaces() {
@@ -28,20 +22,11 @@ export class RecommendedList {
                 price: place.price / 100,
                 image: place.photos?.[0]?.file_path,
                 isLiked: this.props.user?.liked_ids?.includes(place.id),
+                authorized: authorized,
             }));
 
             cleanedPlaces.forEach(place => {
-                const likeButton = new LikeButton({
-                    isLiked: place.isLiked,
-                    className: "card__like"
-                });
-
                 const card = new PlaceCard(place);
-
-                const likeSlot = card.render().querySelector('[data-slot="like-button"]');
-                if (likeSlot && authorized) {
-                    likeSlot.replaceWith(likeButton.render());
-                }
 
                 const li = document.createElement('li');
                 li.className = 'recommended__item';
@@ -50,12 +35,17 @@ export class RecommendedList {
                 this.listContainer.appendChild(li);
             });
 
-        } catch (error) {
-            console.error('Failed to load recommended places:', error);
+        } catch {
+            // TODO Добавить empty state для карточек
         }
     }
 
     render() {
+        this.element = stringToElement(template());
+        this.listContainer = this.element.querySelector('[data-slot="list-container"]');
+
+        this.loadPlaces();
+
         return this.element;
     }
 }

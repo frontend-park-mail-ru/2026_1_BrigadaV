@@ -7,7 +7,7 @@ import { handleSubmit } from '../handlers/handleSubmit';
 
 export class RegisterForm {
     constructor(props) {
-        this.element = stringToElement(template(props));
+        this.props = props;
 
         this.nicknameField = new Field({
             className: 'register-form__field',
@@ -17,6 +17,7 @@ export class RegisterForm {
             attributes: {
                 name: 'nickname',
                 placeholder: 'Никнейм',
+                maxlength: 20,
             },
             hasIcon: false,
         });
@@ -30,6 +31,7 @@ export class RegisterForm {
             attributes: {
                 name: 'login',
                 placeholder: 'Почта',
+                maxlength: 50,
             },
             hasIcon: false,
         });
@@ -43,6 +45,7 @@ export class RegisterForm {
             attributes: {
                 name: 'password',
                 placeholder: 'Пароль',
+                maxlength: 50,
             },
             hasIcon: true,
             iconPath: '/icons/eye.svg'
@@ -56,10 +59,33 @@ export class RegisterForm {
             attributes: {
                 name: 'password-repeat',
                 placeholder: 'Пароль',
+                maxlength: 50,
             },
             hasIcon: true,
             iconPath: '/icons/eye.svg'
         });
+
+        this.fieldMap = {
+            nickname: this.nicknameField,
+            login: this.loginField,
+            password: this.passwordField,
+            'password-repeat': this.passwordRepeatField,
+        };
+    }
+
+    initSubmit() {
+        this.element.addEventListener('submit', async (event) => handleSubmit(this, event));
+    }
+
+    clearErrors() {
+        this.nicknameField.clearError();
+        this.loginField.clearError();
+        this.passwordField.clearError();
+        this.passwordRepeatField.clearError();
+    }
+
+    render() {
+        this.element = stringToElement(template(this.props));
 
         this.element.querySelector('[data-slot="nickname"]')
             .replaceWith(this.nicknameField.render());
@@ -70,32 +96,11 @@ export class RegisterForm {
         this.element.querySelector('[data-slot="password"]')
             .replaceWith(this.passwordField.render());
 
-
         this.element.querySelector('[data-slot="password-repeat"]')
             .replaceWith(this.passwordRepeatField.render());
 
         this.initSubmit();
 
-        this.fieldMap = {
-            nickname: this.nicknameField,
-            login: this.loginField,
-            password: this.passwordField,
-            'password-repeat': this.passwordRepeatField,
-        }
-    }
-
-    initSubmit() {
-        this.element.addEventListener('submit', async (event) => handleSubmit(this, event));
-    }
-
-    clearErrors() {
-        this.nicknameField.clearError()
-        this.loginField.clearError();
-        this.passwordField.clearError();
-        this.passwordRepeatField.clearError();
-    }
-
-    render() {
         return this.element;
     }
 }

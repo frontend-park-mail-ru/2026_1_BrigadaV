@@ -8,4 +8,4 @@ export const findMatch = (path) => {
     }
 
     return null;
-}
+};

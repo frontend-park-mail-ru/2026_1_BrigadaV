@@ -1,4 +1,4 @@
-import { validateEmail } from '../lib/validateEmail';
+import { validateEmail } from '@/shared/utils';
 import { API } from '@/shared/api/api';
 import { appState } from '@/shared/config/router';
 import { navigate } from '@/shared/router/router';
@@ -14,12 +14,12 @@ export const handleSubmit = async (instance, event) => {
 
     if (!validateEmail(login)) {
         instance.loginField.setError('Некорректный формат email');
-        return
+        return;
     }
 
     if (password !== passwordRepeat) {
         instance.passwordRepeatField.setError('Пароли не совпадают');
-        return
+        return;
     }
 
     try {
@@ -29,6 +29,21 @@ export const handleSubmit = async (instance, event) => {
         navigate('/');
 
     } catch (error) {
-        instance.fieldMap[error.field].setError(error.message);
+        switch (error.errorCode) {
+        case 'LOGIN_ALREADY_EXISTS':
+            instance.loginField.setError('Логин уже существует');
+            break;
+
+        case 'NICKNAME_ALREADY_EXISTS':
+            instance.nicknameField.setError('Никнейм уже занят');
+            break;
+
+        case 'VALIDATION_ERROR':
+            instance.fieldMap[error.field].setError(error.message);
+            break;
+
+        default:
+            instance.passwordRepeatField.setError('Произошла непредвиденная ошибка. Попробуйте ещё раз');
+        }
     }
-}
+};

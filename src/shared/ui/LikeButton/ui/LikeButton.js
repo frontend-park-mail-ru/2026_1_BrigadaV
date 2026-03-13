@@ -5,17 +5,17 @@ import { stringToElement } from '@/shared/utils';
 export class LikeButton {
     constructor(props) {
         this.props = props;
-        this.element = stringToElement(template(this.props));
-        this.initListeners();
     }
 
     initListeners() {
-        this.element.addEventListener('click', (event) => {
+        this.element.addEventListener('click', () => {
             this.element.classList.toggle('like--active');
         });
     }
 
     render() {
+        this.element = stringToElement(template(this.props));
+        this.initListeners();
         return this.element;
     }
 }

@@ -1,4 +1,4 @@
-import { validateEmail } from '../lib/validateEmail';
+import { validateEmail } from '@/shared/utils';
 import { API } from '@/shared/api/api';
 import { appState } from '@/shared/config/router';
 import { navigate } from '@/shared/router/router';
@@ -13,7 +13,7 @@ export const handleSubmit = async (instance, event) => {
 
     if (!validateEmail(login)) {
         instance.loginField.setError('Некорректный формат email');
-        return
+        return;
     }
 
     try {
@@ -21,7 +21,7 @@ export const handleSubmit = async (instance, event) => {
         appState.currentUser = result;
         navigate('/');
 
-    } catch (error) {
-        instance.passwordField.setError(error.message);
+    } catch {
+        instance.passwordField.setError('Введен неверный логин или пароль');
     }
-}
+};

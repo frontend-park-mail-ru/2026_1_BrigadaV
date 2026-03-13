@@ -7,7 +7,7 @@ import { handleSubmit } from '../handlers/handleSubmit';
 
 export class AuthForm {
     constructor(props) {
-        this.element = stringToElement(template(props));
+        this.props = props;
 
         this.loginField = new Field({
             className: 'auth-form__login-field',
@@ -18,6 +18,7 @@ export class AuthForm {
                 name: 'login',
                 placeholder: 'мояпочта@gmail.com',
                 autocomplete: 'email',
+                maxlength: 50,
             },
             hasIcon: false,
         });
@@ -31,17 +32,11 @@ export class AuthForm {
                 name: 'password',
                 placeholder: 'Пароль',
                 autocomplete: 'current-password',
+                maxlength: 50,
             },
             hasIcon: true,
             iconPath: '/icons/eye.svg'
         });
-
-        this.element.querySelector('[data-slot="login"]')
-            .replaceWith(this.loginField.render());
-        this.element.querySelector('[data-slot="password"]')
-            .replaceWith(this.passwordField.render());
-
-        this.initSubmit();
     }
 
     initSubmit() {
@@ -54,6 +49,15 @@ export class AuthForm {
     }
 
     render() {
+        this.element = stringToElement(template(this.props));
+
+        this.element.querySelector('[data-slot="login"]')
+            .replaceWith(this.loginField.render());
+        this.element.querySelector('[data-slot="password"]')
+            .replaceWith(this.passwordField.render());
+
+        this.initSubmit();
+
         return this.element;
     }
 }

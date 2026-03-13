@@ -6,20 +6,26 @@ import { UserSession } from '@/widgets/UserSession';
 
 export class Header {
     constructor(props) {
-        this.element = stringToElement(template());
-
-        this.userSessionSlot = this.element.querySelector('[data-slot="user-session"]');
+        this.props = props;
 
         this.userSession = new UserSession({
-            className: "header__account",
+            className: 'header__account',
             ...props
-        })
+        });
 
-        this.element.querySelector('[data-slot="user-session"]')
-            .replaceWith(this.userSession.render());
     }
 
     render() {
+        this.element = stringToElement(template());
+
+        this.userSessionSlot = this.element.querySelector('[data-slot="user-session"]');
+        this.element.querySelector('[data-slot="user-session"]')
+            .replaceWith(this.userSession.render());
+
         return this.element;
+    }
+
+    destroy() {
+        this.userSession.destroy();
     }
 }

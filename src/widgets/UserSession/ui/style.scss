@@ -1,12 +1,64 @@
 @use '@/shared/styles/mixins' as *;
 @use '@/shared/styles/variables' as *;
 
-.user-session {
+.user-profile {
+    @include typo-p;
+    position: relative;
+    display: flex;
+
+    padding: 0;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: transparent;
+    border: none;
+
+    &__nickname {
+        color: $guidely-primary;
+    }
+
+    &__avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: center;
+
+        &--default {
+            opacity: 50%;
+        }
+    }
+}
+
+.auth-links {
     @include typo-p;
     position: relative;
     display: flex;
     align-items: center;
     gap: 0.5rem;
 
+    &__log-in {
+        @include button-primary;
+        min-width: 100px;
+        justify-content: center;
+    }
 
+    &__sign-up {
+        @include button-secondary;
+    }
+}
+
+.auth-prompt {
+    @include typo-p;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &__prompt {
+        color: $guidely-primary;
+    }
+
+    &__link {
+        @include button-primary;
+    }
 }
