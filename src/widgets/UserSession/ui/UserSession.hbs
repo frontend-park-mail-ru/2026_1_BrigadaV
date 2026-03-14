@@ -8,12 +8,12 @@
     {{else}}
     <img src="/icons/avatar.svg" class="user-profile__avatar user-profile__avatar--default">
     {{/if}}
-    
+
     <div data-slot="user-menu"></div>
   </button>
   {{else if authPrompt}}
   <div class="auth-prompt">
-    <span class="auth-prompt__prompt">{{authPrompt.prompt}}</span>
+    <a href="{{authPrompt.href}}" class="auth-prompt__prompt" data-link>{{authPrompt.prompt}}</a>
     <a href="{{authPrompt.href}}" class="auth-prompt__link" data-link>{{authPrompt.buttonText}}</a>
   </div>
   {{else}}
