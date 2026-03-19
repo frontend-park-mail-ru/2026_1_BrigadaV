@@ -1,4 +1,4 @@
-<div class="field {{className}} {{#if error}}field--error{{/if}}">
+<div class="field {{className}}">
   {{#if label}}
   <label class="field__label" for="{{id}}">{{label}}</label>
   {{/if}}
@@ -7,9 +7,9 @@
     <input type="{{type}}" id="{{id}}" class="field__input" {{#each attributes}} {{@key}}="{{this}}"
       {{/each}}>
 
-    {{#if hasIcon}}
+    {{#if iconPath}}
     <button type="button" class="field__icon">
-      <img src="{{iconPath}}">
+      <img src="{{iconPath}}" class="field__icon-image">
     </button>
     {{/if}}
   </div>
