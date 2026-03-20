@@ -1,9 +1,10 @@
 <form class="{{className}} auth-form">
-  <h4 class="auth-form__title">Вход в аккаунт</h4>
+  <h4 class="auth-form__title">{{title}}</h4>
 
   <div class="auth-form__fields">
-    <div data-slot="login"></div>
-    <div data-slot="password"></div>
+    {{#each fields}}
+    <div data-slot="{{this.attributes.name}}"></div>
+    {{/each}}
 
     <div class="auth-form__actions">
       <button class="auth-form__submit" type="submit">{{submitText}}</button>

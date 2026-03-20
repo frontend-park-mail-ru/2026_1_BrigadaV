@@ -6,17 +6,14 @@
     align-items: center;
     gap: 0.5rem;
 
-    &__field-wrapper {
+    &__field {
         position: relative;
         flex-grow: 1;
+        opacity: 50%;
+        pointer-events: none;
     }
 
     &__button {
         @include button-primary;
-    }
-
-    &__input {
-       opacity: 50%;
-       pointer-events: none;
     }
 }
