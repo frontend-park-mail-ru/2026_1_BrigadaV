@@ -2,7 +2,7 @@ import { mapUser } from '@/entities/User';
 import { API, ApiError } from '@/shared/api';
 import { appState } from '@/shared/config';
 import { navigate } from '@/shared/router';
-import { validateEmail } from '@/shared/utils';
+import { validateEmail, validatePassword } from '@/shared/utils';
 import { AuthForm } from '@/widgets/AuthForm';
 
 import { LoginFormData } from '../model/types';
@@ -14,6 +14,11 @@ export const handleSubmit = async (instance: AuthForm, data: FormData) => {
 
     if (!validateEmail(login)) {
         instance.setFieldError('login', 'Некорректный формат email');
+        return;
+    }
+
+    if (!validatePassword(password)) {
+        instance.setFieldError('password', 'Некорректный формат пароля');
         return;
     }
 
