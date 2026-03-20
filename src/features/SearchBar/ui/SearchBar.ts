@@ -7,8 +7,8 @@ import { SearchBarProps } from './model/types';
 import template from './SearchBar.hbs?compiled';
 
 export class SearchBar {
-    private element: HTMLElement | null = null;
-    private searchField: Field | null = null;
+    private element?: HTMLElement;
+    private searchField?: Field;
 
     constructor(private props: SearchBarProps) {
         this.searchField = new Field({

@@ -6,8 +6,8 @@ import { stringToElement } from '@/shared/utils';
 import template from './Hero.hbs?compiled';
 
 export class Hero {
-    private element: HTMLElement | null = null;
-    private searchBar: SearchBar | null = null;
+    private element?: HTMLElement;
+    private searchBar?: SearchBar;
 
     constructor() {
         this.searchBar = new SearchBar({

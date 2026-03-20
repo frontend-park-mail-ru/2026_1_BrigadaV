@@ -27,5 +27,5 @@ export const App = async () => {
         }
     });
 
-    navigate('/');
+    navigate(window.location.pathname);
 };

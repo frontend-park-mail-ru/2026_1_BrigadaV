@@ -6,7 +6,7 @@ import { FieldProps } from '../model/types';
 import template from './Field.hbs?compiled';
 
 export class Field {
-    private element: HTMLElement | null = null;
+    private element?: HTMLElement;
 
     constructor(private props: FieldProps) { }
 

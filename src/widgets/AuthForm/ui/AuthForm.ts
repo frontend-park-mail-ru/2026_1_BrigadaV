@@ -7,7 +7,7 @@ import { AuthFormProps } from '../model/types';
 import template from './AuthForm.hbs?compiled';
 
 export class AuthForm {
-    private element: HTMLElement | null = null;
+    private element?: HTMLElement;
     private fields: Record<string, Field> = {};
 
     constructor(private props: AuthFormProps) {

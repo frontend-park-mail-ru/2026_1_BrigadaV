@@ -7,8 +7,8 @@ import { UserSessionProps } from '../model/types';
 import template from './UserSession.hbs?compiled';
 
 export class UserSession {
-    private menu: UserMenu | null = null;
-    private element: HTMLElement | null = null;
+    private menu?: UserMenu;
+    private element?: HTMLElement;
 
     constructor(private props: UserSessionProps) {
         if (this.props.user) {

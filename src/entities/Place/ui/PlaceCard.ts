@@ -7,8 +7,8 @@ import { PlaceCardProps } from '../model/types';
 import template from './PlaceCard.hbs?compiled';
 
 export class PlaceCard {
-    private element: HTMLElement | null = null;
-    private likeButton: LikeButton | null = null;
+    private element?: HTMLElement;
+    private likeButton?: LikeButton;
 
     constructor(private props: PlaceCardProps) {
         this.likeButton = new LikeButton({

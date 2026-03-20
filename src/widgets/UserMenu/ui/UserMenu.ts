@@ -8,7 +8,7 @@ import { stringToElement } from '@/shared/utils';
 import template from './UserMenu.hbs?compiled';
 
 export class UserMenu {
-    private element: HTMLElement | null = null;
+    private element?: HTMLElement;
 
     constructor() { }
 

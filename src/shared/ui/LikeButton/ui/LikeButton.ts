@@ -6,7 +6,7 @@ import { LikeButtonProps } from '../model/types';
 import template from './LikeButton.hbs?compiled';
 
 export class LikeButton {
-    private element: HTMLElement | null = null;
+    private element?: HTMLElement;
 
     constructor(private props: LikeButtonProps) {}
 

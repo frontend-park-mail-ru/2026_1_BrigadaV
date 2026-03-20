@@ -9,7 +9,7 @@ import { RecommendedListProps } from '../model/types';
 import template from './RecommendedList.hbs?compiled';
 
 export class RecommendedList {
-    private element: HTMLElement | null = null;
+    private element?: HTMLElement;
     private listContainer: HTMLElement | null = null;
 
     constructor(private props: RecommendedListProps) {}

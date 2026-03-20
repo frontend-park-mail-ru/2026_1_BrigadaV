@@ -8,10 +8,10 @@ import { RecommendedList } from '@/widgets/RecommendedList';
 import template from './LandingPage.hbs?compiled';
 
 export class LandingPage implements IPage {
-    private element: HTMLElement | null = null;
-    private header: Header | null = null;
-    private hero: Hero | null = null;
-    private recommendedList: RecommendedList | null = null;
+    private element?: HTMLElement;
+    private header?: Header;
+    private hero?: Hero;
+    private recommendedList?: RecommendedList;
 
     constructor(appState: AppState) {
         this.header = new Header({

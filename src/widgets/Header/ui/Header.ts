@@ -7,8 +7,8 @@ import { HeaderProps } from '../model/types';
 import template from './Header.hbs?compiled';
 
 export class Header {
-    private element: HTMLElement | null = null;
-    private userSession: UserSession | null = null;
+    private element?: HTMLElement;
+    private userSession?: UserSession;
 
     constructor(props: HeaderProps) {
         this.userSession = new UserSession({

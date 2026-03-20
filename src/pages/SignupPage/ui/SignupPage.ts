@@ -9,9 +9,9 @@ import { handleSubmit } from '../handlers/handleSignup';
 import template from './SignupPage.hbs?compiled';
 
 export class SignupPage implements IPage {
-    private element: HTMLElement | null = null;
-    private header: Header | null = null;
-    private registerForm: AuthForm | null = null;
+    private element?: HTMLElement;
+    private header?: Header;
+    private registerForm?: AuthForm;
 
     constructor(appState: AppState) {
         this.header = new Header({
