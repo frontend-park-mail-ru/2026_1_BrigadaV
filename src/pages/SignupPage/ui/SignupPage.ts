@@ -36,7 +36,7 @@ export class SignupPage implements IPage {
                 type: 'login',
                 attributes: {
                     name: 'nickname',
-                    placeholder: 'Никнейм',
+                    placeholder: 'anna parr',
                     maxlength: 20,
                 },
             },
@@ -47,7 +47,7 @@ export class SignupPage implements IPage {
                 attributes: {
                     autocomplete: 'email',
                     name: 'login',
-                    placeholder: 'Почта',
+                    placeholder: 'myemail@gmail.com',
                     maxlength: 50,
                 },
             },
@@ -58,7 +58,7 @@ export class SignupPage implements IPage {
                 type: 'password',
                 attributes: {
                     name: 'password',
-                    placeholder: 'Пароль',
+                    placeholder: '********',
                     maxlength: 50,
                 },
                 iconPath: '/icons/eye.svg',
@@ -70,7 +70,7 @@ export class SignupPage implements IPage {
                 type: 'password',
                 attributes: {
                     name: 'password-repeat',
-                    placeholder: 'Пароль',
+                    placeholder: '********',
                     maxlength: 50,
                 },
                 iconPath: '/icons/eye.svg',

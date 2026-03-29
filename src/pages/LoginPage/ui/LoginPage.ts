@@ -37,7 +37,7 @@ export class LoginPage implements IPage {
                 type: 'text',
                 attributes: {
                     name: 'login',
-                    placeholder: 'мояпочта@gmail.com',
+                    placeholder: 'myemail@gmail.com',
                     autocomplete: 'email',
                     maxlength: 50,
                 },
@@ -47,7 +47,7 @@ export class LoginPage implements IPage {
                 type: 'password',
                 attributes: {
                     name: 'password',
-                    placeholder: 'Пароль',
+                    placeholder: '********',
                     autocomplete: 'current-password',
                     maxlength: 50,
                 },
