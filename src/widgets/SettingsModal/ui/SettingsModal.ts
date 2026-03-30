@@ -3,7 +3,7 @@ import './style.scss';
 import { togglePasswordVisibility } from '@/shared/lib';
 import { Field } from '@/shared/ui';
 import { Textarea } from '@/shared/ui';
-import { stringToElement } from '@/shared/utils';
+import { injectComponents, stringToElement } from '@/shared/utils';
 
 import { SettingsModalProps } from '../model/types';
 import template from './SettingsModal.hbs?compiled';
@@ -23,8 +23,8 @@ export class SettingsModal {
                 maxlength: 20,
                 placeholder: 'Никнейм',
             }
-
         });
+
         this.fields['email'] = new Field({
             id: 'email-input',
             label: 'Почта',
@@ -36,6 +36,7 @@ export class SettingsModal {
                 placeholder: 'Почта',
             }
         });
+
         this.fields['password'] = new Field({
             id: 'password-input',
             label: 'Новый пароль',
@@ -48,6 +49,7 @@ export class SettingsModal {
             rightIcon: '/icons/eye.svg',
             onRightIconClick: togglePasswordVisibility,
         });
+
         this.fields['password-repeat'] = new Field({
             id: 'password-repeat-input',
             label: 'Повторите новый пароль',
@@ -60,6 +62,7 @@ export class SettingsModal {
             rightIcon: '/icons/eye.svg',
             onRightIconClick: togglePasswordVisibility,
         });
+
         this.fields['city'] = new Field({
             id: 'city-input',
             label: 'Город',
@@ -72,6 +75,7 @@ export class SettingsModal {
             },
             leftIcon: '/icons/search.svg',
         });
+
         this.fields['about'] = new Textarea({
             id: 'about-textarea',
             label: 'О себе',
@@ -102,10 +106,7 @@ export class SettingsModal {
             fields: Object.keys(this.fields),
         }));
 
-        Object.entries(this.fields).forEach(([name, field]) => {
-            this.element?.querySelector(`[data-slot="${name}"]`)
-                ?.replaceWith(field.render())
-        })
+        injectComponents(this.element, this.fields)
 
         this.initListeners();
         return this.element;

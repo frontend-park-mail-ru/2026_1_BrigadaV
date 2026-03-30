@@ -16,7 +16,7 @@ export class SearchBar {
             className: 'search__field',
             rightIcon: '/icons/search.svg',
             attributes: {
-                placeholder: 'Куда бы вы хотели отправиться?',
+                placeholder: props.placeholder,
             }
         });
     }

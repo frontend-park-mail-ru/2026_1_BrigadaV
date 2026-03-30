@@ -20,7 +20,8 @@ export class Header {
 
         if (props.withSearch) {
             this.searchBar = new SearchBar({
-                className: 'header__search'
+                className: 'header__search',
+                placeholder: 'Поиск',
             });
         }
     }

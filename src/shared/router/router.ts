@@ -13,6 +13,7 @@ export const router = async (path = '/') => {
         return;
     }
 
+    // TODO maybe remove all destroy() stuff, it's obsolete
     if (pageInstance) {
         pageInstance.destroy();
     }
@@ -22,6 +23,7 @@ export const router = async (path = '/') => {
     let redirectPath: string | null = null;
 
     if (!route) {
+        // TODO add 404 page
         pageInstance = new LandingPage(appState);
         redirectPath = '/';
 

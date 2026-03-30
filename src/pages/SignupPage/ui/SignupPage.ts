@@ -19,7 +19,7 @@ export class SignupPage implements IPage {
                 user: appState.currentUser,
                 authPrompt: {
                     prompt: 'Уже есть аккаунт?',
-        href: '/login',
+                    href: '/login',
                     buttonText: 'Войдите'
                 }
             }
@@ -86,7 +86,7 @@ export class SignupPage implements IPage {
         this.element = document.createElement('div');
         const html = template();
 
-    this.element.classList.add('signup-page');
+        this.element.classList.add('signup-page');
         this.element.innerHTML = html;
 
         if (this.header) {
