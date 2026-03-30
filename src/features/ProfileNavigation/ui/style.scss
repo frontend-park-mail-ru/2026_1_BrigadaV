@@ -1,0 +1,20 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
+.navigation {
+    &__list {
+        display: flex;
+    }
+
+    &__item--active {
+        & .navigation__button {
+            color: $guidely-primary;
+        }
+    }
+
+    &__button {
+        @include button-secondary;
+        --color-active: #{$guidely-primary};
+        color: $color-text-main;
+    }
+}

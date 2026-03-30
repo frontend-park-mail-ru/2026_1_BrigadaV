@@ -19,7 +19,7 @@ export class SignupPage implements IPage {
                 user: appState.currentUser,
                 authPrompt: {
                     prompt: 'Уже есть аккаунт?',
-                    href: '/login',
+        href: '/login',
                     buttonText: 'Войдите'
                 }
             }
@@ -36,6 +36,7 @@ export class SignupPage implements IPage {
                 type: 'login',
                 attributes: {
                     name: 'nickname',
+                    autocomplete: 'nickname',
                     placeholder: 'anna parr',
                     maxlength: 20,
                 },
@@ -61,8 +62,8 @@ export class SignupPage implements IPage {
                     placeholder: '********',
                     maxlength: 50,
                 },
-                iconPath: '/icons/eye.svg',
-                onIconClick: togglePasswordVisibility,
+                rightIcon: '/icons/eye.svg',
+                onRightIconClick: togglePasswordVisibility,
             },
             {
                 id: 'password-repeat-input',
@@ -73,8 +74,8 @@ export class SignupPage implements IPage {
                     placeholder: '********',
                     maxlength: 50,
                 },
-                iconPath: '/icons/eye.svg',
-                onIconClick: togglePasswordVisibility,
+                rightIcon: '/icons/eye.svg',
+                onRightIconClick: togglePasswordVisibility,
 
             }],
             onSubmit: handleSubmit
@@ -85,7 +86,7 @@ export class SignupPage implements IPage {
         this.element = document.createElement('div');
         const html = template();
 
-        this.element.classList.add('page-wrapper');
+    this.element.classList.add('signup-page');
         this.element.innerHTML = html;
 
         if (this.header) {

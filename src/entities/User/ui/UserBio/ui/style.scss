@@ -1,0 +1,32 @@
+@use '@/shared/styles/variables' as *;
+
+.bio {
+    display: grid;
+    grid-template-areas:
+        "avatar meta"
+        "avatar about";
+    grid-template-columns: repeat(2, max-content);
+    column-gap: 3rem;
+
+    &__avatar {
+        aspect-ratio: 1 / 1;
+        width: 128px;
+        grid-area: avatar;
+        border-radius: 8px;
+        object-fit: cover;
+    }
+
+    &__meta {
+        grid-area: meta;
+    }
+
+    &__location {
+        color: $color-text-muted;
+    }
+
+    &__about {
+        margin-top: 2.5rem;
+        grid-area: about;
+        line-height: 1.2;
+    }
+}

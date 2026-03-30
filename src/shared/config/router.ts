@@ -1,11 +1,15 @@
 import { LandingPage } from '@/pages/LandingPage';
 import { LoginPage } from '@/pages/LoginPage';
+import { ProfilePage } from '@/pages/ProfilePage';
 import { SignupPage } from '@/pages/SignupPage';
+
 import { AppState, PageConstructor } from '../model';
 
 export type Route = {
     href: string;
     view: PageConstructor;
+    authOnly?: boolean;
+    nonAuthOnly?: boolean;
 }
 
 export const config: Record<string, Route> = {
@@ -15,11 +19,18 @@ export const config: Record<string, Route> = {
     },
     login: {
         href: '/login',
-        view: LoginPage
+        view: LoginPage,
+        nonAuthOnly: true,
     },
     signup: {
         href: '/sign-up',
-        view: SignupPage
+        view: SignupPage,
+        nonAuthOnly: true,
+    },
+    profile: {
+        href: '/profile',
+        view: ProfilePage,
+        authOnly: true,
     }
 };
 

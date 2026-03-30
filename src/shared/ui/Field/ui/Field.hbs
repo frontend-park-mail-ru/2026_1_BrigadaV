@@ -4,12 +4,18 @@
   {{/if}}
 
   <div class="field__input-wrapper">
+    {{#if leftIcon}}
+    <button type="button" class="field__icon" data-position="left">
+      <img src="{{leftIcon}}" class="field__icon-image" data-position="left">
+    </button>
+    {{/if}}
+
     <input type="{{type}}" id="{{id}}" class="field__input" {{#each attributes}} {{@key}}="{{this}}"
       {{/each}}>
 
-    {{#if iconPath}}
-    <button type="button" class="field__icon">
-      <img src="{{iconPath}}" class="field__icon-image">
+    {{#if rightIcon}}
+    <button type="button" class="field__icon" data-position="right">
+      <img src="{{rightIcon}}" class="field__icon-image" data-position="right">
     </button>
     {{/if}}
   </div>

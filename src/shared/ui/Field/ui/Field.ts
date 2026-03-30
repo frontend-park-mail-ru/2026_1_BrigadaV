@@ -11,21 +11,37 @@ export class Field {
     constructor(private props: FieldProps) { }
 
     private initListeners(): void {
-        const button = this.element?.querySelector('.field__icon');
+        const leftButton = this.element?.querySelector('button[data-position="left"]');
 
-        if (button && this.props.iconPath && this.props.onIconClick) {
-            button.addEventListener('click', this.handleIconClick)
+        if (leftButton && this.props.leftIcon && this.props.onLeftIconClick) {
+            leftButton.addEventListener('click', this.handleIconClick)
+        }
+
+        const rightButton = this.element?.querySelector('button[data-position="right"]');
+
+        if (rightButton && this.props.rightIcon && this.props.onRightIconClick) {
+            rightButton.addEventListener('click', this.handleIconClick)
         }
     }
 
     private handleIconClick = (event: Event): void => {
         const button = event.currentTarget;
 
-        if (button instanceof HTMLElement && this.props.onIconClick) {
-            event.preventDefault();
-            event.stopPropagation();
-            this.props.onIconClick(this);
+        if (!(button instanceof HTMLElement)) {
+            return;
         }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (button.dataset.position === "left" && this.props.onLeftIconClick) {
+            this.props.onLeftIconClick(this);
+        }
+
+        if (button.dataset.position === "right" && this.props.onRightIconClick) {
+            this.props.onRightIconClick(this);
+        }
+
     }
 
     public getType(): string | null {
@@ -44,8 +60,9 @@ export class Field {
         }
     }
 
-    public setIcon(iconPath: string): void {
-        const image = this.element?.querySelector<HTMLImageElement>('.field__icon-image');
+    public setIcon(iconPath: string, position: 'left' | 'right'): void {
+        const image = this.element?.querySelector<HTMLImageElement>(`img[data-position="${position}"]`);
+
         if (image) {
             image.src = iconPath;
         }

@@ -1,0 +1,43 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
+.textarea {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    @media (max-height: 768px) {
+        gap: 0.25rem;
+    }
+
+    &--error &__error-wrapper {
+        display: flex;
+    }
+
+    &__label {
+        @include typo-p;
+    }
+
+    &__input {
+        @include field;
+        min-height: 80px;
+    }
+
+    &__note-wrapper {
+        @include typo-small;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    &__error-wrapper {
+        display: none;
+        align-items: center;
+        gap: 0.25rem;
+        color: $color-status-error;
+    }
+
+    &__message {
+        @include typo-small;
+        color: inherit;
+    }
+}

@@ -1,4 +1,4 @@
-import './style.scss';
+import styles from './style.module.scss';
 
 import { AppState, IPage } from '@/shared/model';
 import { Header } from '@/widgets/Header';
@@ -30,9 +30,9 @@ export class LandingPage implements IPage {
 
     public render(): HTMLElement {
         this.element = document.createElement('div');
-        const html = template();
+        const html = template({styles});
 
-        this.element.classList.add('page-wrapper');
+        this.element.classList.add('landing-page');
         this.element.innerHTML = html;
 
         if (this.header) {

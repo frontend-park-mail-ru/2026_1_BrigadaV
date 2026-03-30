@@ -32,6 +32,14 @@
     src: url("/fonts/Winston-Regular.woff2") format("woff2");
 }
 
+@font-face {
+    font-style: normal;
+    font-weight: 500;
+    font-family: 'Winston';
+    font-display: swap;
+    src: url("/fonts/Winston-Medium.woff2") format("woff2");
+}
+
 h1 {
     @include typo-h1;
 }

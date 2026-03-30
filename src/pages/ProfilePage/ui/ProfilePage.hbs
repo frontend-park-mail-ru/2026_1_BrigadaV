@@ -1,0 +1,25 @@
+<div data-slot="header"></div>
+
+<main class="main">
+  <section class="user-profile">
+    <div data-slot="bio"></div>
+    <button class="user-profile__edit" command="show-modal" commandfor="settings">Редактировать профиль</button>
+    <div data-slot="navigation"></div>
+  </section>
+
+  <section class="about-me">
+    <span class="about-me__join-date">В сообществе с март 2020 г.</span>
+    <div class="about-me__suggested">
+      <button class="about-me__button">
+        <img src="/icons/plus.svg">
+        Добавьте первый отзыв
+      </button>
+      <button class="about-me__button" command="show-modal" commandfor="settings" data-focus-field="about">
+        <img src="/icons/plus.svg">
+        Напишите подробнее о себе
+      </button>
+    </div>
+  </section>
+</main>
+
+<div data-slot="settings-modal"></div>

@@ -51,8 +51,8 @@ export class LoginPage implements IPage {
                     autocomplete: 'current-password',
                     maxlength: 50,
                 },
-                iconPath: '/icons/eye.svg',
-                onIconClick: togglePasswordVisibility,
+                rightIcon: '/icons/eye.svg',
+                onRightIconClick: togglePasswordVisibility,
             }],
             onSubmit: handleSubmit
         });
@@ -62,7 +62,7 @@ export class LoginPage implements IPage {
         this.element = document.createElement('div');
         const html = template();
 
-        this.element.classList.add('page-wrapper');
+        this.element.classList.add('login-page');
         this.element.innerHTML = html;
 
         if (this.header) {

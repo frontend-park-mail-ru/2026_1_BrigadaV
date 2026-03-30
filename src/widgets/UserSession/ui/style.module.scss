@@ -12,6 +12,8 @@
     background-color: transparent;
     border: none;
 
+    anchor-name: --user-button;
+
     &__nickname {
         color: $guidely-primary;
     }

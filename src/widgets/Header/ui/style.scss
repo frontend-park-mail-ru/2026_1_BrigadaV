@@ -11,6 +11,11 @@
     justify-content: space-between;
     background-color: $surface-0;
 
+    &__search {
+        width: 40vw;
+        margin: 0;
+    }
+
     &__name {
         @include typo-h2;
         color: $guidely-primary;

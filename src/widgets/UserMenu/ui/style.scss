@@ -4,49 +4,39 @@
 
 .user-menu {
     position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
+    position-anchor: --user-button;
+    position-area: bottom center;
     z-index: 50;
-    display: none;
-    min-width: 150px;
+    min-width: 160px;
+    margin: 12px 0 0 0;
     padding: 0.5rem;
     background-color: $surface-0;
+    border: none;
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
-    &--active {
-        display: block;
-    }
-
     &__link {
-        --color-active: #{$guidely-primary};
-
         @include typo-p;
-
         width: 100%;
-        padding: 8px 16px;
-        color: $color-text-main;
-        text-align: left;
-        text-decoration: none;
-        background: none;
+        padding: 0.5rem 1rem;
+        color: $guidely-primary;
+        text-align: start;
+        background-color: transparent;
         border: none;
         border-radius: 8px;
 
-        transition:
-            color $timing-animation-short,
-            background-color $timing-animation-short;
-
-        cursor: pointer;
+        transition: background-color $timing-animation-medium;
 
         &:hover {
-            color: $color-text-contrast;
-            background-color: var(--color-active);
+            background-color: $surface-1;
         }
 
         &--logout {
-            --color-active: #{$color-status-error};
-
             color: $color-status-error;
         }
+    }
+
+    &::backdrop {
+        display: none;
     }
 }

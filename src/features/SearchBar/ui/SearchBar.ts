@@ -14,7 +14,7 @@ export class SearchBar {
         this.searchField = new Field({
             type: 'text',
             className: 'search__field',
-            iconPath: '/icons/search.svg',
+            rightIcon: '/icons/search.svg',
             attributes: {
                 placeholder: 'Куда бы вы хотели отправиться?',
             }

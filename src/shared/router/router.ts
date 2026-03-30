@@ -1,8 +1,9 @@
-import { LandingPage } from '@/pages/LandingPage';
 import { appState } from '../config';
-import { IPage, PageConstructor } from '../model';
+import { IPage } from '../model';
 
 import { findMatch } from './findMatch';
+import { Route } from '../config/router';
+import { LandingPage } from '@/pages/LandingPage';
 
 let pageInstance: IPage | null = null;
 
@@ -16,8 +17,14 @@ export const router = async (path = '/') => {
         pageInstance.destroy();
     }
 
-    const ViewClass: PageConstructor = findMatch(path) || LandingPage;
-    pageInstance = new ViewClass(appState);
+    const route: Route | null = findMatch(path);
+
+    if (!route) {
+        // TODO add 404 Page
+        pageInstance = new LandingPage(appState);
+    } else {
+        pageInstance = new route.view(appState);
+    }
 
     root.innerHTML = '';
     root.appendChild(pageInstance.render());

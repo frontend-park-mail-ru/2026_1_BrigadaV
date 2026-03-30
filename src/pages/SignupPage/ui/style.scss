@@ -1,23 +1,11 @@
 @use '@/shared/styles/variables' as *;
+@use '@/shared/styles/layout' as *;
 @use '@/app/styles/typography' as *;
 @use '@/app/styles/base';
 @use '@/app/styles/reset';
 
-.page-wrapper {
-    display: grid;
-    grid-template-areas:
-        "header"
-        "main";
-    grid-template-rows: max-content 1fr;
-    background-color: $surface-0;
-}
-
-.header {
-    grid-area: header;
-}
-
-.main {
-    grid-area: main;
+.signup-page {
+    @include default-page-layout;
 }
 
 .sign-up {

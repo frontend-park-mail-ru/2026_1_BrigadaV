@@ -5,8 +5,10 @@ export type FieldProps = {
     id?: string
     label?: string;
     type: string;
-    iconPath?: string;
+    rightIcon?: string;
+    leftIcon?: string;
     note?: string;
     attributes: Record<string, string | number>;
-    onIconClick?: (instance: Field) => void;
+    onLeftIconClick?: (instance: Field) => void;
+    onRightIconClick?: (instance: Field) => void;
 }

@@ -1,0 +1,18 @@
+<div class="textarea {{className}}">
+  {{#if label}}
+  <label class="textarea__label" for="{{id}}">{{label}}</label>
+  {{/if}}
+
+  <textarea id="{{id}}" class="textarea__input" {{#each attributes}} {{@key}}="{{this}}" {{/each}}></textarea>
+
+  {{#if note}}
+  <div class="textarea__note-wrapper">
+    <span class="textarea__note">{{note}}</span>
+  </div>
+  {{/if}}
+
+  <div class="textarea__error-wrapper">
+    <span class="textarea__message-icon-box"><img src="/icons/alert-error.svg"></span>
+    <span class="textarea__message"></span>
+  </div>
+</div>

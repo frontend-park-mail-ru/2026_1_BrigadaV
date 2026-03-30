@@ -96,11 +96,13 @@ video {
 
 /**
   Наследуем свойства шрифт для полей ввода
+  И убираем дефолтные отступы
  */
 input,
 textarea,
 select,
 button {
+  padding: 0;
   font: inherit;
 }
 
