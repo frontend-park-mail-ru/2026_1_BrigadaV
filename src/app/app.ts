@@ -1,9 +1,22 @@
+import './styles/_base.scss';
+import './styles/_reset.scss';
+import './styles/_typography.scss';
+
+import Handlebars from 'handlebars';
+
 import { mapUser } from '@/entities/User';
 import { API } from '@/shared/api';
 import { appState } from '@/shared/config';
 import { navigate } from '@/shared/router';
 
 export const App = async () => {
+    Handlebars.registerHelper('s', function (this: any, className: string): string {
+        return this.styles?.[className] || className;
+    });
+    Handlebars.registerHelper('eq', function (a: any, b: any): boolean {
+        return a === b;
+    });
+
     try {
         const user = mapUser(await API.me());
         appState.currentUser = user;

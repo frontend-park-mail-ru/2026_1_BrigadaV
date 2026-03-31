@@ -19,22 +19,23 @@
     }
 
     &__input-wrapper {
-        position: relative;
-    }
-
-    &__input {
         @include field;
+        display: flex;
+        width: 100%;
         min-height: 40px;
+        gap: 0.25rem;
     }
 
     &__icon {
-        position: absolute;
-        top: 50%;
-        right: 0.75rem;
         background-color: transparent;
         border: none;
         opacity: 50%;
-        translate: 0 -50%;
+    }
+
+    &__input {
+        flex-grow: 1;
+        border: none;
+        outline: none;
     }
 
     &__note-wrapper {

@@ -10,6 +10,11 @@ export type AppState = {
     currentUser: User | null;
 }
 
+export interface IComponent {
+    render(): HTMLElement;
+    destroy?(): void;
+}
+
 export interface IPage {
     render(): HTMLElement;
     destroy(): void;

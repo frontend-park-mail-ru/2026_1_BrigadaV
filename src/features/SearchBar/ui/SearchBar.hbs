@@ -1,5 +1,7 @@
 <form class="search {{className}}">
   <div data-slot="search-field"></div>
 
+  {{#if withButton}}
   <button class="search__button" type="button" disabled>Поехали!</button>
+  {{/if}}
 </form>

@@ -1,8 +1,9 @@
-import { LandingPage } from '@/pages/LandingPage';
 import { appState } from '../config';
-import { IPage, PageConstructor } from '../model';
+import { IPage } from '../model';
 
 import { findMatch } from './findMatch';
+import { Route } from '../config/router';
+import { LandingPage } from '@/pages/LandingPage';
 
 let pageInstance: IPage | null = null;
 
@@ -12,15 +13,41 @@ export const router = async (path = '/') => {
         return;
     }
 
+    // TODO maybe remove all destroy() stuff, it's obsolete
     if (pageInstance) {
         pageInstance.destroy();
     }
 
-    const ViewClass: PageConstructor = findMatch(path) || LandingPage;
-    pageInstance = new ViewClass(appState);
+    const route: Route | null = findMatch(path);
 
-    root.innerHTML = '';
-    root.appendChild(pageInstance.render());
+    let redirectPath: string | null = null;
+
+    if (!route) {
+        // TODO add 404 page
+        pageInstance = new LandingPage(appState);
+        redirectPath = '/';
+
+    } else {
+        const isAuthRequired = route.authOnly && !appState.currentUser;
+        const isGuestOnly = route.guestOnly && appState.currentUser;
+
+        if (isAuthRequired || isGuestOnly) {
+            pageInstance = new LandingPage(appState);
+            redirectPath = '/';
+        } else {
+            pageInstance = new route.view(appState);
+        }
+    }
+
+    if (redirectPath && path !== redirectPath) {
+        appState.currentPath = redirectPath;
+        window.history.replaceState(appState, '', redirectPath);
+    }
+
+    if (pageInstance) {
+        root.innerHTML = '';
+        root.appendChild(pageInstance.render());
+    }
 };
 
 export const navigate = async (path: string) => {

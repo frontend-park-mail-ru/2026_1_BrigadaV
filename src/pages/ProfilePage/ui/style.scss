@@ -1,0 +1,55 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/layout' as *;
+@use '@/shared/styles/mixins' as *;
+
+.profile-page {
+    @include default-page-layout;
+    gap: 1rem;
+    background-color: $surface-0;
+}
+
+.main {
+    display: flex;
+    padding: 0 7.5rem;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.user-profile {
+    display: grid;
+    padding: 3.25rem 2.25rem 0.75rem 2.25rem;
+    grid-template-areas:
+        "bio edit"
+        "navigation navigation";
+    grid-template-rows: max-content max-content;
+
+    row-gap: 2.25rem;
+    background-color: $white;
+    border-radius: 8px;
+
+    &__bio {
+        grid-area: bio;
+    }
+
+    &__edit {
+        @include typo-p;
+        width: 240px;
+        height: 40px;
+        grid-area: edit;
+        justify-self: end;
+        color: $color-text-main;
+        background-color: $surface-0;
+        border: none;
+        border-radius: 8px;
+
+        transition: background-color $timing-animation-medium;
+
+        &:not([disabled]):hover {
+            background-color: $surface-1;
+        }
+    }
+
+    &__navigation {
+        grid-area: navigation;
+    }
+}

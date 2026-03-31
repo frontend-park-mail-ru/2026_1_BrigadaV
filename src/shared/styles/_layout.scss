@@ -1,0 +1,17 @@
+@use './variables' as *;
+
+@mixin default-page-layout {
+    display: grid;
+    grid-template-areas:
+        "header"
+        "main";
+    grid-template-rows: max-content 1fr;
+
+    .header {
+        grid-area: header;
+    }
+
+    .main {
+        grid-area: main;
+    }
+}

@@ -6,11 +6,13 @@ import { navigate } from '@/shared/router';
 import { stringToElement } from '@/shared/utils';
 
 import template from './UserMenu.hbs?compiled';
+import { UserMenuProps } from '../model/types';
+import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 
 export class UserMenu {
     private element?: HTMLElement;
 
-    constructor() { }
+    constructor(private props: UserMenuProps) { }
 
     initListeners(): void {
         this.element?.addEventListener('click', this.handleClick);
@@ -26,29 +28,25 @@ export class UserMenu {
 
         if (logoutButton) {
             try {
-                await API.logout();
-                appState.currentUser = null;
-                navigate(window.location.pathname);
+                const confirmed = await ConfirmPopup({
+                    prompt: 'Вы действительно хотите выйти из аккаунта?',
+                    cancelText: 'Отменить',
+                    confirmText: 'Выйти',
+                });
+
+                if (confirmed) {
+                    await API.logout();
+                    appState.currentUser = null;
+                    navigate(window.location.pathname);
+                }
             } catch {
                 // TODO Сделать вывод ошибок тост сообщением
             }
         }
     }
 
-    public hide(): void {
-        this.element?.classList.remove('user-menu--active');
-    }
-
-    public show(): void {
-        this.element?.classList.add('user-menu--active');
-    }
-
-    public toggle(): void {
-        this.element?.classList.toggle('user-menu--active');
-    }
-
     public render(): HTMLElement {
-        this.element = stringToElement(template());
+        this.element = stringToElement(template(this.props));
         this.initListeners();
         return this.element;
     }

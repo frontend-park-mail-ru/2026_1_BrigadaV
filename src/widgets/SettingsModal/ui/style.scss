@@ -1,0 +1,87 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
+.settings {
+    min-width: 70vw;
+    padding: 2.25rem 9.75rem 4rem 4rem;
+    background-color: $surface-0;
+    border: none;
+    border-radius: 8px;
+
+    @media (max-height: 768px) {
+        padding-block: 2rem 0;
+    }
+
+    &__form {
+        display: grid;
+        grid-template-areas:
+            "avatar fields"
+            ". actions";
+        grid-template-columns: max-content 1fr;
+        gap: 2rem 9.75rem;
+    }
+
+    &__avatar {
+        width: 128px;
+        height: 128px;
+        grid-area: avatar;
+        object-fit: cover;
+    }
+
+    &__fields {
+        display: flex;
+        flex-direction: column;
+        grid-area: fields;
+        gap: 2rem;
+
+        @media (max-height: 768px) {
+            gap: 0.75rem;
+        }
+
+        & [name="about"] {
+            resize: vertical;
+        }
+
+    }
+
+    &__actions {
+        display: flex;
+        grid-area: actions;
+        gap: 0.5rem;
+    }
+
+    &__submit {
+        @include button-primary;
+    }
+
+    &__close {
+        @include button-secondary;
+    }
+}
+
+.avatar-upload {
+    position: relative;
+    width: 128px;
+    height: 128px;
+    border-radius: 8px;
+    overflow: hidden;
+
+    &__overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        padding: 1rem;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background-color: hsl(0 0% 0% / 0.2);
+        opacity: 0;
+        transition: opacity $timing-animation-short;
+
+    }
+
+    &:hover &__overlay {
+        opacity: 1;
+    }
+
+}

@@ -1,0 +1,9 @@
+<ul class="{{className}}__list">
+  {{#each tabs}}
+  <li class="{{../className}}__item {{#if (eq ../activeId @key)}}{{../className}}__item--active{{/if}}">
+    <button class="{{../className}}__button" data-tab-id="{{@key}}">
+      {{this}}
+    </button>
+  </li>
+  {{/each}}
+</ul>

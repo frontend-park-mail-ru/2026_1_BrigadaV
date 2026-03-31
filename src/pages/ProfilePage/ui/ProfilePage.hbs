@@ -1,0 +1,14 @@
+<div data-slot="header"></div>
+
+<main class="main">
+  <section class="user-profile">
+    <div data-slot="bio"></div>
+    <button class="user-profile__edit" command="show-modal" commandfor="{{settings-modal-id}}">Редактировать профиль</button>
+    <div data-slot="navigation"></div>
+  </section>
+
+  <div data-slot="active-section"></div>
+
+</main>
+
+<div data-slot="settings-modal"></div>

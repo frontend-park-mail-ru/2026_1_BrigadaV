@@ -36,6 +36,7 @@ export class SignupPage implements IPage {
                 type: 'login',
                 attributes: {
                     name: 'nickname',
+                    autocomplete: 'nickname',
                     placeholder: 'anna parr',
                     maxlength: 20,
                 },
@@ -61,8 +62,8 @@ export class SignupPage implements IPage {
                     placeholder: '********',
                     maxlength: 50,
                 },
-                iconPath: '/icons/eye.svg',
-                onIconClick: togglePasswordVisibility,
+                rightIcon: '/icons/eye.svg',
+                onRightIconClick: togglePasswordVisibility,
             },
             {
                 id: 'password-repeat-input',
@@ -73,8 +74,8 @@ export class SignupPage implements IPage {
                     placeholder: '********',
                     maxlength: 50,
                 },
-                iconPath: '/icons/eye.svg',
-                onIconClick: togglePasswordVisibility,
+                rightIcon: '/icons/eye.svg',
+                onRightIconClick: togglePasswordVisibility,
 
             }],
             onSubmit: handleSubmit
@@ -85,7 +86,7 @@ export class SignupPage implements IPage {
         this.element = document.createElement('div');
         const html = template();
 
-        this.element.classList.add('page-wrapper');
+        this.element.classList.add('signup-page');
         this.element.innerHTML = html;
 
         if (this.header) {
@@ -101,9 +102,5 @@ export class SignupPage implements IPage {
         return this.element;
     }
 
-    public destroy(): void {
-        if (this.header) {
-            this.header.destroy();
-        }
-    }
+    public destroy(): void { }
 }

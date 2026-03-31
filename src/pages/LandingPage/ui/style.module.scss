@@ -1,0 +1,18 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/layout' as *;
+
+.landing-page {
+    @include default-page-layout;
+}
+
+.main {
+    display: flex;
+    padding: 1rem 2.5rem;
+    flex-direction: column;
+    gap: 4.5rem;
+    background-color: $surface-0;
+
+    &>section {
+        min-height: calc(100vh - 5rem - 2rem); // <available space> - <header>, and make little gap
+    }
+}

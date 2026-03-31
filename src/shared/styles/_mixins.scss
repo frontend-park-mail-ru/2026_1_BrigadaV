@@ -72,6 +72,7 @@
     &[disabled] {
         color: $guidely-primary;
         background-color: $color-interactable-disabled;
+        opacity: 50%;
         cursor: default;
     }
 
@@ -82,6 +83,8 @@
 }
 
 @mixin button-secondary {
+    --color-active: #{$color-interactable-active};
+
     @include typo-p;
     padding: 0.5rem 1rem;
     color: $guidely-primary;
@@ -99,7 +102,7 @@
     }
 
     &:not([disabled]):hover {
-        color: $color-interactable-active;
+        color: var(--color-active);
         scale: 1.05;
     }
 }
@@ -125,7 +128,7 @@
     @include typo-p;
     width: 100%;
     height: 100%;
-    padding-inline: 1rem 3rem;
+    padding-inline: 0.75rem 0.75rem;
     background-color: $surface-form-field;
     border: 2px solid $color-border-form-field;
     border-radius: 8px;

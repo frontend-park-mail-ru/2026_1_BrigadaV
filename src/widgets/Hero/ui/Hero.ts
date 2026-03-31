@@ -11,7 +11,9 @@ export class Hero {
 
     constructor() {
         this.searchBar = new SearchBar({
-            className: 'hero__search'
+            className: 'hero__search',
+            withButton: true,
+            placeholder: 'Куда бы вы хотели отправиться?',
         });
     }
 
