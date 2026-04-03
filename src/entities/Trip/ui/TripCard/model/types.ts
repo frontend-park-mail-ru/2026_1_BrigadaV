@@ -1,7 +1,8 @@
 export type TripCardProps = {
     title: string;
+    location: string;
     startDate: Date;
     endDate: Date;
-    location: string;
+    description?: string;
     preview: string;
 }

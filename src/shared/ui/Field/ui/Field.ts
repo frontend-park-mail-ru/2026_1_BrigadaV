@@ -94,13 +94,11 @@ export class Field {
         }
     }
 
-    public setValue(value: string): void {
+    public setValue(value?: string): void {
         if (!this.element || !value) return;
 
         const input = this.element.querySelector<HTMLInputElement>('.field__input');
         if (input) {
-            console.log(value);
-            
             input.value = value;
         }
     }

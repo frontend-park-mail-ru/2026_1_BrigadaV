@@ -23,13 +23,13 @@ export class CreateTripDialog {
             }
         })
 
-        this.fields['place'] = new Field({
+        this.fields['location'] = new Field({
             className: 'field--rounded',
-            id: 'place-input',
+            id: 'location-input',
             label: 'Направление',
             type: 'text',
             attributes: {
-                name: 'place',
+                name: 'location',
                 maxlength: 50,
                 placeholder: 'Куда',
             },

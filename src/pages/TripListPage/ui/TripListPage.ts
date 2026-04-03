@@ -8,7 +8,8 @@ import { injectComponents } from '@/shared/utils';
 import { CreateTripDialog } from '@/widgets/CreateTripDialog';
 import { UserTripList } from '@/widgets/UserTripList';
 import { eventBus } from '@/shared/lib';
-import { EditTripDialog } from '@/widgets/EditTripDialog';
+import { EditTripDialog, EditTripInitValues } from '@/widgets/EditTripDialog';
+import { TripCardProps } from '@/entities/Trip';
 
 const CREATE_TRIP_DIALOG_ID = 'create-trip';
 
@@ -49,11 +50,18 @@ export class TripListPage implements IPage {
         eventBus.on('TripCard:edit', this.handleTripEdit);
     }
 
-    // TODO add correct types
-    private handleTripEdit = (tripInfo: any): void => {
+    private handleTripEdit = (tripData: TripCardProps): void => {
         if (!this.editTripDialog) return;
 
-        this.editTripDialog.show(tripInfo);
+        const editData: EditTripInitValues = {
+            title: tripData.title,
+            location: tripData.location,
+            startDate: tripData.startDate,
+            endDate: tripData.endDate,
+            description: tripData.description,
+        };
+
+        this.editTripDialog.show(editData);
     }
 
     public render(): HTMLElement {

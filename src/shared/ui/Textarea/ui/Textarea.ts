@@ -36,7 +36,7 @@ export class Textarea {
         }
     }
 
-    public setValue(value: string): void {
+    public setValue(value?: string): void {
         if (!this.element || !value) return;
 
         const input = this.element.querySelector<HTMLTextAreaElement>('.textarea__input');

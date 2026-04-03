@@ -3,7 +3,7 @@ import styles from './style.module.scss';
 import { Field, Textarea } from '@/shared/ui';
 
 import template from './EditTripDialog.hbs?compiled';
-import { EditTripDialogProps } from '../model/types';
+import { EditTripDialogProps, EditTripInitValues } from '../model/types';
 import { formatDate, injectComponents, stringToElement } from '@/shared/utils';
 import { focusField } from '@/shared/lib';
 
@@ -22,12 +22,12 @@ export class EditTripDialog {
             }
         });
 
-        this.fields['place'] = new Field({
-            id: 'place-input',
+        this.fields['location'] = new Field({
+            id: 'location-input',
             label: 'Направление',
             type: 'text',
             attributes: {
-                name: 'place',
+                name: 'location',
                 maxlength: 50,
             },
             leftIcon: '/icons/search.svg',
@@ -64,13 +64,13 @@ export class EditTripDialog {
     }
 
     // TODO add types
-    public show(tripInfo: any): void {
+    public show(tripInfo: EditTripInitValues): void {
         if (!this.element) return;
 
         const { isoStart, isoEnd } = formatDate(tripInfo.startDate, tripInfo.endDate);
 
         this.fields['title'].setValue(tripInfo.title);
-        this.fields['place'].setValue(tripInfo.location);
+        this.fields['location'].setValue(tripInfo.location);
         this.fields['start-date'].setValue(isoStart);
         this.fields['end-date'].setValue(isoEnd);
         this.fields['description'].setValue(tripInfo.description);
