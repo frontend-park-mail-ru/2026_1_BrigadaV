@@ -1,0 +1,22 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *; 
+
+.working-hours-card {
+  text-align: center;
+  background-color: white;
+  border: 1px solid $gray-150;
+  &__title {
+    @include typo-h4;
+    margin: 0 0 1rem 0;
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+       @include typo-p; 
+    }
+  }
+}

@@ -7,6 +7,8 @@ import { AppState, PageConstructor } from '../model';
 import { TripListPage } from '@/pages/TripListPage';
 import { TripDetailPage } from '@/pages/TripDetailPage';
 
+import { AttractionPage } from '@/pages/AttractionPage';
+
 export type Route = {
     href: string;
     hrefRegex: RegExp,

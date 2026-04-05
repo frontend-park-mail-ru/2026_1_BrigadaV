@@ -1,0 +1,38 @@
+<div data-slot="header"></div>
+
+<main class="{{s 'main'}}">
+  <div class="{{s 'container'}}">
+    <div class="{{s 'title-section'}}">
+      <div>
+        <h1 class="{{s 'title'}}">{{name}}</h1>
+        <div class="{{s 'rating'}}">
+          <span class="{{s 'rating-value'}}">{{rating}}</span>
+          <span class="{{s 'reviews-count'}}">({{reviewsCount}} отзывов)</span>
+        </div>
+      </div>
+      <div data-slot="save-button">Сохранить</div>
+    </div>
+
+    <div class="{{s 'gallery'}}">
+      <div class="{{s 'gallery-main'}}">
+        <img src="{{mainImage}}" alt="{{name}}">
+      </div>
+      <div class="{{s 'gallery-side'}}">
+        <img src="{{sideImage1}}" alt="{{name}}">
+        <img src="{{sideImage2}}" alt="{{name}}">
+      </div>
+    </div>
+
+    <div class="{{s 'two-columns'}}">
+      <div class="{{s 'reviews-section'}}">
+        <div class="{{s 'reviews-header'}}">
+          <h2 class="{{s 'section-title'}}">Отзывы</h2>
+          <button class="{{s 'write-review-btn'}}">Написать отзыв</button>
+        </div>
+        <div class="{{s 'reviews-list'}}" data-slot="reviews-list"></div>
+      </div>
+
+      <div class="{{s 'working-hours'}}" data-slot="working-hours"></div>
+    </div>
+  </div>
+</main>
