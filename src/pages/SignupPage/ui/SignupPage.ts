@@ -1,4 +1,4 @@
-import styles from'./style.module.scss';
+import styles from './style.module.scss';
 
 import { togglePasswordVisibility } from '@/shared/lib';
 import { AppState, IPage } from '@/shared/model';
@@ -25,7 +25,7 @@ export class SignupPage implements IPage {
             }
         });
         this.registerForm = new AuthForm({
-            className: 'sign-up__form',
+            className: styles['main__form'],
             title: 'Регистрация',
             submitText: 'Создать аккаунт',
             redirectText: 'Войти',
@@ -84,7 +84,7 @@ export class SignupPage implements IPage {
 
     public render(): HTMLElement {
         this.element = document.createElement('div');
-        const html = template(styles);
+        const html = template({ styles });
 
         this.element.classList.add(styles['signup-page']);
         this.element.innerHTML = html;

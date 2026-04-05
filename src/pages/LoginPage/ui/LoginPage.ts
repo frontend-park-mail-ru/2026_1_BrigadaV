@@ -26,7 +26,7 @@ export class LoginPage implements IPage {
         });
 
         this.loginForm = new AuthForm({
-            className: 'log-in__form',
+            className: styles['main__form'],
             title: 'Вход в аккаунт',
             submitText: 'Войти',
             redirectText: 'Создать аккаунт',
@@ -60,7 +60,7 @@ export class LoginPage implements IPage {
 
     public render(): HTMLElement {
         this.element = document.createElement('div');
-        const html = template(styles);
+        const html = template({ styles });
 
         this.element.classList.add(styles['login-page']);
         this.element.innerHTML = html;

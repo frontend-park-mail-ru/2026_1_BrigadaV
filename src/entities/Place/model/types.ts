@@ -1,13 +1,11 @@
 export type Place = {
-    id: number
+    id: number;
     name: string;
+    description?: string;
     location: string;
     country: string;
     price: number;
     image?: string;
     isLiked: boolean;
-}
-
-export type PlaceCardProps = Place & {
-    authorized: boolean;
+    rating: number;
 }

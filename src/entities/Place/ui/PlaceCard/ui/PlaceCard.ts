@@ -13,7 +13,7 @@ export class PlaceCard {
     constructor(private props: PlaceCardProps) {
         this.likeButton = new LikeButton({
             className: 'card__like',
-            isLiked: props.isLiked,
+            isLiked: props.place.isLiked,
         });
     }
 

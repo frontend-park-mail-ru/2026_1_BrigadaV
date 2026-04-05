@@ -9,14 +9,29 @@
 
 .main {
     display: flex;
-    padding: 0 3rem 3rem;
+    padding: 0 3.5rem 3rem;
     flex-direction: column;
     gap: 1.5rem;
     background-color: $surface-0;
 }
 
+.trip-banner {
+    width: clamp(300px, 70vw, 850px);
+}
+
+.places {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.place-list {
+    width: clamp(250px, 65vw, 800px);
+}
+
 .add-place {
     display: flex;
+    width: 70%;
     padding: 2.75rem;
     align-items: center;
     justify-content: center;

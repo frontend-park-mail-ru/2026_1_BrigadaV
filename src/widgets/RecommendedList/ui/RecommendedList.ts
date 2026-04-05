@@ -23,7 +23,7 @@ export class RecommendedList {
 
             places.forEach(place => {
                 const card = new PlaceCard({
-                    ...place,
+                    place,
                     authorized
                 });
 
