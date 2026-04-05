@@ -1,0 +1,16 @@
+<article class="review">
+  <div class="review__header">
+    <span class="review__author">{{author}}</span>
+    <span class="review__date">{{date}}</span>
+  </div>
+  <p class="review__text">{{text}}</p>
+  <div class="review__footer">
+    <button class="review__more">Подробнее</button>
+    <div class="{{s 'rating-value'}}">
+      {{rating}}
+      <!--{{#each stars}}
+        <span class="review__star {{#if this}}filled{{/if}}">★</span>
+      {{/each}}-->
+    </div>
+  </div>
+</article>

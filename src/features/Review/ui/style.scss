@@ -1,0 +1,70 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
+
+.review {
+  background-color: $white;
+  padding: 1rem;
+  border: 1px solid $gray-150;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  &__author {
+    font-weight: 600;
+    color: $color-text-main;
+    @include typo-p;
+  }
+
+  &__date {
+    color: $color-text-muted;
+    @include typo-small;
+  }
+
+  &__text {
+    margin: 0 0 1rem 0;
+    line-height: 1.4;
+    color: $color-text-main;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__more {
+    background: none;
+    border: none;
+    color: $color-interactable-idle;
+    cursor: pointer;
+    font-size: 0.875rem;
+    padding: 0;
+    text-decoration: underline;
+    @include typo-p;
+  }
+
+  &__rating {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .rating-value {
+  @include typo-h3;
+  font-weight: 600;
+  color: $color-text-main;
+}
+
+  &__star {
+    color: #ccc;
+    font-size: 1rem;
+
+    &.filled {
+      color: #ffb400;
+    }
+  }
+}
