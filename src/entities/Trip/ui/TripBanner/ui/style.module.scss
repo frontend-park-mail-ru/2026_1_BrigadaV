@@ -1,0 +1,85 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
+// TODO don't hard-code values
+.banner {
+    position: relative;
+    height: 300px;
+
+    &__bg {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    &__delete {
+        --size: 36px;
+
+        position: absolute;
+        anchor-name: --delete-button;
+        top: 0.75rem;
+        right: 1rem;
+        display: flex;
+        width: var(--size);
+        height: var(--size);
+        align-items: center;
+        justify-content: center;
+        background-color: $surface-0;
+        border: none;
+        border-radius: 50%;
+    }
+
+    &__delete-img {
+        --size: 32px;
+
+        width: var(--size);
+        height: var(--size);
+        opacity: 50%;
+    }
+
+    &__content {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: 0 2rem 1.25rem;
+        color: $color-text-contrast;
+
+        &::before {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 5;
+            height: 100%;
+            background-image: linear-gradient(0deg, hsl(0 0% 27% / 0.7) 0%, hsla(0 0% 0% / 0) 100%);
+            content: '';
+        }
+    }
+
+    &__title {
+        position: relative;
+        z-index: 10;
+        color: inherit;
+    }
+
+    &__meta {
+        @include typo-p;
+        position: relative;
+        z-index: 10;
+        display: flex;
+        gap: 1rem;
+        color: inherit;
+    }
+
+    &__delete-confirm {
+        position-anchor: --delete-button;
+        position-area: right span-bottom;
+        margin: 0 0 0 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+        &::backdrop {
+            display: none;
+        }
+    }
+}

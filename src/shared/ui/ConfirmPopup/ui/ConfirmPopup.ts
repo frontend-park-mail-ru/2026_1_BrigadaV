@@ -7,7 +7,7 @@ import template from './ConfirmPopup.hbs?compiled';
 
 export const ConfirmPopup = (props: ConfirmPopupProps): Promise<boolean> => {
     return new Promise<boolean>((resolve) => runPopup(props, resolve));
-}
+};
 
 const runPopup = (props: ConfirmPopupProps, resolve: (value: boolean) => void): void => {
     const html = template(props);
@@ -30,4 +30,4 @@ const runPopup = (props: ConfirmPopupProps, resolve: (value: boolean) => void): 
         popup.remove();
         resolve(false);
     });
-}
+};

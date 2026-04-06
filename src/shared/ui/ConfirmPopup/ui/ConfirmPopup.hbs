@@ -1,5 +1,10 @@
-<dialog class="confirm-popup" closedby="any">
+<dialog class="confirm-popup {{className}}" closedby="any">
   <h5 class="confirm-popup__prompt">{{prompt}}</h5>
+
+  {{#if note}}
+  <h6 class="confirm-popup__note">{{note}}</h6>
+  {{/if}}
+
   <div class="confirm-popup__actions">
     <button class="confirm-popup__cancel">{{cancelText}}</button>
     <button class="confirm-popup__confirm">{{confirmText}}</button>

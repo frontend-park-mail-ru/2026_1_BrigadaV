@@ -1,13 +1,4 @@
-declare module "*.hbs?compiled" {
-    const template: (data?: any) => string;
+declare module '*.hbs?compiled' {
+    const template: (data?: Record<string, unknown>) => string;
     export default template;
-}
-
-interface CommandEvent extends Event {
-    command: string;
-    source: HTMLElement;
-}
-
-interface HTMLElementEventMap {
-  "command": CommandEvent;
 }

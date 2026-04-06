@@ -1,29 +1,36 @@
 import globals from 'globals';
 import pluginJs from '@eslint/js';
+import tseslint from 'typescript-eslint';
 
-export default [
+export default tseslint.config(
     pluginJs.configs.recommended,
+    ...tseslint.configs.recommended,
 
     {
-        files: ['src/**/*.js'],
+        languageOptions: {
+            ecmaVersion: 'latest',
+            sourceType: 'module',
+        },
+    },
+
+    {
+        files: ['src/**/*.{js,ts}'],
         languageOptions: {
             globals: {
                 ...globals.browser,
             },
-            ecmaVersion: 'latest',
-            sourceType: 'module',
         },
     },
+
     {
-        files: ['server/**/*.js'],
+        files: ['server/**/*.{js,ts}'],
         languageOptions: {
             globals: {
                 ...globals.node,
             },
-            ecmaVersion: 'latest',
-            sourceType: 'module',
         },
     },
+
     {
         rules: {
             indent: ['error', 4],
@@ -38,7 +45,8 @@ export default [
             'object-curly-spacing': ['error', 'always'],
         },
     },
+
     {
-        ignores: ['dist/', '**/*.hbs?compiled']
+        ignores: ['dist/', '**/*.hbs?compiled'],
     }
-];
+);

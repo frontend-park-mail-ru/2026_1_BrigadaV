@@ -1,4 +1,4 @@
-import { IComponent } from "@/shared/model";
+import { IComponent } from '@/shared/model';
 
 export const injectComponents = (parent: HTMLElement, slots: Record<string, IComponent | undefined>) => {
     Object.entries(slots).forEach(([name, component]) => {
@@ -7,4 +7,4 @@ export const injectComponents = (parent: HTMLElement, slots: Record<string, ICom
             slot.replaceWith(component.render());
         }
     });
-}
+};

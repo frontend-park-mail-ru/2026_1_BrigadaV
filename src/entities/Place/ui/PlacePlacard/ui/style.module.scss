@@ -1,0 +1,44 @@
+@use '@/shared/styles/mixins' as *;
+@use '@/shared/styles/variables' as *;
+@use 'sass:color';
+
+.placard {
+    position: relative;
+    display: flex;
+    max-height: 250px;
+    gap: 1.25rem;
+    // TODO figure out color naming
+    border: 1px solid $color-border-button;
+
+    &__image {
+        object-fit: cover;
+    }
+
+    &__content {
+        display: flex;
+        padding-block: 1.5rem;
+        flex-direction: column;
+        align-items: start;
+        gap: 0.25rem;
+    }
+
+    &__title {
+        @include typo-h3;
+    }
+
+    &__meta {
+        @include typo-p;
+        display: flex;
+        gap: 1rem;
+    }
+
+    &__rating {
+        --hue: calc(var(--rating) / 5 * 120);
+
+        position: absolute;
+        top: 1rem;
+        right: 0.75rem;
+        color: hsl(var(--hue), 100%, 34%);
+        font-size: 32px
+    }
+}

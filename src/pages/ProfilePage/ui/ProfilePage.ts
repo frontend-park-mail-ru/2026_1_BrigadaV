@@ -31,7 +31,7 @@ export class ProfilePage implements IPage {
 
         this.userBio = new UserBio({
             user: this.user,
-        })
+        });
 
         this.navigation = new ProfileNavigation({
             onTabChange: handleTabChange,
@@ -40,12 +40,12 @@ export class ProfilePage implements IPage {
         this.activeSection = new AboutMe({
             user: this.user,
             modalId: SETTINGS_MODAL_ID,
-        })
+        });
 
         this.settingsModal = new SettingsModal({
             user: this.user,
             id: SETTINGS_MODAL_ID,
-        })
+        });
     }
 
     private get user() {

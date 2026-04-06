@@ -21,7 +21,7 @@ export class CreateTripDialog {
                 maxlength: 20,
                 placeholder: 'например, хотите уехать жить в Лондон',
             }
-        })
+        });
 
         this.fields['location'] = new Field({
             className: 'field--rounded',
@@ -35,7 +35,7 @@ export class CreateTripDialog {
             },
             leftIcon: '/icons/search.svg',
             onLeftIconClick: focusField,
-        })
+        });
     }
 
     public render(): HTMLElement {
@@ -45,7 +45,7 @@ export class CreateTripDialog {
             styles,
         }));
 
-        injectComponents(this.element, this.fields)
+        injectComponents(this.element, this.fields);
 
         return this.element;
     }

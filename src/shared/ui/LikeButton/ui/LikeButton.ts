@@ -16,7 +16,7 @@ export class LikeButton {
 
     private handleClick = (): void => {
         this.element?.classList.toggle('like--active');
-    }
+    };
 
     public render(): HTMLElement {
         this.element = stringToElement(template(this.props));

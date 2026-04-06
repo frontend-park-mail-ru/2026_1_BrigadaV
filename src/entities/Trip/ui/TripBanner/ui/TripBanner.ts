@@ -4,27 +4,36 @@ import { formatDate, stringToElement } from '@/shared/utils';
 import { TripBannerProps } from '../model/types';
 import styles from './style.module.scss';
 import template from './TripBanner.hbs?compiled';
+import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 
 export class TripBanner {
     element?: HTMLElement;
 
-    constructor(private props: TripBannerProps) {}
+    constructor(private props: TripBannerProps) { }
 
     private get trip(): Trip {
         return this.props.trip;
     }
 
-    // private initListeners(): void {
-    //     if (!this.element) return;
+    private initListeners(): void {
+        if (!this.element) return;
 
-    //     this.element.querySelector<HTMLButtonElement>('[data-edit-button]')?.addEventListener('click', this.handleEditButtonClick);
-    // }
+        this.element.querySelector<HTMLButtonElement>('[data-delete-button]')?.addEventListener('click', this.handleDeleteButtonClick);
+    }
 
-    // private handleEditButtonClick = (event: Event): void => {
-    //     // TODO pass trip id and stuff
-    //     const target = event.currentTarget as HTMLButtonElement;
-    //     eventBus.emit('TripCard:edit', this.props);
-    // }
+    private async handleDeleteButtonClick(): Promise<void> {
+        const confirmed = await ConfirmPopup({
+            className: styles['banner__delete-confirm'],
+            prompt: 'Вы действительно хотите удалить поездку?',
+            note: 'При удалении поездки будут удалены все сохраненные в ней элементы и примечания. Удаленную поездку нельзя восстановить.',
+            cancelText: 'Отменить',
+            confirmText: 'Удалить',
+        });
+
+        if (confirmed) {
+            // TODO add API call to remove trip
+        }
+    }
 
     public render(): HTMLElement {
         this.element = stringToElement(template({
@@ -33,7 +42,7 @@ export class TripBanner {
             styles,
         }));
 
-        // this.initListeners();
+        this.initListeners();
         return this.element;
     }
 }

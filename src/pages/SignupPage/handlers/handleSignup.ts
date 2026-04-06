@@ -9,7 +9,7 @@ import { SignUpFormData } from '../model/types';
 
 export const handleSubmit = async (instance: AuthForm, data: FormData) => {
     const rawData = Object.fromEntries(data) as SignUpFormData;
-    const { nickname, login, password, 'password-repeat': passwordRepeat} = rawData;
+    const { nickname, login, password, 'password-repeat': passwordRepeat } = rawData;
 
     if (!validateEmail(login)) {
         instance.setFieldError('login', 'Некорректный формат email');

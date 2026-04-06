@@ -21,11 +21,10 @@ export class TripCard {
         this.element.querySelector<HTMLButtonElement>('[data-edit-button]')?.addEventListener('click', this.handleEditButtonClick);
     }
 
-    private handleEditButtonClick = (event: Event): void => {
+    private handleEditButtonClick = (): void => {
         // TODO pass trip id and stuff
-        const target = event.currentTarget as HTMLButtonElement;
         eventBus.emit('TripCard:edit', this.props);
-    }
+    };
 
     public render(): HTMLElement {
         this.element = stringToElement(template({

@@ -14,13 +14,15 @@
         display: flex;
     }
 
-    &__prompt {
+    &__prompt,
+    &__note {
         text-align: center;
         text-wrap: balance;
     }
 
     &__actions {
         display: grid;
+        padding-inline: 1.25rem;
         grid-template-columns: 1fr 1fr;
         gap: 2rem;
     }

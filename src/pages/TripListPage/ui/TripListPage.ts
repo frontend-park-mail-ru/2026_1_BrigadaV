@@ -50,7 +50,7 @@ export class TripListPage implements IPage {
         eventBus.on('TripCard:edit', this.handleTripEdit);
     }
 
-    private handleTripEdit = ({trip}: TripCardProps): void => {
+    private handleTripEdit = ({ trip }: TripCardProps): void => {
         if (!this.editTripDialog) return;
 
         const editData: EditTripInitValues = {
@@ -62,7 +62,7 @@ export class TripListPage implements IPage {
         };
 
         this.editTripDialog.show(editData);
-    }
+    };
 
     public render(): HTMLElement {
         this.element = document.createElement('div');

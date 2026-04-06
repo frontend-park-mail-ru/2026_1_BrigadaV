@@ -75,7 +75,7 @@ export class EditTripDialog {
         this.fields['end-date'].setValue(isoEnd);
         this.fields['description'].setValue(tripInfo.description);
 
-        this.element.showModal()
+        this.element.showModal();
     }
 
     public render(): HTMLElement {
@@ -85,7 +85,7 @@ export class EditTripDialog {
             styles,
         }));
 
-        injectComponents(this.element, this.fields)
+        injectComponents(this.element, this.fields);
 
         return this.element;
     }

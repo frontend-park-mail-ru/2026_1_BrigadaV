@@ -14,13 +14,13 @@ export class Field {
         const leftButton = this.element?.querySelector('button[data-position="left"]');
 
         if (leftButton && this.props.leftIcon && this.props.onLeftIconClick) {
-            leftButton.addEventListener('click', this.handleIconClick)
+            leftButton.addEventListener('click', this.handleIconClick);
         }
 
         const rightButton = this.element?.querySelector('button[data-position="right"]');
 
         if (rightButton && this.props.rightIcon && this.props.onRightIconClick) {
-            rightButton.addEventListener('click', this.handleIconClick)
+            rightButton.addEventListener('click', this.handleIconClick);
         }
     }
 
@@ -34,15 +34,15 @@ export class Field {
         event.preventDefault();
         event.stopPropagation();
 
-        if (button.dataset.position === "left" && this.props.onLeftIconClick) {
+        if (button.dataset.position === 'left' && this.props.onLeftIconClick) {
             this.props.onLeftIconClick(this);
         }
 
-        if (button.dataset.position === "right" && this.props.onRightIconClick) {
+        if (button.dataset.position === 'right' && this.props.onRightIconClick) {
             this.props.onRightIconClick(this);
         }
 
-    }
+    };
 
     public getType(): string | null {
         const input = this.element?.querySelector<HTMLInputElement>('.field__input');

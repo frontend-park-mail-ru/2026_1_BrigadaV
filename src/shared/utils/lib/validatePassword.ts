@@ -12,4 +12,4 @@ export const validatePassword = (password: string): boolean => {
     const countTraits = [isLong, hasLower, hasUpper, hasDigits, hasSpecial].reduce((acc, value) => acc + Number(value), 0);
     // TODO Добавить полоску с уровнями "слабый", "средний", "сильный" пароль
     return countTraits > 1;
-}
+};

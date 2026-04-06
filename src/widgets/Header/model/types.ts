@@ -1,4 +1,4 @@
-import { UserSessionProps } from "@/widgets/UserSession";
+import { UserSessionProps } from '@/widgets/UserSession';
 
 export type HeaderProps = {
     userSessionProps: UserSessionProps;

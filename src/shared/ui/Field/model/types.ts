@@ -1,4 +1,4 @@
-import { Field } from "../ui/Field";
+import { Field } from '../ui/Field';
 
 export type FieldProps = {
     className?: string;

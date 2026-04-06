@@ -43,7 +43,7 @@ export class UserMenu {
                 // TODO Сделать вывод ошибок тост сообщением
             }
         }
-    }
+    };
 
     public render(): HTMLElement {
         this.element = stringToElement(template(this.props));

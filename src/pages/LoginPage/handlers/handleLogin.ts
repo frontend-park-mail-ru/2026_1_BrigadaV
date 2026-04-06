@@ -29,7 +29,7 @@ export const handleSubmit = async (instance: AuthForm, data: FormData) => {
 
     } catch (error) {
         if (!(error instanceof ApiError) || error.error === 'SERVER_ERROR') {
-            instance.setFieldError('password', 'Наблюдаются проблемы со входом. Попробуйте зайти позже')
+            instance.setFieldError('password', 'Наблюдаются проблемы со входом. Попробуйте зайти позже');
         }
 
         instance.setFieldError('password', 'Введен неверный логин или пароль');

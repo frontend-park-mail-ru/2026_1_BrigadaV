@@ -9,17 +9,18 @@ import { API } from '@/shared/api';
 import { appState, config } from '@/shared/config';
 import { navigate } from '@/shared/router';
 
+
 export const App = async () => {
-    Handlebars.registerHelper('s', function (this: any, className: string): string {
+    Handlebars.registerHelper('s', function (this: { styles?: Record<string, string> }, className: string): string {
         return this.styles?.[className] || className;
     });
 
-    Handlebars.registerHelper('eq', function (a: any, b: any): boolean {
+    Handlebars.registerHelper('eq', function (a: unknown, b: unknown): boolean {
         return a === b;
     });
 
-    Handlebars.registerHelper('url', function(...segments: any[]): string {
-        segments = segments.slice(0, -1);
+    Handlebars.registerHelper('url', function (...segments: unknown[]): string {
+        segments = segments.slice(0, -1) as string[];
 
         const path = segments.join('/');
 
@@ -30,7 +31,7 @@ export const App = async () => {
         }
 
         return '#';
-    })
+    });
 
     try {
         const user = mapUser(await API.me());

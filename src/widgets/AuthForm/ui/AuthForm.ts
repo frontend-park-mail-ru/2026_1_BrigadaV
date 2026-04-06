@@ -33,7 +33,7 @@ export class AuthForm {
 
         const formData = new FormData(target);
         await this.props.onSubmit(this, formData);
-    }
+    };
 
     public setFieldError(field: string, message: string): void {
         if (field in this.fields) {
@@ -50,8 +50,8 @@ export class AuthForm {
 
         Object.entries(this.fields).forEach(([name, field]) => {
             this.element?.querySelector(`[data-slot="${name}"]`)
-                ?.replaceWith(field.render())
-        })
+                ?.replaceWith(field.render());
+        });
 
         this.element?.addEventListener('submit', this.handleSubmit);
 

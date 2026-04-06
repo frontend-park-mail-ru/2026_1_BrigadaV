@@ -91,14 +91,17 @@ export class SettingsModal {
         this.element?.addEventListener('command', this.handleOpen);
     }
 
-    private handleOpen = (event: CommandEvent) => {
-        if (!this.element) return;
+    private handleOpen = (ev: Event) => {
+        const event = ev as CommandEvent;
+        const source = event.source;
 
-        if (event.command === 'show-modal' && event.source.dataset.focusField) {
-            const focusInput = this.element.querySelector<HTMLElement>(`[name="${event.source.dataset.focusField}"]`);
-            setTimeout(() => focusInput?.focus(), 0)
+        if (!this.element || !(source instanceof HTMLElement)) return;
+
+        if (event.command === 'show-modal' && source.dataset.focusField) {
+            const focusInput = this.element.querySelector<HTMLElement>(`[name="${source.dataset.focusField}"]`);
+            setTimeout(() => focusInput?.focus(), 0);
         }
-    }
+    };
 
     public render(): HTMLElement {
         this.element = stringToElement(template({
@@ -106,7 +109,7 @@ export class SettingsModal {
             fields: Object.keys(this.fields),
         }));
 
-        injectComponents(this.element, this.fields)
+        injectComponents(this.element, this.fields);
 
         this.initListeners();
         return this.element;

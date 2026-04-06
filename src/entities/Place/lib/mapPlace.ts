@@ -1,6 +1,6 @@
 import { PlaceDTO } from '@/shared/api';
 
-import type { Place } from "../model/types";
+import type { Place } from '../model/types';
 
 export const mapPlace = (placeData: PlaceDTO): Place => {
     return {
@@ -11,5 +11,5 @@ export const mapPlace = (placeData: PlaceDTO): Place => {
         price: placeData.price / 100,
         image: placeData.photos?.[0]?.file_path,
         isLiked: placeData.is_liked,
-    }
-}
+    };
+};

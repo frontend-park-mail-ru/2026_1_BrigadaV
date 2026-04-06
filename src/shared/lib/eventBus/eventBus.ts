@@ -1,4 +1,4 @@
-type Callback = (data?: any) => void;
+type Callback = (data?: unknown) => void;
 
 class EventBus {
     events: Record<string, Callback[]> = {};
@@ -19,7 +19,7 @@ class EventBus {
         this.events[eventName] = this.events[eventName].filter(item => item !== callback);
     }
 
-    public emit(eventName: string, data?: any): void {
+    public emit(eventName: string, data?: unknown): void {
         this.events[eventName]?.forEach(callback => callback(data));
     }
 }

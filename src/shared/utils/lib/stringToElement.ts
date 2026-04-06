@@ -5,7 +5,7 @@ export const stringToElement = <T extends HTMLElement = HTMLElement>(htmlString:
     const element = parser.firstElementChild;
 
     if (!(element instanceof HTMLElement)) {
-        throw new Error(`Failed to parse "${htmlString.slice(0, 30)}..."`)
+        throw new Error(`Failed to parse "${htmlString.slice(0, 30)}..."`);
     }
 
     return element as T;

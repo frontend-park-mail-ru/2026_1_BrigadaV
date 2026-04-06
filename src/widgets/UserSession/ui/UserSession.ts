@@ -26,7 +26,7 @@ export class UserSession {
 
         injectComponents(this.element, {
             'user-menu': this.menu,
-        })
+        });
 
         return this.element;
     }

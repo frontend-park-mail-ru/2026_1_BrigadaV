@@ -29,7 +29,7 @@ export class Tabs {
 
         this.activeTabId = nextId;
         this.props.onTabChange(nextId);
-    }
+    };
 
     private updateActiveTab(newId: string): void {
         const activeClass = `${this.props.className}__item--active`;

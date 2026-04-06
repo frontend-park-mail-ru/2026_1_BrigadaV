@@ -23,7 +23,7 @@ export class ProfileNavigation {
 
     private handleTabChange = (tabId: string): void => {
         this.props.onTabChange(tabId);
-    }
+    };
 
     public render(): HTMLElement {
         this.element = stringToElement(template());
