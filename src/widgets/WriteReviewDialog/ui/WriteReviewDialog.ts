@@ -1,11 +1,9 @@
-import styles from './style.module.scss';
-
 import { Field, Textarea } from '@/shared/ui';
-
-import template from './CreateTripDialog.hbs?compiled';
-import { WriteReviewDialogProps } from '../model/types';
 import { injectComponents, stringToElement } from '@/shared/utils';
-import { focusField } from '@/shared/lib';
+
+import { WriteReviewDialogProps } from '../model/types';
+import template from './WriteReviewDialog.hbs?compiled';
+import styles from './style.module.scss';
 
 export class WriteReviewDialog {
     private element?: HTMLElement;
@@ -14,28 +12,36 @@ export class WriteReviewDialog {
     constructor(private props: WriteReviewDialogProps) {
         this.fields['title'] = new Field({
             id: 'title-input',
-            label: 'Название поездки',
+            label: 'Заголовок',
             type: 'text',
             attributes: {
                 name: 'title',
                 maxlength: 20,
-                placeholder: 'например, хотите уехать жить в Лондон',
+                placeholder: 'Поделитесь своим мнением',
             }
         });
 
-        this.fields['location'] = new Field({
-            className: 'field--rounded',
-            id: 'location-input',
-            label: 'Направление',
-            type: 'text',
+        this.fields['rating'] = new Field({
+            className: styles['write-review__rating-field'],
+            id: 'rating-input',
+            label: 'Оценка',
+            type: 'number',
             attributes: {
-                name: 'location',
+                name: 'rating',
                 maxlength: 50,
-                placeholder: 'Куда',
+                placeholder: 'от 1 до 5, где 5 — отлично',
             },
-            leftIcon: '/icons/search.svg',
-            onLeftIconClick: focusField,
         });
+
+        this.fields['content'] = new Textarea({
+            id: 'content-textarea',
+            label: 'Текст отзыва',
+            attributes: {
+                name: 'content',
+                maxlength: 150,
+                placeholder: 'Поделитесь своими эмоциями',
+            }
+        })
     }
 
     public render(): HTMLElement {
@@ -49,5 +55,4 @@ export class WriteReviewDialog {
 
         return this.element;
     }
-
 }

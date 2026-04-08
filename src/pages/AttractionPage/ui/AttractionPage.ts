@@ -9,6 +9,9 @@ import { WorkingHours } from '@/widgets/WorkingHours';
 
 import template from './AttractionPage.hbs?compiled';
 import styles from './style.module.scss';
+import { WriteReviewDialog } from '@/widgets/WriteReviewDialog';
+
+const WRITE_REVIEW_DIALOG_ID = 'write-review';
 
 // TODO Minify mock images
 export class AttractionPage implements IPage {
@@ -18,6 +21,7 @@ export class AttractionPage implements IPage {
     private gallery?: Gallery;
     private reviewList?: ReviewList;
     private workingHours?: WorkingHours;
+    private writeReviewDialog?: WriteReviewDialog;
 
     constructor(private appState: AppState) {
         this.header = new Header({
@@ -46,6 +50,11 @@ export class AttractionPage implements IPage {
         this.workingHours = new WorkingHours({
             className: styles['working-hours']
         });
+
+        this.writeReviewDialog = new WriteReviewDialog({
+            id: WRITE_REVIEW_DIALOG_ID,
+            place: this.place,
+        })
     }
 
     get place(): Place {
@@ -67,6 +76,7 @@ export class AttractionPage implements IPage {
 
             // TODO move to somewhere
             reviewCount: `(74520 ${pluralize(74520, { one: 'отзыв', few: 'отзыва', many: 'отзывов' })})`,
+            writeReviewDialogId: WRITE_REVIEW_DIALOG_ID,
             styles
         });
 
@@ -80,6 +90,7 @@ export class AttractionPage implements IPage {
             'gallery': this.gallery,
             'review-list': this.reviewList,
             'working-hours': this.workingHours,
+            'write-review-dialog': this.writeReviewDialog,
         });
 
         return this.element;
