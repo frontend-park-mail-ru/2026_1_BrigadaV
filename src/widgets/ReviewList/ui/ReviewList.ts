@@ -16,6 +16,7 @@ export class ReviewList extends AbstractList<ReviewCard, ReviewListProps> {
                 review: {
                     id: 1,
                     author: 'Антон Смирнов',
+                    title: 'Title1',
                     content: 'Один из крупнейших музеев в мире! Очень интересные экспозиции.  Много древних сокровищ.',
                     rating: 5.0,
                     createdAt: new Date(2026, 2, 1),
@@ -25,6 +26,7 @@ export class ReviewList extends AbstractList<ReviewCard, ReviewListProps> {
                 review: {
                     id: 2,
                     author: 'Katie',
+                    title: 'Title2',
                     content: 'Я бы не поехала, если бы не греческий гид, который неоднократно жаловался на то, что мраморные скульптуры Элгина находятся в Британском музее',
                     rating: 4.0,
                     createdAt: new Date(2026, 3, 1),
@@ -34,6 +36,7 @@ export class ReviewList extends AbstractList<ReviewCard, ReviewListProps> {
                 review: {
                     id: 3,
                     author: 'Джон Сноу',
+                    title: 'Title3',
                     content: 'Британский музей - поистине незабываемый опыт. Коллекция обширна и прекрасно курируется, на ней представлены сокровища со всех уголков мира.',
                     rating: 5.0,
                     createdAt: new Date(2023, 11, 1),

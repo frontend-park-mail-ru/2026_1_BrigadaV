@@ -19,7 +19,7 @@
         gap: 2rem;
     }
 
-    &__rating-field input {
+    & [name="rating"] {
         &::-webkit-outer-spin-button,
         &::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -29,6 +29,10 @@
         & {
             -moz-appearance: textfield;
         }
+    }
+
+    & [name="content"] {
+        resize: vertical;
     }
 
     &__actions {

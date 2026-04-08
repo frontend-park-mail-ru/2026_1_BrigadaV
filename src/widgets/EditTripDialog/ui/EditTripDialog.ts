@@ -63,7 +63,6 @@ export class EditTripDialog {
         });
     }
 
-    // TODO add confirmation on form submit
     public show(tripInfo: EditTripInitValues): void {
         if (!this.element) return;
 

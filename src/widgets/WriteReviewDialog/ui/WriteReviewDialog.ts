@@ -22,7 +22,6 @@ export class WriteReviewDialog {
         });
 
         this.fields['rating'] = new Field({
-            className: styles['write-review__rating-field'],
             id: 'rating-input',
             label: 'Оценка',
             type: 'number',
