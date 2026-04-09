@@ -1,0 +1,49 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
+.write-review {
+    width: 50vw;
+    padding: 3.25rem 5rem 3.75rem;
+    border: none;
+    border-radius: 8px;
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    &__fields {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    & [name="rating"] {
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        & {
+            -moz-appearance: textfield;
+        }
+    }
+
+    & [name="content"] {
+        resize: vertical;
+    }
+
+    &__actions {
+        display: flex;
+    }
+
+    &__cancel {
+        @include button-secondary;
+    }
+
+    &__submit {
+        @include button-primary;
+    }
+}

@@ -1,4 +1,4 @@
-import { formatDate, stringToElement } from '@/shared/utils';
+import { formatDateRange, stringToElement } from '@/shared/utils';
 
 import { TripCardProps } from '../model/types';
 import styles from './style.module.scss';
@@ -29,7 +29,9 @@ export class TripCard {
     public render(): HTMLElement {
         this.element = stringToElement(template({
             ...this.props,
-            ...formatDate(this.trip.startDate, this.trip.endDate),
+            ...formatDateRange(this.trip.startDate, this.trip.endDate),
+            isoStart: this.trip.startDate.toISOString(),
+            isoEnd: this.trip.endDate.toISOString(),
             styles,
         }));
 

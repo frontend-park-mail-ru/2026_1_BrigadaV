@@ -1,0 +1,1 @@
+export { AttractionPage } from './ui/AttractionPage';

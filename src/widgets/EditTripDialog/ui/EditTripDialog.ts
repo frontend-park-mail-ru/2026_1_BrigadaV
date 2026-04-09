@@ -4,7 +4,7 @@ import { Field, Textarea } from '@/shared/ui';
 
 import template from './EditTripDialog.hbs?compiled';
 import { EditTripDialogProps, EditTripInitValues } from '../model/types';
-import { formatDate, injectComponents, stringToElement } from '@/shared/utils';
+import { injectComponents, stringToElement } from '@/shared/utils';
 import { focusField } from '@/shared/lib';
 
 export class EditTripDialog {
@@ -63,16 +63,13 @@ export class EditTripDialog {
         });
     }
 
-    // TODO add types
     public show(tripInfo: EditTripInitValues): void {
         if (!this.element) return;
 
-        const { isoStart, isoEnd } = formatDate(tripInfo.startDate, tripInfo.endDate);
-
         this.fields['title'].setValue(tripInfo.title);
         this.fields['location'].setValue(tripInfo.location);
-        this.fields['start-date'].setValue(isoStart);
-        this.fields['end-date'].setValue(isoEnd);
+        this.fields['start-date'].setValue(tripInfo.startDate.toISOString());
+        this.fields['end-date'].setValue(tripInfo.endDate.toISOString());
         this.fields['description'].setValue(tripInfo.description);
 
         this.element.showModal();

@@ -1,4 +1,5 @@
 export type LikeButtonProps = {
     className?: string;
-    isLiked: boolean;
+    label?: string;
+    isLiked?: boolean;
 }

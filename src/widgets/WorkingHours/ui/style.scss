@@ -1,0 +1,60 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
+.working-hours {
+    --inline-spacing: 1rem;
+
+    display: grid;
+    grid-template-rows: max-content 0fr;
+    align-self: start;
+
+    background-color: transparent;
+    border: 1px solid $gray-150;
+
+    transition: grid-template-rows $timing-animation-medium;
+
+    &[open] {
+        grid-template-rows: max-content 1fr;
+    }
+
+    &::details-content {
+        overflow: hidden;
+        content-visibility: visible;
+    }
+
+    &__header {
+        @include typo-h2;
+        display: flex;
+        padding: 0.75rem var(--inline-spacing);
+        align-self: center;
+        gap: 2rem;
+        cursor: pointer;
+
+        &::marker {
+            content: "";
+        }
+    }
+
+    &__img {
+        rotate: 180deg;
+        transition: rotate $timing-animation-medium;
+    }
+
+    &[open] &__img {
+        rotate: 0deg;
+    }
+
+    &__list {
+        display: flex;
+        padding-bottom: 0.5rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    &__item {
+        display: flex;
+        justify-content: space-between;
+        @include typo-p;
+        margin-inline: var(--inline-spacing);
+    }
+}

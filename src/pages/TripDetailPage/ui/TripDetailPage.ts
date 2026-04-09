@@ -12,7 +12,6 @@ export class TripDetailPage implements IPage {
     private header?: Header;
     private tripBanner?: TripBanner;
     private placeList?: PlaceList;
-    // private optionsDialog?: dialog;
 
     constructor(private appState: AppState) {
         this.header = new Header({

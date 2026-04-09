@@ -1,0 +1,125 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/layout' as *;
+@use '@/shared/styles/mixins' as *;
+
+.attraction-page {
+    @include default-page-layout;
+    background-color: $surface-0;
+}
+
+.main {
+    display: grid;
+    padding: 0rem 4.5rem 2rem;
+    grid-template-areas:
+        "meta meta"
+        "gallery gallery"
+        "reviews working-hours";
+    grid-template-columns: 1fr max-content;
+    column-gap: 10rem;
+    background-color: $surface-0;
+}
+
+.attraction-meta {
+    display: grid;
+    margin-bottom: 2.5rem;
+    grid-area: meta;
+    grid-template-areas:
+        "name like"
+        "rating like";
+    grid-template-columns: 1fr max-content;
+    row-gap: 1rem;
+
+    &__name {
+        grid-area: name;
+        font-size: 3.5rem;
+    }
+
+    &__rating {
+        display: flex;
+        grid-area: rating;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    &__rating-value {
+        --hue: calc(var(--rating) / 5 * 120);
+        color: hsl(var(--hue), 100%, 34%);
+
+        font-weight: bold;
+    }
+
+    &__review-count {
+        @include typo-p;
+    }
+
+    &__like {
+        grid-area: like;
+    }
+}
+
+.gallery {
+    margin-bottom: 3.25rem;
+    grid-area: gallery;
+}
+
+.reviews {
+    display: grid;
+    grid-area: reviews;
+    grid-template-areas:
+        "header write-review"
+        "review-list review-list";
+    row-gap: 2.5rem;
+
+    &__header {
+        grid-area: header;
+    }
+
+    &__write-review {
+        @include typo-p;
+        display: flex;
+        width: 170px;
+        height: 40px;
+        grid-area: write-review;
+        align-items: center;
+        justify-content: center;
+        place-self: center end;
+        gap: 0.5rem;
+        background-color: transparent;
+        border: 1px solid $guidely-primary;
+        border-radius: 8px;
+        transition:
+            background-color $timing-animation-medium,
+            color $timing-animation-medium;
+
+
+        &::before {
+            width: 24px;
+            height: 24px;
+            background-color: $color-text-main;
+            mask-image: url("/icons/pen.svg");
+            mask-position: center;
+            mask-repeat: no-repeat;
+            mask-size: contain;
+            transition: background-color $timing-animation-medium;
+            content: "";
+        }
+
+        &:hover {
+            color: $color-text-contrast;
+            background-color: $guidely-primary;
+        }
+
+        &:hover::before {
+            background-color: $color-text-contrast;
+        }
+    }
+
+    &__list {
+        grid-area: review-list;
+    }
+}
+
+.working-hours {
+    grid-area: working-hours;
+    align-self: start;
+}

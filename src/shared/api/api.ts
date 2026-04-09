@@ -1,7 +1,7 @@
 import { ApiError } from './lib/ApiError';
 import { LoginDTO, PlaceDTO, RegisterDTO } from './types';
 
-const API_URL = import.meta.env.DEV ? 'http://localhost:8081/api' : 'http://212.233.96.48:8080/api';
+const API_URL = import.meta.env.DEV ? 'http://localhost:8080/api' : 'http://212.233.96.48:8080/api';
 
 const request = async (path: string, options: RequestInit) => {
     const url = `${API_URL}${path}`;

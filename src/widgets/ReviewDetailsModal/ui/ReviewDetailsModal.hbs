@@ -1,0 +1,24 @@
+<dialog class="{{s 'review-details'}}" id="{{id}}" closedby="any">
+  <aside class="{{s 'review-details__aside'}}">
+    <img src="/icons/avatar.svg" class="{{s 'review-details__avatar'}}" data-ref="avatar">
+    <h4 class="{{s 'review-details__author'}}" data-ref="author"></h4>
+  </aside>
+
+  <section class="{{s 'review-details__main'}}">
+    <div class="{{s 'review-details__meta'}}">
+      <span class="review-details__place-name">отзыв о <b data-ref="place-name"></b></span>
+      <time class="{{s 'review-details__date'}}" data-ref="date"></time>
+    </div>
+    <h4 class="{{s 'review-details__rating-value'}}" data-ref="rating"></h4>
+    <h3 class="{{s 'review-details__title'}}" data-ref="title"></h3>
+    <p class="{{s 'review-details__content'}}" data-ref="content"></p>
+
+    <button class="{{s 'review-details__show-all'}}" command="close" commandfor="{{id}}" data-ref="show-all-button">
+      Показать все <span data-ref="review-count"></span>
+    </button>
+  </section>
+
+  <button class="{{s 'review-details__delete'}}" data-ref="delete-button">
+    <img src="/icons/bin.svg" class="{{s 'review-details__delete-img'}}">
+  </button>
+</dialog>

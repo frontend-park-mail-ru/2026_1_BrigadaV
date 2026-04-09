@@ -1,0 +1,13 @@
+<dialog class="{{s 'write-review'}}" id="{{id}}" closedby="any">
+  <form class="{{s 'write-review__form'}}">
+    <div class="{{s 'write-review__fields'}}">
+      {{#each fields}}
+      <div data-slot="{{this}}"></div>
+      {{/each}}
+    </div>
+    <div class="{{s 'write-review__actions'}}">
+      <button type="button" command="close" commandfor="{{id}}" class="{{s 'write-review__cancel'}}">Отменить</button>
+      <button type="submit" class="{{s 'write-review__submit'}}">Сохранить</button>
+    </div>
+  </form>
+</dialog>

@@ -7,6 +7,8 @@ import { AppState, PageConstructor } from '../model';
 import { TripListPage } from '@/pages/TripListPage';
 import { TripDetailPage } from '@/pages/TripDetailPage';
 
+import { AttractionPage } from '@/pages/AttractionPage';
+
 export type Route = {
     href: string;
     hrefRegex: RegExp,
@@ -50,6 +52,11 @@ export const config: Record<string, Route> = {
         hrefRegex: /^\/trip\/[0-9]+$/,
         view: TripDetailPage,
         authOnly: true,
+    },
+    attraction: {
+        href: '/attraction/:int',
+        hrefRegex: /^\/attraction\/[0-9]+$/,
+        view: AttractionPage,
     }
 };
 

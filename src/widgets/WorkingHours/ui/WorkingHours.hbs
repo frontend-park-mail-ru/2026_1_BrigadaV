@@ -1,0 +1,17 @@
+<details class="working-hours {{className}}">
+  <summary class="working-hours__header">
+    Часы работы
+    <img src="/icons/arrow-down.svg" class="working-hours__img">
+  </summary>
+  <ul class="working-hours__list">
+    {{#each workingHours}}
+    <li class="working-hours__item">
+      <b>{{dayLabel}}</b>
+      <span><time datetime="{{start}}">{{start}}</time>
+        &ndash;
+        <time datetime="{{end}}">{{end}}</time>
+      </span>
+    </li>
+    {{/each}}
+  </ul>
+</details>

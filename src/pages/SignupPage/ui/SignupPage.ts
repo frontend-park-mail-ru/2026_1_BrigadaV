@@ -38,7 +38,8 @@ export class SignupPage implements IPage {
                     name: 'nickname',
                     autocomplete: 'nickname',
                     placeholder: 'anna parr',
-                    maxlength: 20,
+                    maxlength: 50,
+                    minlength: 3,
                 },
             },
             {

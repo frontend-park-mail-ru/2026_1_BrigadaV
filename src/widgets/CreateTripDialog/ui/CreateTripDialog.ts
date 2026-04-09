@@ -18,7 +18,8 @@ export class CreateTripDialog {
             type: 'text',
             attributes: {
                 name: 'title',
-                maxlength: 20,
+                maxlength: 255,
+                minlength: 1,
                 placeholder: 'например, хотите уехать жить в Лондон',
             }
         });

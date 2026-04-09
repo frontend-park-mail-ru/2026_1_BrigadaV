@@ -1,10 +1,10 @@
 <article class="{{s 'placard'}}" data-id="{{trip.id}}">
-  <a href="{{url '/place' place.id}}" data-link>
+  <a href="{{url '/attraction' place.id}}" data-link>
     <img src="{{place.image}}" class="{{s 'placard__image'}}">
   </a>
 
   <div class="{{s 'placard__content'}}">
-    <a href="{{url '/place' place.id}}" class="{{s 'placard__title'}}" data-link>{{place.name}}</a>
+    <a href="{{url '/attraction' place.id}}" class="{{s 'placard__title'}}" data-link>{{place.name}}</a>
 
     <div class="{{s 'placard__meta'}}">
       <span class="{{s 'placard__description'}}">{{place.description}}</span>

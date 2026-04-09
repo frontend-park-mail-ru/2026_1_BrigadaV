@@ -1,0 +1,11 @@
+<article class="{{s 'card'}}">
+  <div class="{{s 'card__meta'}}">
+    <h5 class="{{s 'card__author'}}">{{review.author}}</h5>
+    <time class="{{s 'card__created-at'}}" datetime="{{isoDate}}">{{date}}</time>
+  </div>
+  <p class="{{s 'card__content'}}">{{review.content}}</p>
+  <div class="{{s 'card__footer'}}">
+    <button class="{{s 'card__more'}}" data-details-button>Подробнее</button>
+    <h4 class="{{s 'card__rating'}}">{{review.rating}}</h4>
+  </div>
+</article>

@@ -1,15 +1,17 @@
 import globals from 'globals';
 import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
+import { defineConfig } from 'eslint/config';
 
-export default tseslint.config(
+export default defineConfig(
     pluginJs.configs.recommended,
-    ...tseslint.configs.recommended,
+    tseslint.configs.recommended,
 
     {
         languageOptions: {
             ecmaVersion: 'latest',
             sourceType: 'module',
+            parser: tseslint.parser,
         },
     },
 
@@ -40,7 +42,7 @@ export default tseslint.config(
             'no-console': 'error',
             'no-var': 'error',
             'prefer-const': 'error',
-            'no-unused-vars': ['error', { args: 'none' }],
+            '@typescript-eslint/no-unused-vars': ['error', { args: 'none' }],
             'eol-last': ['error', 'always'],
             'object-curly-spacing': ['error', 'always'],
         },

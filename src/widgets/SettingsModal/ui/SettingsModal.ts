@@ -91,6 +91,7 @@ export class SettingsModal {
         this.element?.addEventListener('command', this.handleOpen);
     }
 
+    // TODO add confirmation on form submit
     private handleOpen = (ev: Event) => {
         const event = ev as CommandEvent;
         const source = event.source;

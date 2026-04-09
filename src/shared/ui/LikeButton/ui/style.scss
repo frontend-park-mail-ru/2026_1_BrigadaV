@@ -1,15 +1,13 @@
 @use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
 
 .like {
-    position: absolute;
-    top: 12px;
-    right: 12px;
+    @include typo-p;
     display: flex;
 
-    width: 36px;
-    height: 36px;
     align-items: center;
     justify-content: center;
+    gap: 0.5rem;
     background-color: $surface-0;
     border: none;
     border-radius: 50%;
@@ -27,16 +25,12 @@
         content: "";
     }
 
-    &:hover {
-        &::before {
-            background-color: $color-interactable-active;
-        }
+    &:hover::before {
+        background-color: $color-interactable-active;
     }
 
-    &--active {
-        &::before {
-            background-color: $color-interactable-active;
-            mask-image: url("/icons/like-solid.svg");
-        }
+    &--active::before {
+        background-color: $color-interactable-active;
+        mask-image: url("/icons/like-solid.svg");
     }
 }

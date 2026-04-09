@@ -1,0 +1,27 @@
+<div data-slot="header"></div>
+
+<main class="{{s 'main'}}">
+  <section class="{{s 'attraction-meta'}}">
+    <h1 class="{{s 'attraction-meta__name'}}">{{place.name}}</h1>
+    <div class="{{s 'attraction-meta__rating'}}">
+      <h3 class="{{s 'attraction-meta__rating-value'}}">{{place.rating}}</h3>
+      <span class="{{s 'attraction-meta__review-count'}}">{{reviewCount}}</span>
+    </div>
+    <div data-slot="like-button"></div>
+  </section>
+
+  <div data-slot="gallery"></div>
+
+  <section class="{{s 'reviews'}}">
+    <h2 class="{{s 'reviews__header'}}">Отзывы</h2>
+    <button class="{{s 'reviews__write-review'}}" command="show-modal" commandfor="{{writeReviewDialogId}}">
+      Написать отзыв
+    </button>
+    <div data-slot="review-list"></div>
+  </section>
+
+  <div data-slot="working-hours"></div>
+</main>
+
+<div data-slot="write-review-dialog"></div>
+<div data-slot="review-details-modal"></div>
