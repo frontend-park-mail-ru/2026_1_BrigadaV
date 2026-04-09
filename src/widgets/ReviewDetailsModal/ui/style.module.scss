@@ -1,9 +1,15 @@
-// TODO keep scroll when opening a modal
+@use '@/shared/styles/mixins' as *;
+
+// TODO preserve scroll when opening a modal
 .review-details {
-    position: relative;
-    padding: 32px;
-    grid-template-columns: 120px 1fr;
-    gap: 24px;
+    position: fixed;
+    width: 45vw;
+    margin-block: none;
+    padding: 1rem;
+    grid-template-columns: max-content 1fr;
+    column-gap: 5.5rem;
+    border: 0;
+    border-radius: 8px;
 
     &:open {
         display: grid;
@@ -11,20 +17,68 @@
 
     &__aside {
         display: flex;
-        padding-top: 20px;
         flex-direction: column;
         align-items: center;
+        gap: 1.25rem;
+    }
+
+    &__avatar {
+        --size: 100px;
+
+        width: var(--size);
+        height: var(--size);
+
+        margin-top: 2.5rem;
+        object-fit: cover;
     }
 
     &__main {
         display: flex;
         flex-direction: column;
-        gap: 12px;
+    }
+
+    &__meta {
+        @include typo-small;
+        display: flex;
+        margin-bottom: 0.75rem;
+        gap: 1.25rem;
+    }
+
+    &__rating-value {
+        --hue: calc(var(--rating) / 5 * 120);
+        color: hsl(var(--hue), 100%, 34%)
+    }
+
+    &__title {
+        margin-bottom: 2rem;
+    }
+
+    &__content {
+        margin-bottom: 3rem;
+    }
+
+    &__show-all {
+        @include button-secondary;
     }
 
     &__delete {
         position: absolute;
-        top: 16px;
-        right: 16px;
+        top: 1rem;
+        right: 1rem;
+        display: none;
+        background-color: transparent;
+        border: none;
+        opacity: 50%;
+    }
+
+    &__delete-img {
+        --size: 24px;
+
+        width: var(--size);
+        height: var(--size);
+    }
+
+    &--own &__delete {
+        display: block;
     }
 }

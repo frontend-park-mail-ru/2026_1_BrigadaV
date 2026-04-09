@@ -10,8 +10,6 @@ export class ReviewDetailsModal {
 
     constructor(private props: ReviewDetailsModalProps) { }
 
-
-
     // TODO add confirmation on form submit
     public show(reviewInfo: ReviewDetailsModalInitValues): void {
         if (!this.element) return;
@@ -20,13 +18,8 @@ export class ReviewDetailsModal {
             // TODO get author avatar somehow
             // this.fields['avatar'].src =
         }
-        console.log(reviewInfo.review);
-        console.log(reviewInfo.review.createdAt);
-
 
         const formattedDate = formatDate(reviewInfo.review.createdAt);
-        console.log(formattedDate);
-
 
         this.fields['author'].textContent = reviewInfo.review.author;
         this.fields['place-name'].textContent = reviewInfo.placeName;
@@ -36,6 +29,12 @@ export class ReviewDetailsModal {
         this.fields['title'].textContent = reviewInfo.review.title;
         this.fields['content'].textContent = reviewInfo.review.content;
         this.fields['review-count'].textContent = reviewInfo.reviewCount.toString();
+
+        this.element.style.setProperty('--rating', reviewInfo.review.rating.toString());
+
+        // TODO check user id instead of names
+        const isOwner = this.props.user?.nickname === reviewInfo.review.author;
+        this.element.classList.toggle(styles['review-details--own'], isOwner);
 
         this.element.showModal();
     }

@@ -17,7 +17,7 @@ export class ReviewCard {
 
     private handleEditButtonClick = (): void => {
         // TODO pass review id and stuff
-        eventBus.emit('ReviewCard:showDetails', this.props);
+        eventBus.emit('ReviewCard:showDetails', this.props.review);
     };
 
     public render(): HTMLElement {

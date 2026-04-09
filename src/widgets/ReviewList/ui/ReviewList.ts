@@ -38,7 +38,7 @@ export class ReviewList extends AbstractList<ReviewCard, ReviewListProps> {
                     author: 'Джон Сноу',
                     title: 'Title3',
                     content: 'Британский музей - поистине незабываемый опыт. Коллекция обширна и прекрасно курируется, на ней представлены сокровища со всех уголков мира.',
-                    rating: 5.0,
+                    rating: 3.0,
                     createdAt: new Date(2023, 11, 1),
                 }
             }),
