@@ -8,7 +8,7 @@ import { injectComponents, stringToElement } from '@/shared/utils';
 import { focusField } from '@/shared/lib';
 
 export class CreateTripDialog {
-    private element?: HTMLElement;
+    private element?: HTMLDialogElement;
     private fields: Record<string, Field> = {};
 
     constructor(private props: CreateTripDialogProps) {
@@ -39,14 +39,54 @@ export class CreateTripDialog {
         });
     }
 
+    private initListeners(): void {
+        this.element?.addEventListener('command', this.handleCommand);
+        this.element?.addEventListener('cancel', this.handleCommand);
+    }
+
+    private handleCommand = (event: Event): void => {
+        if (!this.element) return;
+
+        let command: string | undefined;
+
+        switch (true) {
+            case event.type === 'cancel':
+                command = 'close';
+                break;
+            case 'command' in event:
+                command = (event as CommandEvent).command;
+                break;
+            default: return;
+        }
+
+        event.preventDefault();
+
+        switch (command) {
+            case 'show-modal':
+                this.element.showModal();
+                this.element.classList.add(styles['is-visible']);
+                break;
+
+            case 'close':
+                this.element.classList.remove(styles['is-visible']);
+
+                const handleTransitionEnd = (e: TransitionEvent) => {
+                    this.element!.close();
+                };
+                this.element.addEventListener('transitionend', handleTransitionEnd, { once: true });
+                break;
+        }
+    }
+
     public render(): HTMLElement {
-        this.element = stringToElement(template({
+        this.element = stringToElement<HTMLDialogElement>(template({
             ...this.props,
             fields: Object.keys(this.fields),
             styles,
         }));
 
         injectComponents(this.element, this.fields);
+        this.initListeners();
 
         return this.element;
     }

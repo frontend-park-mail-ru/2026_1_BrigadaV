@@ -1,4 +1,5 @@
 @use '@/shared/styles/mixins' as *;
+@use '@/shared/styles/variables' as *;
 
 .create-trip {
     position: fixed;
@@ -14,9 +15,23 @@
     border: none;
     border-radius: 8px 0 0 8px;
 
-    &:open {
+    translate: 100%;
+    transition:
+        translate $timing-animation-medium;
+
+    &.is-visible {
         display: grid;
         grid-template-rows: max-content 1fr;
+        translate: 0;
+    }
+
+    &::backdrop {
+        background-color: hsl(0 0% 0% / 0);
+        transition: background-color $timing-animation-medium;
+    }
+
+    &.is-visible::backdrop {
+        background-color: hsl(0 0% 0% / 0.4);
     }
 
     &__close {

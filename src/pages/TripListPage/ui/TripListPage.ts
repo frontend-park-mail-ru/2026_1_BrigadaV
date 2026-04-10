@@ -29,6 +29,7 @@ export class TripListPage implements IPage {
 
         this.createTripDialog = new CreateTripDialog({
             id: CREATE_TRIP_DIALOG_ID,
+            className: styles['create-trip-dialog'],
             user: this.user,
         });
 
@@ -37,9 +38,10 @@ export class TripListPage implements IPage {
         });
 
         this.editTripDialog = new EditTripDialog({
-            id: 'trip-edit',
+            id: 'edit-trip',
             user: this.user,
         });
+        console.log(styles);
     }
 
     private get user() {
