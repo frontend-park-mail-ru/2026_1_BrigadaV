@@ -1,11 +1,11 @@
-import styles from './style.module.scss';
-
 import { AppState, IPage } from '@/shared/model';
+import { injectComponents } from '@/shared/utils';
 import { Header } from '@/widgets/Header';
 import { Hero } from '@/widgets/Hero';
 import { RecommendedList } from '@/widgets/RecommendedList';
 
 import template from './LandingPage.hbs?compiled';
+import styles from './style.module.scss';
 
 export class LandingPage implements IPage {
     private element?: HTMLElement;
@@ -13,43 +13,40 @@ export class LandingPage implements IPage {
     private hero?: Hero;
     private recommendedList?: RecommendedList;
 
-    constructor(appState: AppState) {
+    private constructor(private appState: AppState) {}
+
+    public static async create(appState: AppState): Promise<LandingPage> {
+        const page = new LandingPage(appState);
+        page.setupComponents();
+        return page;
+    }
+
+    private setupComponents() {
         this.header = new Header({
             userSessionProps: {
-                user: appState.currentUser
+                user: this.appState.currentUser
             }
         });
 
         this.hero = new Hero();
 
         this.recommendedList = new RecommendedList({
-            user: appState.currentUser
+            user: this.appState.currentUser
         });
-
     }
 
     public render(): HTMLElement {
         this.element = document.createElement('div');
         const html = template({ styles });
 
-
         this.element.classList.add(styles['landing-page']);
         this.element.innerHTML = html;
 
-        if (this.header) {
-            this.element.querySelector('[data-slot="header"]')
-                ?.replaceWith(this.header.render());
-        }
-
-        if (this.hero) {
-            this.element.querySelector('[data-slot="hero"]')
-                ?.replaceWith(this.hero.render());
-        }
-
-        if (this.recommendedList) {
-            this.element.querySelector('[data-slot="recommended-list"]')
-                ?.replaceWith(this.recommendedList.render());
-        }
+        injectComponents(this.element, {
+            'header': this.header,
+            'hero': this.hero,
+            'recommended-list': this.recommendedList,
+        });
 
         return this.element;
     }

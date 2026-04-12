@@ -1,22 +1,30 @@
-import styles from './style.module.scss';
-
 import { togglePasswordVisibility } from '@/shared/lib';
 import { AppState, IPage } from '@/shared/model';
+import { injectComponents } from '@/shared/utils';
 import { AuthForm } from '@/widgets/AuthForm';
 import { Header } from '@/widgets/Header';
 
 import { handleSubmit } from '../handlers/handleSignup';
 import template from './SignupPage.hbs?compiled';
+import styles from './style.module.scss';
 
 export class SignupPage implements IPage {
     private element?: HTMLElement;
     private header?: Header;
     private registerForm?: AuthForm;
 
-    constructor(appState: AppState) {
+    private constructor(private appState: AppState) {}
+
+    public static async create(appState: AppState): Promise<SignupPage> {
+        const page = new SignupPage(appState);
+        page.setupComponents();
+        return page;
+    }
+
+    private setupComponents() {
         this.header = new Header({
             userSessionProps: {
-                user: appState.currentUser,
+                user: this.appState.currentUser,
                 authPrompt: {
                     prompt: 'Уже есть аккаунт?',
                     href: '/login',
@@ -90,15 +98,10 @@ export class SignupPage implements IPage {
         this.element.classList.add(styles['signup-page']);
         this.element.innerHTML = html;
 
-        if (this.header) {
-            this.element.querySelector('[data-slot="header"]')
-                ?.replaceWith(this.header.render());
-        }
-
-        if (this.registerForm) {
-            this.element.querySelector('[data-slot="register-form"]')
-                ?.replaceWith(this.registerForm.render());
-        }
+        injectComponents(this.element, {
+            'header': this.header,
+            'register-form': this.registerForm,
+        });
 
         return this.element;
     }

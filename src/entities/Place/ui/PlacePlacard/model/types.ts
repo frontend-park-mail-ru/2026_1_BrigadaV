@@ -1,5 +1,5 @@
-import { Place } from '@/entities/Place/model/types';
+import { PlaceSummary } from '@/entities/Place/model/types';
 
 export type PlacePlacardProps = {
-    place: Place;
+    place: PlaceSummary;
 }

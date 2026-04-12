@@ -1,4 +1,4 @@
-import { Review } from "@/entities/Review/model/types"
+import { Review } from '@/entities/Review/model/types';
 
 export type ReviewCardProps = {
     review: Review;

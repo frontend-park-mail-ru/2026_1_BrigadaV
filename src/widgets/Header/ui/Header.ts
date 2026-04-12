@@ -1,11 +1,11 @@
 import './style.scss';
 
+import { SearchBar } from '@/features/SearchBar';
 import { stringToElement } from '@/shared/utils';
 import { UserSession } from '@/widgets/UserSession';
 
 import { HeaderProps } from '../model/types';
 import template from './Header.hbs?compiled';
-import { SearchBar } from '@/features/SearchBar';
 
 export class Header {
     private element?: HTMLElement;

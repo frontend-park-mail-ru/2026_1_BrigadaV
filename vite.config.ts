@@ -12,6 +12,8 @@ export default defineConfig({
         }
     },
     plugins: [
-        handlebarsPrecompile(),
+        handlebarsPrecompile({
+            partialsDir: path.resolve(__dirname, './src/shared/ui/Handlebars'),
+        }),
     ],
 });

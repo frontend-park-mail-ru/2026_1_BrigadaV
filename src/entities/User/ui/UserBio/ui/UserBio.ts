@@ -11,7 +11,9 @@ export class UserBio {
     constructor(private props: UserBioProps) { }
 
     public render(): HTMLElement {
-        this.element = stringToElement(template(this.props));
+        this.element = stringToElement(template({
+            ...this.props,
+        }));
         return this.element;
     }
 }

@@ -7,10 +7,12 @@
     <a href="{{url '/trip' trip.id}}" class="{{s 'card__title'}}" data-link>{{trip.title}}</a>
 
     <div class="{{s 'card__meta'}}">
+      {{#if hasDates}}
       <div class="{{s 'card__date-wrapper'}}">
         <time class="{{s 'card__date-start'}}" datetime="{{isoStart}}">{{start}}</time> &ndash;
         <time class="{{s 'card__date-end'}}" datetime="{{isoEnd}}">{{end}}</time>
       </div>
+      {{/if}}
       <span class="{{s 'card__location'}}">{{trip.location}}</span>
     </div>
   </div>

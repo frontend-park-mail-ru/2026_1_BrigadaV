@@ -1,4 +1,4 @@
-import { Place } from '@/entities/Place';
+import { mapPlace, Place } from '@/entities/Place';
 import { Review } from '@/entities/Review/model/types';
 import { eventBus } from '@/shared/lib';
 import { AppState, IPage } from '@/shared/model';
@@ -7,19 +7,20 @@ import { injectComponents, pluralize } from '@/shared/utils';
 import { Gallery } from '@/widgets/Gallery';
 import { Header } from '@/widgets/Header';
 import { ReviewDetailsModal } from '@/widgets/ReviewDetailsModal';
-import { ReviewDetailsModalInitValues } from '@/widgets/ReviewDetailsModal/model/types';
 import { ReviewList } from '@/widgets/ReviewList';
 import { WorkingHours } from '@/widgets/WorkingHours';
 import { WriteReviewDialog } from '@/widgets/WriteReviewDialog';
 
 import template from './AttractionPage.hbs?compiled';
 import styles from './style.module.scss';
+import { API } from '@/shared/api';
+import { AttractionPageParameters } from '../model/types';
 
 const WRITE_REVIEW_DIALOG_ID = 'write-review';
 const REVIEW_DETAILS_MODAL_ID = 'review-details';
 
-// TODO Minify mock images
 export class AttractionPage implements IPage {
+    private place!: Place;
     private element?: HTMLElement;
     private header?: Header;
     private likeButton?: LikeButton;
@@ -29,18 +30,30 @@ export class AttractionPage implements IPage {
     private writeReviewDialog?: WriteReviewDialog;
     private reviewDetailsModal?: ReviewDetailsModal;
 
-    constructor(private appState: AppState) {
+    private constructor(private appState: AppState) {}
+
+    public static async create(appState: AppState, parameters: AttractionPageParameters): Promise<AttractionPage> {
+        const page = new AttractionPage(appState);
+
+        const placeData = await API.getPlaceById(parameters.placeId);
+        page.place = placeData;
+
+        page.setupComponents();
+        return page;
+    }
+
+    private setupComponents() {
         this.header = new Header({
-            userSessionProps: { user: appState.currentUser },
+            userSessionProps: { user: this.appState.currentUser },
             withSearch: true,
         });
 
-        if (appState.currentUser) {
+        if (this.appState.currentUser) {
             this.likeButton = new LikeButton({
                 className: styles['attraction-meta__like'],
                 label: 'Сохранить',
                 isLiked: this.place.isLiked,
-            })
+            });
         }
 
         this.gallery = new Gallery({
@@ -51,6 +64,7 @@ export class AttractionPage implements IPage {
 
         this.reviewList = new ReviewList({
             className: styles['reviews__list'],
+            placeId: this.place.id,
         });
 
         this.workingHours = new WorkingHours({
@@ -64,20 +78,8 @@ export class AttractionPage implements IPage {
 
         this.reviewDetailsModal = new ReviewDetailsModal({
             id: REVIEW_DETAILS_MODAL_ID,
-            user: appState.currentUser,
-        })
-    }
-
-    get place(): Place {
-        return {
-            id: 1,
-            name: 'Британский музей',
-            location: '',
-            country: '',
-            price: 0,
-            isLiked: true,
-            rating: 4.6,
-        }
+            user: this.appState.currentUser,
+        });
     }
 
     private initListeners(): void {
@@ -87,7 +89,7 @@ export class AttractionPage implements IPage {
     private handleShowDetails = (review: Review): void => {
         if (!this.reviewDetailsModal) return;
 
-        this.reviewDetailsModal?.show({
+        this.reviewDetailsModal.show({
             review,
             placeName: this.place.name,
             reviewCount: 74520

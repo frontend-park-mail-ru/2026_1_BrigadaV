@@ -1,10 +1,10 @@
 import { Trip } from '@/entities/Trip/model/types';
+import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 import { formatDateRange, stringToElement } from '@/shared/utils';
 
 import { TripBannerProps } from '../model/types';
 import styles from './style.module.scss';
 import template from './TripBanner.hbs?compiled';
-import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 
 export class TripBanner {
     element?: HTMLElement;

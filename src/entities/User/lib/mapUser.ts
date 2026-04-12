@@ -1,12 +1,16 @@
-import { LoginDTO, RegisterDTO } from '@/shared/api';
+import { UserDTO } from '@/shared/api';
 
 import { User } from '../model/types';
 
-export const mapUser = (userData: LoginDTO | RegisterDTO): User => {
+export const mapUser = (userData: UserDTO): User => {
     return {
-        id: ('user_id' in userData) ? userData.user_id : userData.id,
-        login: userData.login,
+        id: userData.id,
         nickname: userData.nickname,
-        avatar: userData.avatar_url,
+        avatar: userData.avatar,
+        country: userData.location.country,
+        city: userData.location.name,
+        about: userData.about,
+        commentCount: userData.comment_count,
+        createdAt: new Date(userData.created_at),
     };
 };

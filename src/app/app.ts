@@ -4,13 +4,13 @@ import './styles/_typography.scss';
 
 import Handlebars from 'handlebars';
 
-import { mapUser } from '@/entities/User';
+import { mapUserAuth } from '@/entities/User';
 import { API } from '@/shared/api';
 import { appState, config } from '@/shared/config';
 import { navigate } from '@/shared/router';
 
-
 export const App = async () => {
+    // TODO move helpers in a dedicated directory
     Handlebars.registerHelper('s', function (this: { styles?: Record<string, string> }, className: string): string {
         return this.styles?.[className] || className;
     });
@@ -34,7 +34,7 @@ export const App = async () => {
     });
 
     try {
-        const user = mapUser(await API.me());
+        const user = mapUserAuth(await API.me());
         appState.currentUser = user;
     } catch {
         appState.currentUser = null;

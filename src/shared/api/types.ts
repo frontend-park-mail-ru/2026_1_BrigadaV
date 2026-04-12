@@ -29,6 +29,15 @@ export type PlaceDTO = {
     category?: CategoryDTO;
     photos?: PlacePhotoDTO[];
     created_at: string;
+    rating?: number;
+};
+
+export type PlaceSummaryDTO = {
+    id: number;
+    name: string;
+    description: string;
+    rating: number;
+    image: string;
 };
 
 export type LoginDTO = {
@@ -45,6 +54,58 @@ export type RegisterDTO = {
     avatar_url: string;
     created_at: string;
     message?: string;
+};
+
+export type ReviewDTO = {
+    id: number;
+    author: UserSummaryDTO;
+    place_id: number;
+    rating: number;
+    title: string;
+    comment?: string;
+    visit_date?: string;
+    created_at: string;
+    updated_at: string;
+};
+
+export type UserDTO = {
+    id: number;
+    nickname: string;
+    avatar?: string;
+    location: LocalityDTO;
+    about?: string;
+    comment_count: number;
+    created_at: string;
+    updated_at: string;
+}
+
+export type UserSummaryDTO = {
+    id: number;
+    nickname: string;
+    avatar?: string,
+}
+
+export type TripDTO = {
+    id: number;
+    title: string;
+    description?: string;
+    location: LocalityDTO;
+    start_date?: string;
+    end_date?: string;
+    created_by: number;
+    is_public: boolean;
+    created_at: string;
+    updated_at: string;
+    preview: string;
+};
+
+export type TripSummaryDTO = {
+    id: number;
+    title: string;
+    location: string;
+    start_date?: Date;
+    end_date?: Date;
+    preview: string;
 };
 
 export type ErrorDTO = {

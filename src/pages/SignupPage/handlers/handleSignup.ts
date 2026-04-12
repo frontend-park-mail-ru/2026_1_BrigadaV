@@ -1,8 +1,8 @@
-import { mapUser } from '@/entities/User';
+import { mapUserAuth } from '@/entities/User';
 import { API, ApiError } from '@/shared/api';
 import { appState } from '@/shared/config';
 import { navigate } from '@/shared/router';
-import { validateEmail, validatePassword } from '@/shared/utils';
+import { validateEmail, validatePassword } from '@/shared/lib';
 import { AuthForm } from '@/widgets/AuthForm';
 
 import { SignUpFormData } from '../model/types';
@@ -27,7 +27,7 @@ export const handleSubmit = async (instance: AuthForm, data: FormData) => {
     }
 
     try {
-        const result = mapUser(await API.register(nickname, login, password));
+        const result = mapUserAuth(await API.register(nickname, login, password));
 
         appState.currentUser = result;
         navigate('/');

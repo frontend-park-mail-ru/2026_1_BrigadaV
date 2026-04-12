@@ -3,11 +3,11 @@ import './style.scss';
 import { API } from '@/shared/api';
 import { appState } from '@/shared/config';
 import { navigate } from '@/shared/router';
+import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 import { stringToElement } from '@/shared/utils';
 
-import template from './UserMenu.hbs?compiled';
 import { UserMenuProps } from '../model/types';
-import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
+import template from './UserMenu.hbs?compiled';
 
 export class UserMenu {
     private element?: HTMLElement;

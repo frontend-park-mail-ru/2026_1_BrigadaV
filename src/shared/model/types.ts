@@ -1,8 +1,8 @@
-import { User } from '@/entities/User';
+import { UserAuth } from '@/entities/User';
 
 export type AppState = {
     currentPath: string;
-    currentUser: User | null;
+    currentUser: UserAuth | null;
 }
 
 export interface IComponent {
@@ -15,4 +15,6 @@ export interface IPage {
     destroy(): void;
 }
 
-export type PageConstructor = new (appState: AppState) => IPage;
+export interface IPageConstructor {
+    create(appState: AppState, parameters?: Record<string, string | number>): Promise<IPage>;
+}

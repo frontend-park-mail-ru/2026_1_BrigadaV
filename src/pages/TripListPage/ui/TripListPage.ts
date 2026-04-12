@@ -1,5 +1,3 @@
-import styles from './style.module.scss';
-
 import { TripCardProps } from '@/entities/Trip';
 import { eventBus } from '@/shared/lib';
 import { AppState, IPage } from '@/shared/model';
@@ -9,6 +7,7 @@ import { EditTripDialog, EditTripInitValues } from '@/widgets/EditTripDialog';
 import { Header } from '@/widgets/Header';
 import { UserTripList } from '@/widgets/UserTripList';
 
+import styles from './style.module.scss';
 import template from './TripListPage.hbs?compiled';
 
 const CREATE_TRIP_DIALOG_ID = 'create-trip';
@@ -20,10 +19,18 @@ export class TripListPage implements IPage {
     private userTripList?: UserTripList;
     private editTripDialog?: EditTripDialog;
 
-    constructor(private appState: AppState) {
+    private constructor(private appState: AppState) {}
+
+    public static async create(appState: AppState): Promise<TripListPage> {
+        const page = new TripListPage(appState);
+        page.setupComponents();
+        return page;
+    }
+
+    private setupComponents() {
         this.header = new Header({
             userSessionProps: {
-                user: appState.currentUser,
+                user: this.appState.currentUser,
             },
         });
 

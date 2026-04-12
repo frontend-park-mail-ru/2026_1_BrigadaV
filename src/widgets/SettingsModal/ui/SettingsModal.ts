@@ -1,16 +1,18 @@
 import './style.scss';
 
 import { togglePasswordVisibility } from '@/shared/lib';
-import { Field } from '@/shared/ui';
-import { Textarea } from '@/shared/ui';
+import { Field, Textarea } from '@/shared/ui';
 import { injectComponents, stringToElement } from '@/shared/utils';
+import { validateEmail, validatePassword } from '@/shared/lib';
 
-import { SettingsModalProps } from '../model/types';
+import { SettingsModalFormData, SettingsModalProps } from '../model/types';
 import template from './SettingsModal.hbs?compiled';
+import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 
 export class SettingsModal {
     private element?: HTMLElement;
     private fields: Record<string, Field | Textarea> = {};
+    private avatarPreviewUrl?: string;
 
     constructor(private props: SettingsModalProps) {
         this.fields['nickname'] = new Field({
@@ -19,8 +21,9 @@ export class SettingsModal {
             type: 'text',
             attributes: {
                 name: 'nickname',
-                value: props.user.nickname,
-                maxlength: 20,
+                value: props.userAuth.nickname,
+                maxlength: 50,
+                minlength: 3,
                 placeholder: 'Никнейм',
             }
         });
@@ -31,7 +34,7 @@ export class SettingsModal {
             type: 'text',
             attributes: {
                 name: 'email',
-                value: props.user.login,
+                value: props.userAuth.login,
                 maxlength: 50,
                 placeholder: 'Почта',
             }
@@ -83,12 +86,15 @@ export class SettingsModal {
                 name: 'about',
                 maxlength: 1000,
                 placeholder: 'Напишите подробнее о себе',
+                value: this.props.user.about || '',
             },
         });
     }
 
     private initListeners(): void {
         this.element?.addEventListener('command', this.handleOpen);
+        this.element?.addEventListener('submit', this.handleSubmit);
+        this.element?.addEventListener('change', this.handleAvatarChange);
     }
 
     // TODO add confirmation on form submit
@@ -104,6 +110,66 @@ export class SettingsModal {
         }
     };
 
+    private handleAvatarChange = (event: Event): void => {
+        const target = event.target;
+        if (!(target instanceof HTMLInputElement)) return;
+
+        if (target.name !== 'avatar' || !target.files?.[0]) return;
+
+        const file = target.files[0];
+
+        if (file.size > 10 * 1024 * 1024) {
+            // TODO make a toast
+            alert("Файл слишком большой! Лимит 10 Мб.");
+            target.value = '';
+            return;
+        }
+
+        if (this.avatarPreviewUrl) {
+            URL.revokeObjectURL(this.avatarPreviewUrl);
+        }
+
+        this.avatarPreviewUrl = URL.createObjectURL(file);
+
+        const previewImage = this.element?.querySelector('[data-ref="avatar"]') as HTMLImageElement;
+
+        if (previewImage) {
+            previewImage.src = this.avatarPreviewUrl;
+            previewImage.classList.remove('avatar--default');
+        }
+    }
+
+    private handleSubmit = async (event: Event): Promise<void> => {
+        const target = event.target;
+        if (!(target instanceof HTMLFormElement)) {
+            return;
+        }
+
+        event.preventDefault();
+        this.clearErrors();
+
+        const confirmed = await ConfirmPopup({
+            prompt: "Вы уверены, что хотите сохранить изменения?",
+            cancelText: "Нет",
+            confirmText: "Да, сохранить"
+        });
+
+        if (confirmed) {
+            const formData = new FormData(target);
+            await this.props.onSubmit(this, formData);
+        }
+    }
+
+    public clearErrors(): void {
+        Object.values(this.fields).forEach((field) => field.clearError());
+    }
+
+    public setFieldError(field: string, message: string): void {
+        if (field in this.fields) {
+            this.fields[field].setError(message);
+        }
+    }
+
     public render(): HTMLElement {
         this.element = stringToElement(template({
             ...this.props,
@@ -114,5 +180,9 @@ export class SettingsModal {
 
         this.initListeners();
         return this.element;
+    }
+
+    public destroy(): void {
+        if (this.avatarPreviewUrl) URL.revokeObjectURL(this.avatarPreviewUrl);
     }
 }
