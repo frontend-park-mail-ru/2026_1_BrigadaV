@@ -1,9 +1,9 @@
+import { Place } from '@/entities/Place/model/types';
 import { stringToElement } from '@/shared/utils';
 
 import { PlacePlacardProps } from '../model/types';
-import styles from './style.module.scss';
 import template from './PlacePlacard.hbs?compiled';
-import { Place } from '@/entities/Place/model/types';
+import styles from './style.module.scss';
 
 export class PlacePlacard {
     element?: HTMLElement;

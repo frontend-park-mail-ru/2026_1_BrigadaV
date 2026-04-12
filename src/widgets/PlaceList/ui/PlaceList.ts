@@ -4,6 +4,8 @@ import { PlacePlacard } from '@/entities/Place/ui/PlacePlacard';
 import { AbstractList } from '@/shared/ui/AbstractList';
 
 import { PlaceListProps } from '../model/types';
+import { API } from '@/shared/api';
+import { mapPlaceSummary } from '@/entities/Place';
 
 export class PlaceList extends AbstractList<PlacePlacard, PlaceListProps> {
     constructor(props: PlaceListProps) {
@@ -12,6 +14,15 @@ export class PlaceList extends AbstractList<PlacePlacard, PlaceListProps> {
     }
 
     protected async loadData(): Promise<PlacePlacard[]> {
+        try {
+            const placesData = await API.getPlacesByTrip(this.props.tripId);
+            return placesData.map((placeRaw) => new PlacePlacard({place: mapPlaceSummary(placeRaw)}));
+
+        } catch (error) {
+            console.error(error);
+        }
+
+        return [];
         return [
             new PlacePlacard({
                 place: {

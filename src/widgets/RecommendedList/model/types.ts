@@ -1,5 +1,5 @@
-import { User } from '@/entities/User';
+import { UserAuth } from '@/entities/User';
 
 export type RecommendedListProps = {
-    user: User | null;
+    user: UserAuth | null;
 }

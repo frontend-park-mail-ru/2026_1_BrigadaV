@@ -1,7 +1,8 @@
 import './style.scss';
 
-import { GalleryProps } from '../model/types';
 import { AbstractList } from '@/shared/ui/AbstractList';
+
+import { GalleryProps } from '../model/types';
 
 export class Gallery extends AbstractList<HTMLImageElement, GalleryProps> {
     constructor(props: GalleryProps) {

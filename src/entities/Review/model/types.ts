@@ -1,8 +1,10 @@
+import { UserSummary } from "@/entities/User";
+
 export type Review = {
     id: number;
-    author: string;
+    author: UserSummary;
     title: string;
-    content: string;
+    content?: string;
     rating: number;
     createdAt: Date;
 }

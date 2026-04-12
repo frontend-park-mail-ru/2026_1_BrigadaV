@@ -7,5 +7,13 @@ export type Place = {
     price: number;
     image?: string;
     isLiked: boolean;
+    rating?: number;
+}
+
+export type PlaceSummary = {
+    id: number;
+    name: string;
+    description: string;
     rating: number;
+    image: string;
 }

@@ -1,8 +1,10 @@
-import { injectComponents, stringToElement } from '@/shared/utils';
-import template from './ProfileNavigation.hbs?compiled';
 import './style.scss';
-import { ProfileNavigationProps } from '../model/types';
+
 import { Tabs } from '@/shared/ui/Tabs';
+import { injectComponents, stringToElement } from '@/shared/utils';
+
+import { ProfileNavigationProps } from '../model/types';
+import template from './ProfileNavigation.hbs?compiled';
 
 export class ProfileNavigation {
     element?: HTMLElement;

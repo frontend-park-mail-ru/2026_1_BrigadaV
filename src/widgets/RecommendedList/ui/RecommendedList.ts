@@ -1,7 +1,6 @@
 import './style.scss';
 
-import { PlaceCard } from '@/entities/Place';
-import { mapPlace } from '@/entities/Place';
+import { mapPlace, PlaceCard } from '@/entities/Place';
 import { API } from '@/shared/api';
 import { stringToElement } from '@/shared/utils';
 

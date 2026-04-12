@@ -1,9 +1,14 @@
-import { appState } from '../config';
-import { IPage } from '../model';
-
-import { findMatch } from './findMatch';
-import { Route } from '../config/router';
 import { LandingPage } from '@/pages/LandingPage';
+
+import { appState } from '../config';
+import { Route } from '../config/router';
+import { IPage } from '../model';
+import { findMatch } from './findMatch';
+
+export type Match = {
+    page: Route;
+    parameters: Record<string, string | number>;
+}
 
 let pageInstance: IPage | null = null;
 
@@ -17,24 +22,24 @@ export const router = async (path = '/') => {
         pageInstance.destroy();
     }
 
-    const route: Route | null = findMatch(path);
+    const match: Match | null = findMatch(path);
 
     let redirectPath: string | null = null;
 
-    if (!route) {
+    if (!match) {
         // TODO add 404 page
-        pageInstance = new LandingPage(appState);
+        pageInstance = await LandingPage.create(appState);
         redirectPath = '/';
 
     } else {
-        const isAuthRequired = route.authOnly && !appState.currentUser;
-        const isGuestOnly = route.guestOnly && appState.currentUser;
+        const isAuthRequired = match.page.authOnly && !appState.currentUser;
+        const isGuestOnly = match.page.guestOnly && appState.currentUser;
 
         if (isAuthRequired || isGuestOnly) {
-            pageInstance = new LandingPage(appState);
+            pageInstance = await LandingPage.create(appState);
             redirectPath = '/';
         } else {
-            pageInstance = new route.view(appState);
+            pageInstance = await match.page.view.create(appState, match.parameters);
         }
     }
 

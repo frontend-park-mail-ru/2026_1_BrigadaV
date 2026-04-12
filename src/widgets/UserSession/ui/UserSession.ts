@@ -1,9 +1,8 @@
-import styles from './style.module.scss';
-
 import { injectComponents, stringToElement } from '@/shared/utils';
 import { UserMenu } from '@/widgets/UserMenu';
 
 import { UserSessionProps } from '../model/types';
+import styles from './style.module.scss';
 import template from './UserSession.hbs?compiled';
 
 export class UserSession {

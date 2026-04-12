@@ -1,8 +1,9 @@
-import styles from './style.module.scss';
-import template from './ReviewCard.hbs?compiled';
-import { ReviewCardProps } from '../model/types';
-import { formatDate, stringToElement } from '@/shared/utils';
 import { eventBus } from '@/shared/lib';
+import { formatDate, stringToElement } from '@/shared/utils';
+
+import { ReviewCardProps } from '../model/types';
+import template from './ReviewCard.hbs?compiled';
+import styles from './style.module.scss';
 
 export class ReviewCard {
     element?: HTMLElement;
@@ -21,6 +22,8 @@ export class ReviewCard {
     };
 
     public render(): HTMLElement {
+        console.log(this.props);
+        
         this.element = stringToElement(template({
             ...this.props,
             ...formatDate(this.props.review.createdAt),

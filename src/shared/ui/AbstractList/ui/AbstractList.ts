@@ -1,10 +1,11 @@
 import { stringToElement } from '@/shared/utils';
+
 import template from './AbstractList.hbs?compiled';
 
 export abstract class AbstractList<T, P extends Record<string, unknown> | undefined> {
     protected element: HTMLElement;
 
-    constructor(private props: P) {
+    constructor(protected props: P) {
         this.element = stringToElement(template(props));
     }
 
@@ -13,9 +14,13 @@ export abstract class AbstractList<T, P extends Record<string, unknown> | undefi
 
     // TODO add pagination and list update methods
 
+    // TODO add
+
     private async init(): Promise<void> {
         try {
             const data = await this.loadData();
+
+            // TODO add empty state handling
 
             data.forEach(item => {
                 this.element.appendChild(this.renderItem(item));

@@ -1,8 +1,8 @@
-import styles from './style.module.scss';
-
-import template from './ReviewDetailsModal.hbs?compiled';
-import { ReviewDetailsModalProps, ReviewDetailsModalInitValues } from '../model/types';
 import { formatDate, stringToElement } from '@/shared/utils';
+
+import { ReviewDetailsModalInitValues, ReviewDetailsModalProps } from '../model/types';
+import template from './ReviewDetailsModal.hbs?compiled';
+import styles from './style.module.scss';
 
 export class ReviewDetailsModal {
     private element?: HTMLDialogElement;
@@ -14,27 +14,27 @@ export class ReviewDetailsModal {
     public show(reviewInfo: ReviewDetailsModalInitValues): void {
         if (!this.element) return;
 
-        if (this.fields['avatar'] instanceof HTMLImageElement) {
-            // TODO get author avatar somehow
-            // this.fields['avatar'].src =
+        if (this.fields['avatar'] instanceof HTMLImageElement && reviewInfo.review.author.avatar) {
+            this.fields['avatar'].src = reviewInfo.review.author.avatar;
         }
 
         const formattedDate = formatDate(reviewInfo.review.createdAt);
 
-        this.fields['author'].textContent = reviewInfo.review.author;
+        this.fields['author'].textContent = reviewInfo.review.author.nickname;
         this.fields['place-name'].textContent = reviewInfo.placeName;
         this.fields['date'].textContent = formattedDate.date;
         this.fields['date'].setAttribute('datetime', formattedDate.isoDate);
         this.fields['rating'].textContent = reviewInfo.review.rating.toString();
         this.fields['title'].textContent = reviewInfo.review.title;
-        this.fields['content'].textContent = reviewInfo.review.content;
+        this.fields['content'].textContent = reviewInfo.review.content || '';
         this.fields['review-count'].textContent = reviewInfo.reviewCount.toString();
 
         this.element.style.setProperty('--rating', reviewInfo.review.rating.toString());
 
-        // TODO check user id instead of names
-        const isOwner = this.props.user?.nickname === reviewInfo.review.author;
-        this.element.classList.toggle(styles['review-details--own'], isOwner);
+        if (this.props.user) {
+            const isOwner = this.props.user.id === reviewInfo.review.author.id;
+            this.element.classList.toggle(styles['review-details--own'], isOwner);
+        }
 
         this.element.showModal();
     }

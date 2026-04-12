@@ -19,6 +19,10 @@
         gap: 2rem;
     }
 
+    & [name="description"] {
+        resize: vertical;
+    }
+
     &__date-wrapper {
         display: grid;
         grid-template-columns: 1fr 1fr;

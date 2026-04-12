@@ -1,9 +1,9 @@
-import { Review } from "@/entities/Review/model/types";
-import { User } from "@/entities/User";
+import { Review } from '@/entities/Review/model/types';
+import { UserAuth } from '@/entities/User';
 
 export type ReviewDetailsModalProps = {
     id: string;
-    user: User | null;
+    user: UserAuth | null;
 }
 
 export type ReviewDetailsModalInitValues = {

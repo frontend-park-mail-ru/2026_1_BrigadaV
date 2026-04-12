@@ -1,9 +1,10 @@
 import './style.scss';
 
-import { TripCard } from '@/entities/Trip';
+import { mapTrip, TripCard } from '@/entities/Trip';
+import { AbstractList } from '@/shared/ui/AbstractList';
 
 import { UserTripListProps } from '../model/types';
-import { AbstractList } from '@/shared/ui/AbstractList';
+import { API } from '@/shared/api';
 
 export class UserTripList extends AbstractList<TripCard, UserTripListProps> {
     constructor(props: UserTripListProps) {
@@ -12,29 +13,14 @@ export class UserTripList extends AbstractList<TripCard, UserTripListProps> {
     }
 
     protected async loadData(): Promise<TripCard[]> {
-        return [
-            new TripCard({
-                trip: {
-                    id: 1,
-                    title: 'Поиск лепреконов',
-                    startDate: new Date(2026, 2, 5),
-                    endDate: new Date(2026, 2, 17),
-                    location: 'Англия',
-                    preview: '/mock/place/trip1.png',
-                }
-            }),
-            new TripCard({
-                trip: {
-                    id: 12,
-                    title: 'Отдых на курорте',
-                    startDate: new Date(2026, 11, 25),
-                    endDate: new Date(2027, 0, 5),
-                    location: 'Дубай',
-                    preview: '/mock/place/trip2.png',
-                }
-            })
+        try {
+            const tripData = await API.getUserTripList(this.props.user.id);
+            return tripData.map((tripRaw) => new TripCard({trip: mapTrip(tripRaw)}))
+        } catch (error) {
+            console.error(error);
+        }
 
-        ];
+        return [];
     }
 
     protected renderItem(item: TripCard): HTMLElement {

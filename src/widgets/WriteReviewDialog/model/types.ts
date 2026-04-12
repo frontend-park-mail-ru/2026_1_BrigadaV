@@ -1,4 +1,4 @@
-import { Place } from "@/entities/Place"
+import { Place } from '@/entities/Place';
 
 export type WriteReviewDialogProps = {
     id: string;

@@ -2,8 +2,8 @@ import { Field, Textarea } from '@/shared/ui';
 import { injectComponents, stringToElement } from '@/shared/utils';
 
 import { WriteReviewDialogProps } from '../model/types';
-import template from './WriteReviewDialog.hbs?compiled';
 import styles from './style.module.scss';
+import template from './WriteReviewDialog.hbs?compiled';
 
 export class WriteReviewDialog {
     private element?: HTMLElement;

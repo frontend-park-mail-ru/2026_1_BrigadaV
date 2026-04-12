@@ -1,4 +1,4 @@
-import { User } from '@/entities/User';
+import { UserAuth } from '@/entities/User';
 
 export type AboutMeProps = {
     user: User;

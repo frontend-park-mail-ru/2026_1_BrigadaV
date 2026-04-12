@@ -1,45 +1,50 @@
-import styles from './style.module.scss';
-
-import template from './TripDetailPage.hbs?compiled';
+import { mapTrip, TripBanner } from '@/entities/Trip';
 import { AppState, IPage } from '@/shared/model';
-import { Header } from '@/widgets/Header';
 import { injectComponents } from '@/shared/utils';
-import { TripBanner } from '@/entities/Trip';
+import { Header } from '@/widgets/Header';
 import { PlaceList } from '@/widgets/PlaceList';
 
+import styles from './style.module.scss';
+import template from './TripDetailPage.hbs?compiled';
+import { API } from '@/shared/api';
+import { TripDetailPageParams } from '../model/types';
+import { Trip } from '@/entities/Trip/model/types';
+
 export class TripDetailPage implements IPage {
+    private trip!: Trip;
     private element?: HTMLElement;
     private header?: Header;
     private tripBanner?: TripBanner;
     private placeList?: PlaceList;
 
-    constructor(private appState: AppState) {
+    private constructor(private appState: AppState) { }
+
+    public static async create(appState: AppState, parameters: TripDetailPageParams): Promise<TripDetailPage> {
+        const page = new TripDetailPage(appState);
+
+        const tripData = await API.getTripById(parameters.tripId);
+        page.trip = mapTrip(tripData);
+
+        page.setupComponents();
+        return page;
+    }
+
+    private setupComponents() {
         this.header = new Header({
             userSessionProps: {
-                user: appState.currentUser,
+                user: this.appState.currentUser,
             },
         });
 
         this.tripBanner = new TripBanner({
             className: styles['trip-banner'],
-            trip: {
-                id: 1,
-                title: 'Поиск лепреконов',
-                startDate: new Date(2026, 2, 5),
-                endDate: new Date(2026, 2, 17),
-                location: 'Англия',
-                preview: '/mock/place/tripbig.png',
-            }
+            trip: this.trip
         });
 
         this.placeList = new PlaceList({
             className: styles['place-list'],
-            tripId: 1,
+            tripId: this.trip.id,
         });
-    }
-
-    private get user() {
-        return this.appState.currentUser!;
     }
 
     public render(): HTMLElement {

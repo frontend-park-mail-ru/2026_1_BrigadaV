@@ -1,11 +1,10 @@
-import styles from './style.module.scss';
-
-import { Field } from '@/shared/ui';
-
-import template from './CreateTripDialog.hbs?compiled';
-import { CreateTripDialogProps } from '../model/types';
-import { injectComponents, stringToElement } from '@/shared/utils';
 import { focusField } from '@/shared/lib';
+import { Field } from '@/shared/ui';
+import { injectComponents, stringToElement } from '@/shared/utils';
+
+import { CreateTripDialogProps } from '../model/types';
+import template from './CreateTripDialog.hbs?compiled';
+import styles from './style.module.scss';
 
 export class CreateTripDialog {
     private element?: HTMLElement;
