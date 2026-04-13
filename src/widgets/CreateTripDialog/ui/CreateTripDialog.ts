@@ -1,13 +1,13 @@
-import { focusField } from '@/shared/lib';
+import { eventBus, focusField } from '@/shared/lib';
 import { Field } from '@/shared/ui';
-import { injectComponents, stringToElement } from '@/shared/utils';
+import { formatDateRange, injectComponents, stringToElement } from '@/shared/utils';
 
 import { CreateTripDialogProps } from '../model/types';
 import template from './CreateTripDialog.hbs?compiled';
 import styles from './style.module.scss';
 
 export class CreateTripDialog {
-    private element?: HTMLElement;
+    private element?: HTMLDialogElement;
     private fields: Record<string, Field> = {};
 
     constructor(private props: CreateTripDialogProps) {
@@ -20,6 +20,7 @@ export class CreateTripDialog {
                 maxlength: 255,
                 minlength: 1,
                 placeholder: 'например, хотите уехать жить в Лондон',
+                required: '',
             }
         });
 
@@ -32,20 +33,42 @@ export class CreateTripDialog {
                 name: 'location',
                 maxlength: 50,
                 placeholder: 'Куда',
+                required: '',
             },
             leftIcon: '/icons/search.svg',
             onLeftIconClick: focusField,
         });
     }
 
+    private initListeners(): void {
+        this.element?.addEventListener('submit', this.handleSubmit);
+    }
+
+    private handleSubmit(event: Event): void {
+        const target = event.target;
+        if (!(target instanceof HTMLFormElement)) {
+            return;
+        }
+
+        event.preventDefault();
+
+        const formData = Object.fromEntries(new FormData(target));
+        eventBus.emit('CreateTripDialog:submit', { instance: this, data: formData });
+    }
+
+    public close(): void {
+        this.element?.close();
+    }
+
     public render(): HTMLElement {
-        this.element = stringToElement(template({
+        this.element = stringToElement<HTMLDialogElement>(template({
             ...this.props,
             fields: Object.keys(this.fields),
             styles,
         }));
 
         injectComponents(this.element, this.fields);
+        this.initListeners();
 
         return this.element;
     }

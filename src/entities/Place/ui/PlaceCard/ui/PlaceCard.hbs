@@ -1,7 +1,7 @@
-<article class="card">
+<article class="card" data-id="{{place.id}}">
   <div class="card__image-wrapper">
     <div data-slot="like-button"></div>
-    <img src="{{place.image}}" class="card__image">
+    <a href="{{url '/attraction' place.id}}" class="card__redirect" data-link><img src="{{place.image}}" class="card__image"></a>
   </div>
   <article class="card__content">
     <h6 class="card__subtitle">{{place.location}}, {{place.country}}</h6>

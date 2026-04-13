@@ -12,7 +12,6 @@ export const handleSubmit = async (instance: WriteReviewDialog, data: FormData, 
 
     try {
         const newReviewData = {
-            authorId: user.id,
             placeId,
             title: String(rawData.title),
             content: String(rawData.content),
@@ -22,7 +21,7 @@ export const handleSubmit = async (instance: WriteReviewDialog, data: FormData, 
 
         const success = await API.createReview(newReviewData);
 
-        if (success) {
+        if (success.message === 'ok') {
             onSuccess({
                 ...newReviewData,
                 author: {

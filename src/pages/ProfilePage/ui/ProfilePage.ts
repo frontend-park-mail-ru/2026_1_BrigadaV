@@ -29,7 +29,7 @@ export class ProfilePage implements IPage {
     public static async create(appState: AppState): Promise<ProfilePage> {
         const page = new ProfilePage(appState);
 
-        const userData = await API.getUserById(appState.currentUser!.id);
+        const userData = await API.getUserById();
         page.user = mapUser(userData);
 
         page.setupComponents();

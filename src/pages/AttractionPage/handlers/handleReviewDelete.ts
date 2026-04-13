@@ -3,9 +3,11 @@ import { ReviewDetailsModal } from "@/widgets/ReviewDetailsModal";
 
 export const handleReviewDelete = async (instance: ReviewDetailsModal, reviewId: number, onSuccess: (reviewId: number) => void): Promise<void> => {
     try {
-        const success = await API.deleteReview(reviewId);
+        console.log(reviewId);
 
-        if (success) {
+        const error = await API.deleteReview(reviewId);
+
+        if (!error) {
             onSuccess(reviewId);
             instance.close();
         }

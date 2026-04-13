@@ -6,11 +6,11 @@ export const mapUser = (userData: UserDTO): User => {
     return {
         id: userData.id,
         nickname: userData.nickname,
-        avatar: userData.avatar,
-        country: userData.location.country,
-        city: userData.location.name,
+        avatar: userData.avatar_url,
+        country: userData.country,
+        city: userData.city,
         about: userData.about,
-        commentCount: userData.comment_count,
-        createdAt: new Date(userData.created_at),
+        hasReviews: userData.hasReviews,
+        createdAt: new Date(userData.createdAt),
     };
 };

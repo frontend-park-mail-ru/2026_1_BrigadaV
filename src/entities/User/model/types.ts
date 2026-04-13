@@ -2,7 +2,7 @@ export type UserAuth = {
     id: number;
     login: string;
     nickname: string;
-    avatar: string;
+    avatar?: string;
 }
 
 export type User = {

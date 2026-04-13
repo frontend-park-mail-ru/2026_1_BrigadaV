@@ -1,4 +1,4 @@
-import { formatDate, stringToElement } from '@/shared/utils';
+import { formatDate, pluralize, stringToElement } from '@/shared/utils';
 
 import { ReviewDetailsModalInitValues, ReviewDetailsModalProps } from '../model/types';
 import template from './ReviewDetailsModal.hbs?compiled';
@@ -29,7 +29,7 @@ export class ReviewDetailsModal {
         this.fields['rating'].textContent = reviewInfo.review.rating.toString();
         this.fields['title'].textContent = reviewInfo.review.title;
         this.fields['content'].textContent = reviewInfo.review.content || '';
-        this.fields['review-count'].textContent = reviewInfo.reviewCount.toString();
+        this.fields['review-count'].textContent = `${reviewInfo.reviewCount} ${pluralize(reviewInfo.reviewCount, { one: 'отзыв', few: 'отзыва', many: 'отзывов' })}`;
 
         this.review = reviewInfo.review;
 
