@@ -15,6 +15,8 @@ import template from './AttractionPage.hbs?compiled';
 import styles from './style.module.scss';
 import { API } from '@/shared/api';
 import { AttractionPageParameters } from '../model/types';
+import { handleSubmit } from '../handlers/handleReviewCreate';
+import { handleReviewDelete } from '../handlers/handleReviewDelete';
 
 const WRITE_REVIEW_DIALOG_ID = 'write-review';
 const REVIEW_DETAILS_MODAL_ID = 'review-details';
@@ -30,7 +32,7 @@ export class AttractionPage implements IPage {
     private writeReviewDialog?: WriteReviewDialog;
     private reviewDetailsModal?: ReviewDetailsModal;
 
-    private constructor(private appState: AppState) {}
+    private constructor(private appState: AppState) { }
 
     public static async create(appState: AppState, parameters: AttractionPageParameters): Promise<AttractionPage> {
         const page = new AttractionPage(appState);
@@ -74,11 +76,13 @@ export class AttractionPage implements IPage {
         this.writeReviewDialog = new WriteReviewDialog({
             id: WRITE_REVIEW_DIALOG_ID,
             place: this.place,
+            onSubmit: (instance, data) => handleSubmit(instance, data, this.place.id, (newReview) => this.reviewList?.addReview('afterbegin', newReview))
         });
 
         this.reviewDetailsModal = new ReviewDetailsModal({
             id: REVIEW_DETAILS_MODAL_ID,
             user: this.appState.currentUser,
+            onDelete: (instance, reviewId) => handleReviewDelete(instance, reviewId, (reviewId) => this.reviewList?.removeReview(reviewId)),
         });
     }
 
@@ -104,6 +108,7 @@ export class AttractionPage implements IPage {
             // TODO move to somewhere
             reviewCount: `(74520 ${pluralize(74520, { one: 'отзыв', few: 'отзыва', many: 'отзывов' })})`,
             writeReviewDialogId: WRITE_REVIEW_DIALOG_ID,
+            isAuth: !!this.appState.currentUser,
             styles
         });
 

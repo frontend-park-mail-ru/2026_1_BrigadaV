@@ -3,9 +3,8 @@ import './style.scss';
 import { togglePasswordVisibility } from '@/shared/lib';
 import { Field, Textarea } from '@/shared/ui';
 import { injectComponents, stringToElement } from '@/shared/utils';
-import { validateEmail, validatePassword } from '@/shared/lib';
 
-import { SettingsModalFormData, SettingsModalProps } from '../model/types';
+import { SettingsModalProps } from '../model/types';
 import template from './SettingsModal.hbs?compiled';
 import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 

@@ -22,8 +22,6 @@ export class ReviewCard {
     };
 
     public render(): HTMLElement {
-        console.log(this.props);
-        
         this.element = stringToElement(template({
             ...this.props,
             ...formatDate(this.props.review.createdAt),

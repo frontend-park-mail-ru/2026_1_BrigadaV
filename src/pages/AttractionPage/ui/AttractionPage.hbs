@@ -14,9 +14,11 @@
 
   <section class="{{s 'reviews'}}">
     <h2 class="{{s 'reviews__header'}}">Отзывы</h2>
+    {{#if isAuth}}
     <button class="{{s 'reviews__write-review'}}" command="show-modal" commandfor="{{writeReviewDialogId}}">
       Написать отзыв
     </button>
+    {{/if}}
     <div data-slot="review-list"></div>
   </section>
 

@@ -3,8 +3,10 @@ import { formatDate, stringToElement } from '@/shared/utils';
 import { ReviewDetailsModalInitValues, ReviewDetailsModalProps } from '../model/types';
 import template from './ReviewDetailsModal.hbs?compiled';
 import styles from './style.module.scss';
+import { Review } from '@/entities/Review/model/types';
 
 export class ReviewDetailsModal {
+    private review?: Review;
     private element?: HTMLDialogElement;
     private fields: Record<string, HTMLElement> = {};
 
@@ -29,6 +31,8 @@ export class ReviewDetailsModal {
         this.fields['content'].textContent = reviewInfo.review.content || '';
         this.fields['review-count'].textContent = reviewInfo.reviewCount.toString();
 
+        this.review = reviewInfo.review;
+
         this.element.style.setProperty('--rating', reviewInfo.review.rating.toString());
 
         if (this.props.user) {
@@ -51,6 +55,18 @@ export class ReviewDetailsModal {
         });
     }
 
+    private initListeners(): void {
+        this.element?.querySelector('[data-ref="delete-button"]')?.addEventListener('click', this.handleDelete);
+    }
+
+    private handleDelete = async (event: Event): Promise<void> => {
+        event.preventDefault();
+        await this.props.onDelete(this, this.review?.id!);
+    }
+
+    public close(): void {
+        this.element?.close();
+    }
     public render(): HTMLElement {
         this.element = stringToElement<HTMLDialogElement>(template({
             ...this.props,
@@ -58,6 +74,7 @@ export class ReviewDetailsModal {
         }));
 
         this.initFields();
+        this.initListeners();
 
         return this.element;
     }
