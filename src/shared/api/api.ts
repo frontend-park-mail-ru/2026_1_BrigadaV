@@ -196,10 +196,10 @@ export const API = {
                 image: '/mock/place/place1.png',
             },
             {
-                id: 1,
-                name: 'Place 1',
-                description: 'Desc1',
-                rating: 3.2,
+                id: 2,
+                name: 'Place 2',
+                description: 'Desc2',
+                rating: 5.0,
                 image: '/mock/place/place2.png',
             }
         ]
@@ -220,5 +220,20 @@ export const API = {
             is_liked: true,
             rating: 4.6,
         }
+    },
+
+    createReview: async ({ authorId, placeId, title, rating, content, createdAt }: {
+        authorId: number,
+        placeId: number,
+        title: string,
+        rating: number,
+        content: string,
+        createdAt: Date
+    }) => {
+        return true;
+    },
+
+    deleteReview: async (reviewId: number) => {
+        return true;
     }
 };
