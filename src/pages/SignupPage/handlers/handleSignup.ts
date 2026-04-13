@@ -29,7 +29,12 @@ export const handleSubmit = async (instance: AuthForm, data: FormData) => {
     try {
         const result = mapUserAuth(await API.register(nickname, login, password));
 
-        appState.currentUser = result;
+        appState.currentUser = {
+            id: result.id,
+            login,
+            nickname,
+        };
+       
         navigate('/');
 
     } catch (error) {

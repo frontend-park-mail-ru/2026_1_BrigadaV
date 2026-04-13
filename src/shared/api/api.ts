@@ -74,95 +74,21 @@ export const API = {
     },
 
     getPlaceReviews: async (placeId: number): Promise<ReviewDTO[]> => {
-        return [
-            {
-                id: 1,
-                author: { id: 1, nickname: 'Author 1' },
-                place_id: 1,
-                rating: 5,
-                title: 'Title 1',
-                comment: 'Один из крупнейших музеев в мире! Очень интересные экспозиции.  Много древних сокровищ.',
-                created_at: new Date(2026, 2, 1).toISOString(),
-                updated_at: new Date(2026, 2, 1).toISOString(),
-            },
-            {
-                id: 2,
-                author: { id: 2, nickname: 'Author 2' },
-                place_id: 1,
-                rating: 5,
-                title: 'Title 2',
-                comment: 'Я бы не поехала, если бы не греческий гид, который неоднократно жаловался на то, что мраморные скульптуры Элгина находятся в Британском музее',
-                created_at: new Date(2025, 2, 25).toISOString(),
-                updated_at: new Date(2025, 2, 25).toISOString(),
-            },
-            {
-                id: 3,
-                author: { id: 3, nickname: 'Author 3' },
-                place_id: 1,
-                rating: 4,
-                title: 'Title 3',
-                comment: 'Британский музей - поистине незабываемый опыт. Коллекция обширна и прекрасно курируется, на ней представлены сокровища со всех уголков мира.',
-                created_at: new Date(2026, 4, 14).toISOString(),
-                updated_at: new Date(2026, 4, 14).toISOString(),
-            }
-        ]
+        return request(`/places/${placeId}/reviews`, {
+            method: 'GET'
+        })
     },
 
-    getUserById: async (userId: number): Promise<UserDTO> => {
-        return {
-            id: 1,
-            nickname: 'Somename',
-            location: {
-                id: 1,
-                name: 'City',
-                country: 'Country',
-                latitude: 1,
-                longitude: 1,
-            },
-            // about: 'My very cool about',
-            comment_count: 0,
-            created_at: new Date(2026, 4, 12).toISOString(),
-            updated_at: new Date(2026, 4, 12).toISOString(),
-        }
+    getUserById: async (): Promise<UserDTO> => {
+        return request('/profile', {
+            method: 'GET'
+        })
     },
 
-    getUserTripList: async (userId: number): Promise<TripDTO[]> => {
-        return [
-            {
-                id: 1,
-                title: 'Поиск лепреконов',
-                start_date: new Date(2026, 2, 5).toISOString(),
-                end_date: new Date(2026, 2, 17).toISOString(),
-                location: {
-                    id: 1,
-                    name: 'City',
-                    country: 'Country',
-                    latitude: 1,
-                    longitude: 1,
-                },
-                preview: '/mock/place/trip1.png',
-                created_at: new Date(2026, 2, 1).toISOString(),
-                updated_at: new Date(2026, 2, 1).toISOString(),
-                created_by: 1,
-                is_public: true,
-            },
-            {
-                id: 2,
-                title: 'Отдых на курорте',
-                location: {
-                    id: 1,
-                    name: 'City',
-                    country: 'Country',
-                    latitude: 1,
-                    longitude: 1,
-                },
-                preview: '/mock/place/trip2.png',
-                created_at: new Date(2026, 2, 1).toISOString(),
-                updated_at: new Date(2026, 2, 1).toISOString(),
-                created_by: 1,
-                is_public: true,
-            }
-        ]
+    getUserTripList: async (): Promise<TripDTO[]> => {
+        return request('/trips', {
+            method: 'GET',
+        })
     },
 
     getTripById: async (tripId: number): Promise<TripDTO> => {
@@ -206,34 +132,47 @@ export const API = {
     },
 
     getPlaceById: async (placeId: number): Promise<PlaceDTO> => {
-        return {
-            id: 1,
-            name: 'Британский музей',
-            locality: {
-                id: 1,
-                name: 'City',
-                country: 'Country',
-                latitude: 1,
-                longitude: 1,
-            },
-            price: 0,
-            is_liked: true,
-            rating: 4.6,
-        }
+        return request(`/places/${placeId}`, {
+            method: 'GET',
+        });
     },
 
-    createReview: async ({ authorId, placeId, title, rating, content, createdAt }: {
-        authorId: number,
+    createReview: async ({ placeId, title, rating, content, createdAt }: {
         placeId: number,
         title: string,
         rating: number,
         content: string,
         createdAt: Date
     }) => {
-        return true;
+        return request('/reviews', {
+            method: 'POST',
+            body: JSON.stringify({ place_id: placeId, title, rating, content, visit_data: createdAt }),
+        })
     },
 
     deleteReview: async (reviewId: number) => {
-        return true;
+        return request(`/reviews/${reviewId}`, {
+            method: 'DELETE',
+        })
+    },
+
+    createTrip: async ({ title, location, isPublic }) => {
+        return request('/trips', {
+            method: 'POST',
+            body: JSON.stringify({ title, location, is_public: isPublic }),
+        });
+    },
+
+    updateTrip: async (tripId: number, title: string, description: string, location: string, startDate: Date, endDate: Date) => {
+        return request(`/trips/${tripId}`, {
+            method: 'PUT',
+            body: JSON.stringify({ title, description, location, start_date: startDate, end_date: endDate }),
+        })
+    },
+
+    deleteTrip: async (tripId: number) => {
+        return request(`/trips/${tripId}`, {
+            method: 'DELETE',
+        })
     }
 };

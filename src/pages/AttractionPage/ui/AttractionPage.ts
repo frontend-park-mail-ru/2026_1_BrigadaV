@@ -54,7 +54,7 @@ export class AttractionPage implements IPage {
             this.likeButton = new LikeButton({
                 className: styles['attraction-meta__like'],
                 label: 'Сохранить',
-                isLiked: this.place.isLiked,
+                isLiked: this.place.is_liked,
             });
         }
 
@@ -96,7 +96,7 @@ export class AttractionPage implements IPage {
         this.reviewDetailsModal.show({
             review,
             placeName: this.place.name,
-            reviewCount: 74520
+            reviewCount: this.place.reviewCount,
         });
     }
 
@@ -106,7 +106,7 @@ export class AttractionPage implements IPage {
             place: this.place,
 
             // TODO move to somewhere
-            reviewCount: `(74520 ${pluralize(74520, { one: 'отзыв', few: 'отзыва', many: 'отзывов' })})`,
+            reviewCount: `(${this.place.reviewCount} ${pluralize(this.place.reviewCount, { one: 'отзыв', few: 'отзыва', many: 'отзывов' })})`,
             writeReviewDialogId: WRITE_REVIEW_DIALOG_ID,
             isAuth: !!this.appState.currentUser,
             styles

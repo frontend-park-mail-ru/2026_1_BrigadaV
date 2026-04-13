@@ -17,7 +17,9 @@ export class ReviewList extends AbstractList<ReviewCard, ReviewListProps> {
     protected async loadData(): Promise<ReviewCard[]> {
         try {
             const reviewData = await API.getPlaceReviews(this.props.placeId);
-            return reviewData.map((reviewRaw) => new ReviewCard({ review: mapReview(reviewRaw) }));
+            if (reviewData) {
+                return reviewData.map((reviewRaw) => new ReviewCard({ review: mapReview(reviewRaw) }));
+            }
 
         } catch (error) {
             console.error(error);

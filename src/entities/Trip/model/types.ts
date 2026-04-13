@@ -5,5 +5,5 @@ export type Trip = {
     startDate?: Date;
     endDate?: Date;
     description?: string;
-    preview: string;
+    preview?: string;
 }

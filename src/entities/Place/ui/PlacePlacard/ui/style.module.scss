@@ -33,7 +33,7 @@
     }
 
     &__rating {
-        --hue: calc(var(--rating) / 5 * 120);
+        --hue: calc((var(--rating) - 1) / 4 * 120);
 
         position: absolute;
         top: 1rem;

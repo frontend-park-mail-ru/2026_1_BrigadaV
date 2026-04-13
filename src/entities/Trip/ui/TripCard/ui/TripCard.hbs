@@ -15,6 +15,10 @@
       {{/if}}
       <span class="{{s 'card__location'}}">{{trip.location}}</span>
     </div>
+
+    {{#if trip.description}}
+    <p class="{{s 'card__description'}}">{{trip.description}}</p>
+    {{/if}}
   </div>
 
   <button class="{{s 'card__options'}}" data-edit-button>

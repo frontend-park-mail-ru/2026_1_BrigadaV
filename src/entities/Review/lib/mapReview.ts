@@ -6,9 +6,9 @@ export const mapReview = (reviewData: ReviewDTO): Review => {
     return {
         id: reviewData.id,
         author: reviewData.author,
-        title: reviewData.title,
+        // title: reviewData.title,
         rating: reviewData.rating,
-        content: reviewData.comment,
-        createdAt: new Date(reviewData.created_at),
+        content: reviewData.content,
+        createdAt: new Date(reviewData.createdAt),
     }
 }

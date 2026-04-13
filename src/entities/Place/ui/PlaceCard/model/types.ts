@@ -1,6 +1,6 @@
 import { Place } from '@/entities/Place/model/types';
 
 export type PlaceCardProps = {
-    place: Place
+    place: Place;
     authorized: boolean;
 }

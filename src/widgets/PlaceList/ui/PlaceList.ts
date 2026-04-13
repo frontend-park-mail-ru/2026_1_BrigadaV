@@ -23,34 +23,6 @@ export class PlaceList extends AbstractList<PlacePlacard, PlaceListProps> {
         }
 
         return [];
-        return [
-            new PlacePlacard({
-                place: {
-                    id: 1,
-                    name: 'Британский музей',
-                    description: 'Музей искусств',
-                    location: '',
-                    country: '',
-                    price: 0,
-                    image: '/mock/place/place1.png',
-                    isLiked: false,
-                    rating: 4.6,
-                }
-            }),
-            new PlacePlacard({
-                place: {
-                    id: 13,
-                    name: 'Букингемский дворец',
-                    description: 'Культурные достопримечательности',
-                    location: '',
-                    country: '',
-                    price: 0,
-                    image: '/mock/place/place2.png',
-                    isLiked: false,
-                    rating: 0.8,
-                }
-            })
-        ];
     }
 
     protected renderItem(item: PlacePlacard): HTMLElement {

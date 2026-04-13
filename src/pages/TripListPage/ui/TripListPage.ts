@@ -9,6 +9,7 @@ import { UserTripList } from '@/widgets/UserTripList';
 
 import styles from './style.module.scss';
 import template from './TripListPage.hbs?compiled';
+import { API } from '@/shared/api';
 
 const CREATE_TRIP_DIALOG_ID = 'create-trip';
 
@@ -19,7 +20,7 @@ export class TripListPage implements IPage {
     private userTripList?: UserTripList;
     private editTripDialog?: EditTripDialog;
 
-    private constructor(private appState: AppState) {}
+    private constructor(private appState: AppState) { }
 
     public static async create(appState: AppState): Promise<TripListPage> {
         const page = new TripListPage(appState);
@@ -55,12 +56,16 @@ export class TripListPage implements IPage {
 
     private initListeners(): void {
         eventBus.on('TripCard:edit', this.handleTripEdit);
+        eventBus.on('CreateTripDialog:submit', this.handleTripCreate);
+        eventBus.on('EditTripDialog:submit', this.handleTripUpdate);
+        eventBus.on('EditTripDialog:delete', this.handleTripDelete);
     }
 
     private handleTripEdit = ({ trip }: TripCardProps): void => {
         if (!this.editTripDialog) return;
 
         const editData: EditTripInitValues = {
+            tripId: trip.id,
             title: trip.title,
             location: trip.location,
             startDate: trip.startDate,
@@ -70,6 +75,53 @@ export class TripListPage implements IPage {
 
         this.editTripDialog.show(editData);
     };
+
+    private handleTripCreate = async ({ instance, data }: {
+        instance: CreateTripDialog,
+        data: FormData
+    }): Promise<void> => {
+        const success = await API.createTrip({ title: data.title, location: data.location, isPublic: false });
+
+        if (success) {
+            this.userTripList?.addTrip('afterbegin', {
+                id: success.id,
+                title: data.title,
+                location: data.location,
+            })
+            instance.close();
+        }
+    }
+
+    private handleTripUpdate = async ({ instance, data, tripId}: {
+        instance: CreateTripDialog,
+        data: FormData
+    }): Promise<void> => {
+
+        const success = await API.updateTrip(tripId, data.title, data.description, data.location, new Date(data['start-date']), new Date(data['end-date']));
+
+        if (success.message === 'ok') {
+            this.userTripList?.updateTrip(tripId, {
+                id: tripId,
+                title: data.title,
+                description: data.description,
+                location: data.location,
+                startDate: new Date(data['start-date']),
+                endDate: new Date(data['end-date']),
+            })
+            instance.close();
+        }
+    }
+
+    private handleTripDelete = async ({ instance, tripId }: {
+        instance: CreateTripDialog,
+    }): Promise<void> => {
+        const error = await API.deleteTrip(tripId);
+
+        if (!error) {
+            this.userTripList?.removeTrip(tripId);
+            instance.close();
+        }
+    }
 
     public render(): HTMLElement {
         this.element = document.createElement('div');
@@ -96,5 +148,6 @@ export class TripListPage implements IPage {
 
     public destroy(): void {
         eventBus.off('TripCard:edit', this.handleTripEdit);
+        eventBus.off('CreateTripDialog:submit', this.handleTripCreate);
     }
 }

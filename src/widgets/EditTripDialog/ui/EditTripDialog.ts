@@ -1,4 +1,4 @@
-import { focusField } from '@/shared/lib';
+import { eventBus, focusField } from '@/shared/lib';
 import { Field, Textarea } from '@/shared/ui';
 import { injectComponents, stringToElement } from '@/shared/utils';
 
@@ -7,6 +7,7 @@ import template from './EditTripDialog.hbs?compiled';
 import styles from './style.module.scss';
 
 export class EditTripDialog {
+    private tripId!: number;
     private element?: HTMLDialogElement;
     private fields: Record<string, Field | Textarea> = {};
 
@@ -65,18 +66,31 @@ export class EditTripDialog {
     private initListeners(): void {
         this.element?.addEventListener('submit', this.handleSubmit);
 
-        const deleteBtn = this.element?.querySelector('[data-ref="delete"');
+        const deleteBtn = this.element?.querySelector('[data-ref="delete"]');
         deleteBtn?.addEventListener('click', this.handleDelete);
     }
 
     private handleSubmit = async (event: Event): Promise<void> => {
+        const target = event.target;
+        if (!(target instanceof HTMLFormElement)) {
+            return;
+        }
+
+        event.preventDefault();
+
+        const formData = Object.fromEntries(new FormData(target));
+        eventBus.emit('EditTripDialog:submit', { instance: this, data: formData, tripId: this.tripId });
     }
 
     private handleDelete = async (event: Event): Promise<void> => {
+        event.preventDefault();
+        eventBus.emit('EditTripDialog:delete', { instance: this, tripId: this.tripId });
     }
 
     public show(tripInfo: EditTripInitValues): void {
         if (!this.element) return;
+
+        this.tripId = tripInfo.tripId;
 
         this.fields['title'].setValue(tripInfo.title);
         this.fields['location'].setValue(tripInfo.location);
@@ -87,6 +101,10 @@ export class EditTripDialog {
         this.fields['description'].setValue(tripInfo.description);
 
         this.element.showModal();
+    }
+
+    public close(): void {
+        this.element?.close();
     }
 
     public render(): HTMLElement {
