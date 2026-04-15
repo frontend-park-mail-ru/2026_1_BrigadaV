@@ -36,12 +36,11 @@
     }
 
     &__img {
-        rotate: 180deg;
         transition: rotate $timing-animation-medium;
     }
 
     &[open] &__img {
-        rotate: 0deg;
+        rotate: 180deg;
     }
 
     &__list {

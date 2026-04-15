@@ -41,7 +41,7 @@ export class SignupPage implements IPage {
             fields: [{
                 id: 'nickname-input',
                 label: 'Введите никнейм',
-                type: 'login',
+                type: 'text',
                 attributes: {
                     name: 'nickname',
                     autocomplete: 'nickname',
@@ -53,7 +53,7 @@ export class SignupPage implements IPage {
             {
                 id: 'login-input',
                 label: 'Введите почту',
-                type: 'text',
+                type: 'email',
                 attributes: {
                     autocomplete: 'email',
                     name: 'login',

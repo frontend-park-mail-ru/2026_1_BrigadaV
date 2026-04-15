@@ -11,16 +11,14 @@ export class Gallery extends AbstractList<HTMLImageElement, GalleryProps> {
     }
 
     protected async loadData(): Promise<HTMLImageElement[]> {
-        const img1 = new Image();
-        img1.src = '/mock/attraction/british1.jpg';
+        const result = [];
+        for (const photo of this.props.photos) {
+            const image = new Image();
+            image.src = `/${photo}`;
 
-        const img2 = new Image();
-        img2.src = '/mock/attraction/british2.jpg';
-
-        const img3 = new Image();
-        img3.src = '/mock/attraction/british3.jpg';
-
-        return [img1, img2, img3];
+            result.push(image);
+        }
+        return result;
     }
 
     protected renderItem(item: HTMLImageElement): HTMLElement {
