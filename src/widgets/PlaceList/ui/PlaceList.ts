@@ -15,8 +15,7 @@ export class PlaceList extends AbstractList<PlacePlacard, PlaceListProps> {
 
     protected async loadData(): Promise<PlacePlacard[]> {
         try {
-            const placesData = await API.getPlacesByTrip(this.props.tripId);
-            return placesData.map((placeRaw) => new PlacePlacard({place: mapPlaceSummary(placeRaw)}));
+            return this.props.places || [];
 
         } catch (error) {
             console.error(error);

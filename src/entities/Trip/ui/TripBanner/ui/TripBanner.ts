@@ -35,12 +35,29 @@ export class TripBanner {
         }
     }
 
+    private makeTemplateDates(): Record<string, string | boolean> {
+        const { startDate, endDate } = this.trip;
+
+        let dateRange = {};
+
+        if (startDate && endDate) {
+            dateRange = formatDateRange(startDate, endDate);
+        }
+
+        return {
+            ...dateRange,
+            isoStart: startDate?.toISOString() ?? '',
+            isoEnd: endDate?.toISOString() ?? '',
+            hasDates: !!(startDate && endDate),
+        };
+    }
+
     public render(): HTMLElement {
+        console.log(this.props);
+
         this.element = stringToElement(template({
             ...this.props,
-            ...formatDateRange(this.trip.startDate, this.trip.endDate),
-            isoStart: this.trip.startDate.toISOString(),
-            isoEnd: this.trip.endDate.toISOString(),
+            ...this.makeTemplateDates(),
             styles,
         }));
 

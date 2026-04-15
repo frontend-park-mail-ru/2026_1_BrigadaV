@@ -6,8 +6,8 @@ export const mapTrip = (tripData: TripDTO): Trip => {
         id: tripData.id,
         title: tripData.title,
         location: tripData.location,
-        startDate: tripData.start_date ? new Date(tripData.start_date) : undefined,
-        endDate: tripData.end_date ? new Date(tripData.end_date) : undefined,
+        startDate: tripData.startDate ? new Date(tripData.startDate) : undefined,
+        endDate: tripData.endDate ? new Date(tripData.endDate) : undefined,
         description: tripData.description,
         preview: tripData.preview,
     }

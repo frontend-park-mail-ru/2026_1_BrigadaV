@@ -3,21 +3,23 @@ import { LoginDTO, PlaceDTO, PlaceSummaryDTO, RegisterDTO, ReviewDTO, TripDTO, U
 
 const API_URL = import.meta.env.DEV ? 'http://localhost:8080/api' : 'http://212.233.96.48:8080/api';
 
-let cachedCSRFToken: string | null = null;
+// let cachedCSRFToken: string | null = null;
 
 const getCSRFToken = async (): Promise<string> => {
-    if (cachedCSRFToken) return cachedCSRFToken;
+
+    // if (cachedCSRFToken) return cachedCSRFToken;
 
     try {
         let response = await fetch(`${API_URL}/csrf-token`, { credentials: 'include' });
-        if (!response.ok && cachedCSRFToken) {
-            cachedCSRFToken = null;
-            response = await fetch(`${API_URL}/csrf-token`, { credentials: 'include' });
-        }
+        // if (!response.ok && cachedCSRFToken) {
+        //     cachedCSRFToken = null;
+        //     response = await fetch(`${API_URL}/csrf-token`, { credentials: 'include' });
+        // }
 
         const data = await response.json();
-        cachedCSRFToken = data.csrf_token;
-        return cachedCSRFToken || '';
+        console.log(data);
+        // cachedCSRFToken = data.csrf_token;
+        return data.csrf_token || '';
     } catch (error) {
         console.error(error);
     }
@@ -117,43 +119,9 @@ export const API = {
     },
 
     getTripById: async (tripId: number): Promise<TripDTO> => {
-        return {
-            id: 1,
-            title: 'Поиск лепреконов',
-            start_date: new Date(2026, 2, 5).toISOString(),
-            end_date: new Date(2026, 2, 17).toISOString(),
-            location: {
-                id: 1,
-                name: 'City',
-                country: 'Country',
-                latitude: 1,
-                longitude: 1,
-            },
-            preview: '/mock/place/tripbig.png',
-            created_at: new Date(2026, 2, 1).toISOString(),
-            updated_at: new Date(2026, 2, 1).toISOString(),
-            created_by: 1,
-            is_public: true,
-        }
-    },
-
-    getPlacesByTrip: async (tripId: number): Promise<PlaceSummaryDTO[]> => {
-        return [
-            {
-                id: 1,
-                name: 'Place 1',
-                description: 'Desc1',
-                rating: 3.2,
-                image: '/mock/place/place1.png',
-            },
-            {
-                id: 2,
-                name: 'Place 2',
-                description: 'Desc2',
-                rating: 5.0,
-                image: '/mock/place/place2.png',
-            }
-        ]
+        return request(`/trips/${tripId}`, {
+            method: 'GET',
+        });
     },
 
     getPlaceById: async (placeId: number): Promise<PlaceDTO> => {

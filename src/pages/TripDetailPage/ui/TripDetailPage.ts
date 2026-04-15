@@ -43,7 +43,7 @@ export class TripDetailPage implements IPage {
 
         this.placeList = new PlaceList({
             className: styles['place-list'],
-            tripId: this.trip.id,
+            places: this.trip.attractions,
         });
     }
 
