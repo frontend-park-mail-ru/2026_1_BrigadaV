@@ -59,10 +59,11 @@ export class AttractionPage implements IPage {
         }
 
         this.gallery = new Gallery({
-            className: styles['gallery']
+            className: styles['gallery'],
+            photos: [this.place.photo_url],
         });
         // TODO add photo count from this.place
-        this.gallery.addAttribute('data-count', '3');
+        this.gallery.addAttribute('data-count', '2');
 
         this.reviewList = new ReviewList({
             className: styles['reviews__list'],

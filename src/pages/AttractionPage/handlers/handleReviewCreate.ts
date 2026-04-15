@@ -29,7 +29,7 @@ export const handleSubmit = async (instance: WriteReviewDialog, data: FormData, 
                     nickname: user.nickname,
                     avatar: user.avatar,
                 },
-                id: 12,
+                id: success.id,
             })
             instance.close();
         }

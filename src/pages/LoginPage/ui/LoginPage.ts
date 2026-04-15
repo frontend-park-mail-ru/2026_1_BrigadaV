@@ -42,7 +42,7 @@ export class LoginPage implements IPage {
             fields: [{
                 id: 'login-input',
                 label: 'Введите почту',
-                type: 'text',
+                type: 'email',
                 attributes: {
                     name: 'login',
                     placeholder: 'myemail@gmail.com',
