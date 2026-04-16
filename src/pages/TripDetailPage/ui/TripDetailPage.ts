@@ -9,6 +9,8 @@ import template from './TripDetailPage.hbs?compiled';
 import { API } from '@/shared/api';
 import { TripDetailPageParams } from '../model/types';
 import { Trip } from '@/entities/Trip/model/types';
+import { eventBus } from '@/shared/lib';
+import { navigate } from '@/shared/router';
 
 export class TripDetailPage implements IPage {
     private trip!: Trip;
@@ -23,6 +25,8 @@ export class TripDetailPage implements IPage {
         const page = new TripDetailPage(appState);
 
         const tripData = await API.getTripById(parameters.tripId);
+        console.log(tripData);
+
         page.trip = mapTrip(tripData);
 
         page.setupComponents();
@@ -43,13 +47,25 @@ export class TripDetailPage implements IPage {
 
         this.placeList = new PlaceList({
             className: styles['place-list'],
-            places: this.trip.attractions,
+            places: this.trip.places,
         });
+    }
+
+    private initListeners() {
+        eventBus.on('TripBanner:delete', this.handleTripDelete);
+    }
+
+    private handleTripDelete = async (tripId: number) => {
+        const error = await API.deleteTrip(tripId);
+
+        if (!error) {
+            navigate('/trip-list');
+        }
     }
 
     public render(): HTMLElement {
         this.element = document.createElement('div');
-        const html = template({ styles });
+        const html = template({ styles, tripId: this.trip.id });
 
         this.element.classList.add(styles['trip-detail-page']);
         this.element.innerHTML = html;
@@ -59,6 +75,8 @@ export class TripDetailPage implements IPage {
             'trip-banner': this.tripBanner,
             'place-list': this.placeList,
         });
+
+        this.initListeners();
 
         return this.element;
     }

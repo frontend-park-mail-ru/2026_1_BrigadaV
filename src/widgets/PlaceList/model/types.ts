@@ -1,5 +1,6 @@
+import { Place } from "@/entities/Place";
 
 export type PlaceListProps = {
     className?: string;
-    places: any;
+    places: Place[];
 }

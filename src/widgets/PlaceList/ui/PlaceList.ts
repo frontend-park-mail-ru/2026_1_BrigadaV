@@ -14,14 +14,15 @@ export class PlaceList extends AbstractList<PlacePlacard, PlaceListProps> {
     }
 
     protected async loadData(): Promise<PlacePlacard[]> {
-        try {
-            return this.props.places || [];
-
-        } catch (error) {
-            console.error(error);
-        }
-
-        return [];
+        return this.props.places.map((place) => new PlacePlacard({
+            place: {
+                id: place.id,
+                name: place.name,
+                description: place.description,
+                rating: place.rating,
+                image: place.photo_url,
+            }
+        }));
     }
 
     protected renderItem(item: PlacePlacard): HTMLElement {

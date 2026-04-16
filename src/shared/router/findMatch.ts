@@ -5,6 +5,7 @@ export const findMatch = (path: string): Match | null => {
     for (const page of Object.values(config)) {
         const match = path.match(page.hrefRegex);
         if (match) {
+
             return {
                 page,
                 parameters: Object.entries(match.groups || {}).reduce((acc, [param, value]) => {

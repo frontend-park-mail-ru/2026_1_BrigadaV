@@ -1,10 +1,9 @@
 @use '@/shared/styles/variables' as *;
 @use '@/shared/styles/mixins' as *;
 
-.like {
+.add {
     @include typo-p;
     display: flex;
-    width: max-content;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
@@ -14,23 +13,26 @@
     transition: transform $timing-animation-medium;
 
     &::before {
-        width: 24px;
-        height: 24px;
+        --size: 28px;
+        width: var(--size);
+        height: var(--size);
+
         background-color: $color-interactable-idle;
-        mask-image: url("/icons/like-outline.svg");
+        mask-image: url("/icons/plus.svg");
         mask-position: center;
         mask-repeat: no-repeat;
         mask-size: contain;
-        transition: background-color $timing-animation-medium;
+        transition:
+            background-color $timing-animation-medium,
+            scale $timing-animation-medium;
         content: "";
     }
 
     &:hover::before {
         background-color: $color-interactable-active;
+        scale: 1.05;
     }
-
-    &--active::before {
-        background-color: $color-interactable-active;
-        mask-image: url("/icons/like-solid.svg");
+    &--active {
+        rotate: 45deg;
     }
 }

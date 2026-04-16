@@ -10,5 +10,6 @@ export const mapTrip = (tripData: TripDTO): Trip => {
         endDate: tripData.endDate ? new Date(tripData.endDate) : undefined,
         description: tripData.description,
         preview: tripData.preview,
+        places: tripData.attractions ?? [],
     }
 }

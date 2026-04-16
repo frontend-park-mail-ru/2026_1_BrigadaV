@@ -8,10 +8,10 @@
     <div data-slot="place-list"></div>
   </section>
 
-  <button class="{{s 'add-place'}}">
+  <a href="{{url '/place-select' tripId}}" class="{{s 'add-place'}}" data-link>
     <img src="/icons/plus.svg" class="{{s 'add-place__image'}}">
     <h3 class="{{s 'add-place__text'}}">Добавим красок в ваше путешествие</h3>
-  </button>
+  </a>
 </main>
 
 <div data-slot="trip-options-dialog"></div>

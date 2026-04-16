@@ -1,29 +1,24 @@
 import './style.scss';
 
-import { LikeButton } from '@/shared/ui';
-import { stringToElement } from '@/shared/utils';
+import { injectComponents, stringToElement } from '@/shared/utils';
 
 import { PlaceCardProps } from '../model/types';
 import template from './PlaceCard.hbs?compiled';
+import { IComponent } from '@/shared/model';
 
 export class PlaceCard {
     private element?: HTMLElement;
-    private likeButton?: LikeButton;
+    private actionElement?: IComponent;
 
     constructor(private props: PlaceCardProps) {
-        this.likeButton = new LikeButton({
-            className: 'card__like',
-            isLiked: props.place.isLiked,
-        });
+        this.actionElement = props.actionComponent;
     }
 
     public render(): HTMLElement {
         this.element = stringToElement(template(this.props));
-
-        if (this.props.authorized && this.likeButton) {
-            this.element.querySelector('[data-slot="like-button"]')
-                ?.replaceWith(this.likeButton.render());
-        }
+        injectComponents(this.element, {
+            'action': this.actionElement,
+        })
 
         return this.element;
     }

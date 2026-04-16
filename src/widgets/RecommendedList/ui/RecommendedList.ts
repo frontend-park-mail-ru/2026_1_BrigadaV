@@ -6,12 +6,13 @@ import { stringToElement } from '@/shared/utils';
 
 import { RecommendedListProps } from '../model/types';
 import template from './RecommendedList.hbs?compiled';
+import { LikeButton } from '@/shared/ui';
 
 export class RecommendedList {
     private element?: HTMLElement;
     private listContainer: HTMLElement | null = null;
 
-    constructor(private props: RecommendedListProps) {}
+    constructor(private props: RecommendedListProps) { }
 
     private async loadPlaces(): Promise<void> {
         try {
@@ -23,7 +24,10 @@ export class RecommendedList {
             places.forEach(place => {
                 const card = new PlaceCard({
                     place,
-                    authorized
+                    authorized,
+                    ...(authorized && {
+                        actionComponent: new LikeButton({ isLiked: place.isLiked })
+                    })
                 });
 
                 const li = document.createElement('li');

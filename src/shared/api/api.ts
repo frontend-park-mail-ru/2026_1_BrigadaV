@@ -3,23 +3,22 @@ import { LoginDTO, PlaceDTO, PlaceSummaryDTO, RegisterDTO, ReviewDTO, TripDTO, U
 
 const API_URL = import.meta.env.DEV ? 'http://localhost:8080/api' : 'http://212.233.96.48:8080/api';
 
-// let cachedCSRFToken: string | null = null;
+let cachedCSRFToken: string | null = null;
 
 const getCSRFToken = async (): Promise<string> => {
 
-    // if (cachedCSRFToken) return cachedCSRFToken;
+    if (cachedCSRFToken) return cachedCSRFToken;
 
     try {
         let response = await fetch(`${API_URL}/csrf-token`, { credentials: 'include' });
-        // if (!response.ok && cachedCSRFToken) {
-        //     cachedCSRFToken = null;
-        //     response = await fetch(`${API_URL}/csrf-token`, { credentials: 'include' });
-        // }
+        if (!response.ok && cachedCSRFToken) {
+            cachedCSRFToken = null;
+            response = await fetch(`${API_URL}/csrf-token`, { credentials: 'include' });
+        }
 
         const data = await response.json();
-        console.log(data);
-        // cachedCSRFToken = data.csrf_token;
-        return data.csrf_token || '';
+        cachedCSRFToken = data.csrf_token;
+        return cachedCSRFToken || '';
     } catch (error) {
         console.error(error);
     }
@@ -30,13 +29,13 @@ const request = async (path: string, options: RequestInit) => {
     const url = `${API_URL}${path}`;
 
     const method = options.method?.toUpperCase() ?? 'GET';
-    const needCSRF = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method);
+    // const needCSRF = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method);
 
     const defaultOptions: RequestInit = {
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
-            ...(needCSRF ? { 'X-CSRF-Token': await getCSRFToken() } : {}),
+            // ...(needCSRF ? { 'X-CSRF-Token': await getCSRFToken() } : {}),
         },
         ...options,
     };
@@ -167,5 +166,11 @@ export const API = {
         return request(`/trips/${tripId}`, {
             method: 'DELETE',
         })
-    }
+    },
+
+    getAddedPlaces: async (tripId: number) => {
+        return request(`/trips/${tripId}/places`, {
+            method: 'GET',
+        })
+    },
 };

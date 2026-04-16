@@ -5,6 +5,7 @@ import { formatDateRange, stringToElement } from '@/shared/utils';
 import { TripBannerProps } from '../model/types';
 import styles from './style.module.scss';
 import template from './TripBanner.hbs?compiled';
+import { eventBus } from '@/shared/lib';
 
 export class TripBanner {
     element?: HTMLElement;
@@ -21,7 +22,7 @@ export class TripBanner {
         this.element.querySelector<HTMLButtonElement>('[data-delete-button]')?.addEventListener('click', this.handleDeleteButtonClick);
     }
 
-    private async handleDeleteButtonClick(): Promise<void> {
+    private handleDeleteButtonClick = async (): Promise<void> => {
         const confirmed = await ConfirmPopup({
             className: styles['banner__delete-confirm'],
             prompt: 'Вы действительно хотите удалить поездку?',
@@ -31,7 +32,7 @@ export class TripBanner {
         });
 
         if (confirmed) {
-            // TODO add API call to remove trip
+            eventBus.emit('TripBanner:delete', this.trip.id);
         }
     }
 
@@ -53,8 +54,6 @@ export class TripBanner {
     }
 
     public render(): HTMLElement {
-        console.log(this.props);
-
         this.element = stringToElement(template({
             ...this.props,
             ...this.makeTemplateDates(),

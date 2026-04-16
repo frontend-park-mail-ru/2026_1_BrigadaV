@@ -1,0 +1,35 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/layout' as *;
+@use '@/shared/styles/mixins' as *;
+
+.place-select-page {
+    @include default-page-layout;
+    gap: 0.25rem;
+    background-color: $surface-0;
+}
+
+.main {
+    display: flex;
+    padding: 0 2rem 1rem;
+    flex-direction: column;
+    gap: 2rem;
+    background-color: $surface-0;
+}
+
+.page-header {
+    display: flex;
+
+    &__back-img {
+        --size: 40px;
+
+        width: var(--size);
+        height: var(--size);
+    }
+
+    &__filter {
+        @include field;
+        max-width: 60vw;
+        margin-inline: auto;
+        flex-grow: 1;
+    }
+}

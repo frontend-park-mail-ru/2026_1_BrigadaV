@@ -14,7 +14,7 @@ export class Gallery extends AbstractList<HTMLImageElement, GalleryProps> {
         const result = [];
         for (const photo of this.props.photos) {
             const image = new Image();
-            image.src = `/${photo}`;
+            image.src = photo;
 
             result.push(image);
         }
