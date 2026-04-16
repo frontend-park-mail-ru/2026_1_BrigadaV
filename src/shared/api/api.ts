@@ -111,6 +111,13 @@ export const API = {
         })
     },
 
+    updateUser: async (nickname, country, city, about) => {
+        return request('/profile', {
+            method: 'PUT',
+            body: JSON.stringify({nickname, country, city, about}),
+        });
+    },
+
     getUserTripList: async (): Promise<TripDTO[]> => {
         return request('/trips', {
             method: 'GET',

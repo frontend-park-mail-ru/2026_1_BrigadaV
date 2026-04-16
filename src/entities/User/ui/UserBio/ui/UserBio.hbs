@@ -4,10 +4,12 @@
     className="bio__avatar"
   }}
   <div class="bio__meta">
-    <h3 class="bio__nickname">{{user.nickname}}</h3>
-    <p class="bio__location">{{user.city}}, {{user.country}}</p>
+    <h3 class="bio__nickname" data-ref="nickname">{{user.nickname}}</h3>
+    {{#if location}}
+    <p class="bio__location" data-ref="location">{{location}}</p>
+    {{/if}}
   </div>
   {{#if user.about}}
-  <p class="bio__about">{{user.about}}</p>
+  <p class="bio__about" data-ref="about">{{user.about}}</p>
   {{/if}}
 </div>

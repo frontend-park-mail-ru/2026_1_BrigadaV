@@ -6,6 +6,7 @@ import { UserSession } from '@/widgets/UserSession';
 
 import { HeaderProps } from '../model/types';
 import template from './Header.hbs?compiled';
+import { eventBus } from '@/shared/lib';
 
 export class Header {
     private element?: HTMLElement;
@@ -42,5 +43,7 @@ export class Header {
         return this.element;
     }
 
-    public destroy(): void { }
+    public destroy() {
+        this.userSession?.destroy();
+    }
 }

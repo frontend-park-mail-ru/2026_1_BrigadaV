@@ -89,5 +89,7 @@ export class ProfilePage implements IPage {
 
     public destroy(): void {
         this.settingsModal?.destroy();
+        this.userBio?.destroy();
+        this.header?.destroy();
     }
 }

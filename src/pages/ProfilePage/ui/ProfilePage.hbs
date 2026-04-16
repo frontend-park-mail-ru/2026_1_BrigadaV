@@ -3,7 +3,7 @@
 <main class="{{s 'main'}}">
   <section class="{{s 'user-profile'}}">
     <div data-slot="bio"></div>
-    <button class="{{s 'user-profile__edit'}}" command="show-modal" commandfor="{{settingsModalId}}" disabled>Редактировать профиль</button>
+    <button class="{{s 'user-profile__edit'}}" command="show-modal" commandfor="{{settingsModalId}}">Редактировать профиль</button>
     <div data-slot="navigation"></div>
   </section>
 
@@ -11,4 +11,4 @@
 
 </main>
 
-{{!-- <div data-slot="settings-modal"></div> --}}
+<div data-slot="settings-modal"></div>

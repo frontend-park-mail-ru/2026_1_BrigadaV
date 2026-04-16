@@ -1,7 +1,7 @@
 export type SettingsModalFormData = {
     avatar?: File;
     nickname: string;
-    email: string;
+    login: string;
     password?: string;
     'password-repeat'?: string;
     city?: string;

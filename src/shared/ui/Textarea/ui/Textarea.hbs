@@ -3,7 +3,7 @@
   <label class="textarea__label" for="{{id}}">{{label}}</label>
   {{/if}}
 
-  <textarea id="{{id}}" class="textarea__input" {{#each attributes}} {{@key}}="{{this}}" {{/each}}></textarea>
+  <textarea id="{{id}}" class="textarea__input" {{#each attributes}} {{@key}}="{{this}}" {{/each}}>{{value}}</textarea>
 
   {{#if note}}
   <div class="textarea__note-wrapper">

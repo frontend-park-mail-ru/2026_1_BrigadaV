@@ -9,7 +9,7 @@ import template from './SettingsModal.hbs?compiled';
 import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 
 export class SettingsModal {
-    private element?: HTMLElement;
+    private element?: HTMLDialogElement;
     private fields: Record<string, Field | Textarea> = {};
     private avatarPreviewUrl?: string;
 
@@ -24,15 +24,16 @@ export class SettingsModal {
                 maxlength: 50,
                 minlength: 3,
                 placeholder: 'Никнейм',
+                required: '',
             }
         });
 
-        this.fields['email'] = new Field({
-            id: 'email-input',
+        this.fields['login'] = new Field({
+            id: 'login-input',
             label: 'Почта',
-            type: 'text',
+            type: 'email',
             attributes: {
-                name: 'email',
+                name: 'login',
                 value: props.userAuth.login,
                 maxlength: 50,
                 placeholder: 'Почта',
@@ -71,21 +72,23 @@ export class SettingsModal {
             type: 'text',
             attributes: {
                 name: 'city',
-                autocomplete: 'address-level2',
                 maxlength: 150,
                 placeholder: 'Поиск',
+                value: props.user.city,
+                required: '',
             },
             leftIcon: '/icons/search.svg',
         });
 
         this.fields['about'] = new Textarea({
             id: 'about-textarea',
+            value: props.user.about,
             label: 'О себе',
             attributes: {
                 name: 'about',
                 maxlength: 1000,
                 placeholder: 'Напишите подробнее о себе',
-                value: this.props.user.about || '',
+                required: '',
             },
         });
     }
@@ -155,7 +158,7 @@ export class SettingsModal {
 
         if (confirmed) {
             const formData = new FormData(target);
-            await this.props.onSubmit(this, formData);
+            this.props.onSubmit(this, formData);
         }
     }
 
@@ -169,8 +172,12 @@ export class SettingsModal {
         }
     }
 
+    public close() {
+        this.element?.close();
+    }
+
     public render(): HTMLElement {
-        this.element = stringToElement(template({
+        this.element = stringToElement<HTMLDialogElement>(template({
             ...this.props,
             fields: Object.keys(this.fields),
         }));

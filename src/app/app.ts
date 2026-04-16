@@ -35,6 +35,7 @@ export const App = async () => {
 
     try {
         const user = mapUserAuth(await API.me());
+       
         appState.currentUser = user;
     } catch {
         appState.currentUser = null;

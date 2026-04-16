@@ -1,7 +1,7 @@
 <div class="{{s 'user-session'}} {{className}}">
   {{#if user}}
   <button class="{{s 'user-profile'}}" command="show-modal" commandfor="user-menu">
-    <span class="{{s 'user-profile__nickname'}}">{{user.nickname}}</span>
+    <span class="{{s 'user-profile__nickname'}}" data-ref="nickname">{{user.nickname}}</span>
 
     {{> UserAvatar
       src=user.avatar
