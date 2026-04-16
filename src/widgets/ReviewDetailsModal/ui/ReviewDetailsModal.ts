@@ -4,6 +4,7 @@ import { ReviewDetailsModalInitValues, ReviewDetailsModalProps } from '../model/
 import template from './ReviewDetailsModal.hbs?compiled';
 import styles from './style.module.scss';
 import { Review } from '@/entities/Review/model/types';
+import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 
 export class ReviewDetailsModal {
     private review?: Review;
@@ -61,7 +62,16 @@ export class ReviewDetailsModal {
 
     private handleDelete = async (event: Event): Promise<void> => {
         event.preventDefault();
-        await this.props.onDelete(this, this.review?.id!);
+        const confirmed = await ConfirmPopup({
+            prompt: 'Вы действительно хотите удалить отзыв?',
+            note: 'При удалении отзыва будут удалены все сохраненные в нем элементы и примечания. Удаленный отзыв нельзя восстановить.',
+            cancelText: 'Отменить',
+            confirmText: 'Удалить',
+        });
+
+        if (confirmed) {
+            await this.props.onDelete(this, this.review?.id!);
+        }
     }
 
     public close(): void {
