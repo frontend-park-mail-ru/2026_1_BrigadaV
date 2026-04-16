@@ -39,11 +39,22 @@ export class PlaceSelectPage implements IPage {
     }
 
     private initListeners() {
-        eventBus.on('AddButton:click', this.handleAdd);
+        eventBus.on('PlaceCard:add', this.handleAdd);
+        eventBus.on('PlaceCard:remove', this.handleRemove);
     }
 
-    private handleAdd = ({ placeId }: { placeId: number }) => {
+    private handleAdd = async ({ placeId }: { placeId: number }) => {
+        const success = await API.addPlaceToTrip(this.tripId, placeId, this.addedPlaces.size);
+        if (success) {
+            this.addedPlaces.add(placeId);
+        }
+    }
 
+    private handleRemove = async ({ placeId }: { placeId: number }) => {
+        const error = await API.removePlaceFromTrip(this.tripId, placeId);
+        if (!error) {
+            this.addedPlaces.delete(placeId);
+        }
     }
 
     public render(): HTMLElement {
@@ -67,5 +78,8 @@ export class PlaceSelectPage implements IPage {
         return this.element;
     }
 
-    public destroy(): void { }
+    public destroy(): void {
+        eventBus.off('PlaceCard:add', this.handleAdd);
+        eventBus.off('PlaceCard:remove', this.handleRemove);
+    }
 }

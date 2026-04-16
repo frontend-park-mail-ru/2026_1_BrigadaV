@@ -26,8 +26,9 @@ export class AnotherPlaceList extends AbstractList<PlaceCard, AnotherPlaceListPr
             return places.map(place => new PlaceCard({
                 place,
                 actionComponent: new AddButton({
-                    onClick: () => eventBus.emit('PlaceCard:add-to-trip', { placeId: place.id }),
                     isActive: this.props.addedPlaces.has(place.id),
+                    onAdd: () => eventBus.emit('PlaceCard:add', { placeId: place.id }),
+                    onRemove: () => eventBus.emit('PlaceCard:remove', {placeId: place.id})
                 }),
             }))
 

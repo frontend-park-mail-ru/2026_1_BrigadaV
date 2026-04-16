@@ -10,7 +10,7 @@
     background-color: $surface-0;
     border: none;
     border-radius: 50%;
-    transition: transform $timing-animation-medium;
+    transition: rotate $timing-animation-medium;
 
     &::before {
         --size: 28px;

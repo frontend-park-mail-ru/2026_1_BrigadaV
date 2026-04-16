@@ -173,4 +173,17 @@ export const API = {
             method: 'GET',
         })
     },
+
+    addPlaceToTrip: async (tripId: number, placeId: number, orderIndex: number) => {
+        return request(`/trips/${tripId}/places`, {
+            method: 'POST',
+            body: JSON.stringify({ place_id: placeId, order_index: orderIndex }),
+        })
+    },
+
+    removePlaceFromTrip: async (tripId: number, placeId: number) => {
+        return request(`/trips/${tripId}/places/${placeId}`, {
+            method: 'DELETE',
+        })
+    },
 };
