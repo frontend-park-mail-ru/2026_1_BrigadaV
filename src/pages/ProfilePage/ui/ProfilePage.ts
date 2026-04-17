@@ -62,7 +62,7 @@ export class ProfilePage implements IPage {
             user: this.user,
             userAuth: this.appState.currentUser!,
             id: SETTINGS_MODAL_ID,
-            onSubmit: handleSubmit,
+            onSubmit: ( instance, props) => handleSubmit(instance, props, this.user),
         });
     }
 

@@ -111,10 +111,10 @@ export const API = {
         })
     },
 
-    updateUser: async (nickname, country, city, about) => {
+    updateUser: async ({ nickname, country, city, about }) => {
         return request('/profile', {
             method: 'PUT',
-            body: JSON.stringify({nickname, country, city, about}),
+            body: JSON.stringify({ nickname, country, city, about }),
         });
     },
 

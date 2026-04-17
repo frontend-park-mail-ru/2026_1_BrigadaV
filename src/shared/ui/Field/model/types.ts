@@ -8,7 +8,7 @@ export type FieldProps = {
     rightIcon?: string;
     leftIcon?: string;
     note?: string;
-    attributes: Record<string, string | number>;
+    attributes: Record<string, string | number | boolean>;
     onLeftIconClick?: (instance: Field) => void;
     onRightIconClick?: (instance: Field) => void;
 }

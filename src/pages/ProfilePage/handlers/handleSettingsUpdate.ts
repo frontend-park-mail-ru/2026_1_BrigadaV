@@ -2,31 +2,35 @@ import { SettingsModal } from "@/widgets/SettingsModal";
 import { SettingsModalFormData } from "../model/types";
 import { eventBus, validateEmail, validatePassword } from "@/shared/lib";
 import { API } from "@/shared/api";
+import { User } from "@/entities/User";
 
-export const handleSubmit = async (instance: SettingsModal, data: FormData): Promise<void> => {
+export const handleSubmit = async (instance: SettingsModal, data: FormData, user: User): Promise<void> => {
     const rawData = Object.fromEntries(data) as SettingsModalFormData;
     const { avatar, nickname, login, password, 'password-repeat': passwordRepeat, city, about } = rawData;
 
-    if (login && !validateEmail(login)) {
-        instance.setFieldError('login', 'Некорректный формат email');
-        return;
+    const patch = {};
+
+    if (user.nickname !== nickname) {
+        patch.nickname = nickname;
     }
 
-    if (password && !validatePassword(password)) {
-        instance.setFieldError('password', 'Некорректный формат пароля');
-        return;
+    if (user.city !== city) {
+        patch.city = city;
     }
 
-    if (password !== passwordRepeat) {
-        instance.setFieldError('password-repeat', 'Пароли не совпадают');
+    if (user.about !== about) {
+        patch.about = about;
+    }
+
+    if (Object.keys(patch).length === 0) {
+        instance.close();
         return;
     }
 
     try {
-        const result = await API.updateUser(nickname, '', city, about);
+        const result = await API.updateUser(patch);
         if (result) {
             instance.close();
-            console.log('here');
             eventBus.emit('user:update', { nickname, city, about })
         }
     } catch {

@@ -1,6 +1,6 @@
 import './style.scss';
 
-import { injectComponents, stringToElement } from '@/shared/utils';
+import { formatNumber, injectComponents, stringToElement } from '@/shared/utils';
 
 import { PlaceCardProps } from '../model/types';
 import template from './PlaceCard.hbs?compiled';
@@ -15,7 +15,7 @@ export class PlaceCard {
     }
 
     public render(): HTMLElement {
-        this.element = stringToElement(template(this.props));
+        this.element = stringToElement(template({ ...this.props, formattedPrice: formatNumber(this.props.place.price) }));
         injectComponents(this.element, {
             'action': this.actionElement,
         })

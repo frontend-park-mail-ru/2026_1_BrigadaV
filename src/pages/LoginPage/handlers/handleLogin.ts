@@ -3,24 +3,14 @@ import { API, ApiError } from '@/shared/api';
 import { appState } from '@/shared/config';
 import { navigate } from '@/shared/router';
 import { AuthForm } from '@/widgets/AuthForm';
-import { validateEmail, validatePassword } from '@/shared/lib';
 
 import { LoginFormData } from '../model/types';
+import { Toast } from '@/shared/ui/Toast';
 
 export const handleSubmit = async (instance: AuthForm, data: FormData) => {
     const rawData = Object.fromEntries(data) as LoginFormData;
 
     const { login, password } = rawData;
-
-    if (!validateEmail(login)) {
-        instance.setFieldError('login', 'Некорректный формат email');
-        return;
-    }
-
-    if (!validatePassword(password)) {
-        instance.setFieldError('password', 'Некорректный формат пароля');
-        return;
-    }
 
     try {
         const result = mapUserAuth(await API.login(login, password));
@@ -29,7 +19,7 @@ export const handleSubmit = async (instance: AuthForm, data: FormData) => {
 
     } catch (error) {
         if (!(error instanceof ApiError) || error.error === 'SERVER_ERROR') {
-            instance.setFieldError('password', 'Наблюдаются проблемы со входом. Попробуйте зайти позже');
+            Toast({message: 'Наблюдаются проблемы со входом. Попробуйте зайти позже'})
         }
 
         instance.setFieldError('password', 'Введен неверный логин или пароль');

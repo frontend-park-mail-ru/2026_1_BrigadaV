@@ -4,6 +4,7 @@
 .add {
     @include typo-p;
     display: flex;
+    width: max-content;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;

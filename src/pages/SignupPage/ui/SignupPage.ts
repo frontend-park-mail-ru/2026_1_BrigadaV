@@ -7,6 +7,7 @@ import { Header } from '@/widgets/Header';
 import { handleSubmit } from '../handlers/handleSignup';
 import template from './SignupPage.hbs?compiled';
 import styles from './style.module.scss';
+import { Toast } from '@/shared/ui/Toast';
 
 export class SignupPage implements IPage {
     private element?: HTMLElement;

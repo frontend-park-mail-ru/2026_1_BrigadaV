@@ -8,6 +8,7 @@ import { PlaceSelectPageParams } from '../model/types';
 import { eventBus } from '@/shared/lib';
 import { AddButton } from '@/shared/ui/AddButton';
 import { API } from '@/shared/api';
+import { Toast } from '@/shared/ui/Toast';
 
 export class PlaceSelectPage implements IPage {
     private element?: HTMLElement;
@@ -47,6 +48,7 @@ export class PlaceSelectPage implements IPage {
         const success = await API.addPlaceToTrip(this.tripId, placeId, this.addedPlaces.size);
         if (success) {
             this.addedPlaces.add(placeId);
+            Toast({message: 'Место добавлено', type: 'success'})
         }
     }
 
@@ -54,6 +56,7 @@ export class PlaceSelectPage implements IPage {
         const error = await API.removePlaceFromTrip(this.tripId, placeId);
         if (!error) {
             this.addedPlaces.delete(placeId);
+            Toast({message: 'Место удалено', type: 'error'})
         }
     }
 

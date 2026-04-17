@@ -6,6 +6,7 @@ import { validateEmail, validatePassword } from '@/shared/lib';
 import { AuthForm } from '@/widgets/AuthForm';
 
 import { SignUpFormData } from '../model/types';
+import { Toast } from '@/shared/ui/Toast';
 
 export const handleSubmit = async (instance: AuthForm, data: FormData) => {
     const rawData = Object.fromEntries(data) as SignUpFormData;
@@ -34,14 +35,25 @@ export const handleSubmit = async (instance: AuthForm, data: FormData) => {
             login,
             nickname,
         };
-       
+
         navigate('/');
 
     } catch (error) {
-        if (!(error instanceof ApiError) || !error.field) {
-            return;
-        }
+        if (!(error instanceof ApiError)) return;
 
-        instance.setFieldError(error.field, error.message);
+        switch (error.error) {
+            case 'nickname already exists':
+                instance.setFieldError('nickname', 'Имя уже занято');
+                break;
+            case 'email already exists':
+                instance.setFieldError('login', 'Почта уже зарегистрирована');
+                break;
+
+            default:
+                Toast({
+                    message: 'Произошла непредвиденная ошибка. Пожалуйста, повторите попытку позже.',
+                    type: 'warning',
+                })
+        }
     }
 };

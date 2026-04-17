@@ -32,11 +32,13 @@ export class SettingsModal {
             id: 'login-input',
             label: 'Почта',
             type: 'email',
+            note: 'В данный момент изменить почту невозможно',
             attributes: {
                 name: 'login',
                 value: props.userAuth.login,
                 maxlength: 50,
                 placeholder: 'Почта',
+                readonly: true,
             }
         });
 
@@ -44,10 +46,12 @@ export class SettingsModal {
             id: 'password-input',
             label: 'Новый пароль',
             type: 'password',
+            note: 'В данный момент изменить пароль невозможно',
             attributes: {
                 name: 'password',
                 maxlength: 50,
                 placeholder: '*'.repeat(10),
+                readonly: true,
             },
             rightIcon: '/icons/eye.svg',
             onRightIconClick: togglePasswordVisibility,
@@ -61,6 +65,7 @@ export class SettingsModal {
                 name: 'password-repeat',
                 maxlength: 50,
                 placeholder: '*'.repeat(10),
+                readonly: true,
             },
             rightIcon: '/icons/eye.svg',
             onRightIconClick: togglePasswordVisibility,

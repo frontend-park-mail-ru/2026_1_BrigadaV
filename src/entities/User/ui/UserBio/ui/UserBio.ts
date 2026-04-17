@@ -39,7 +39,7 @@ export class UserBio {
 
     private update = (data) => {
         this.fields['nickname'].textContent = data.nickname;
-        this.fields['city'].textContent = data.city;
+        this.fields['location'].textContent = data.city;
         this.fields['about'].textContent = data.about;
     }
 
