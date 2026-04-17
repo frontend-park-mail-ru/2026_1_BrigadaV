@@ -31,7 +31,7 @@ export class RecommendedList {
             const placesData = await API.getPlaces();
             const authorized = this.props.user !== null;
 
-            const places = placesData.map(this.getRandom(mapPlace, 8));
+            const places = this.getRandom(placesData, 8).map(mapPlace);
 
             places.forEach(place => {
                 const card = new PlaceCard({

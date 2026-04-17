@@ -15,7 +15,10 @@ export class PlaceCard {
     }
 
     public render(): HTMLElement {
-        this.element = stringToElement(template({ ...this.props, formattedPrice: formatNumber(this.props.place.price) }));
+        this.element = stringToElement(template({
+            ...this.props,
+            formattedPrice: this.props.place.price === 0 ? 'Бесплатно' : `от ${formatNumber(this.props.place.price)} ₽`,
+        }));
         injectComponents(this.element, {
             'action': this.actionElement,
         })
