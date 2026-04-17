@@ -1,11 +1,12 @@
 <div class="{{s 'user-session'}} {{className}}">
   {{#if user}}
-  <button class="{{s 'user-profile'}}" command="show-modal" commandfor="user-menu">
-    <span class="{{s 'user-profile__nickname'}}" data-ref="nickname">{{user.nickname}}</span>
+  <button class="{{s 'user-profile'}} js-session-toggle">
+    <span class="{{s 'user-profile__nickname'}}"  data-ref="nickname">{{user.nickname}}</span>
 
     {{> UserAvatar
       src=user.avatar
       className=(s 'user-profile__avatar')
+      ref="avatar"
     }}
 
     <div data-slot="user-menu"></div>

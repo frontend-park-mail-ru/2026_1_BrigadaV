@@ -48,7 +48,7 @@ export class PlaceSelectPage implements IPage {
         const success = await API.addPlaceToTrip(this.tripId, placeId, this.addedPlaces.size);
         if (success) {
             this.addedPlaces.add(placeId);
-            Toast({message: 'Место добавлено', type: 'success'})
+            Toast({ message: 'Место добавлено', type: 'success' })
         }
     }
 
@@ -56,7 +56,7 @@ export class PlaceSelectPage implements IPage {
         const error = await API.removePlaceFromTrip(this.tripId, placeId);
         if (!error) {
             this.addedPlaces.delete(placeId);
-            Toast({message: 'Место удалено', type: 'error'})
+            Toast({ message: 'Место удалено', type: 'error' })
         }
     }
 
@@ -84,5 +84,6 @@ export class PlaceSelectPage implements IPage {
     public destroy(): void {
         eventBus.off('PlaceCard:add', this.handleAdd);
         eventBus.off('PlaceCard:remove', this.handleRemove);
+        this.header?.destroy();
     }
 }

@@ -134,5 +134,6 @@ export class AttractionPage implements IPage {
 
     public destroy(): void {
         eventBus.off('ReviewCard:showDetails', this.handleShowDetails);
+        this.header?.destroy();
     }
 }

@@ -81,5 +81,7 @@ export class TripDetailPage implements IPage {
         return this.element;
     }
 
-    public destroy(): void { }
+    public destroy(): void {
+        this.header?.destroy();
+    }
 }

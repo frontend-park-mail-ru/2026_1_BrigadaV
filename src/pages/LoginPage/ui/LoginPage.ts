@@ -13,7 +13,7 @@ export class LoginPage implements IPage {
     private header?: Header;
     private loginForm?: AuthForm;
 
-    private constructor(private appState: AppState) {}
+    private constructor(private appState: AppState) { }
 
     public static async create(appState: AppState): Promise<LoginPage> {
         const page = new LoginPage(appState);
@@ -81,5 +81,7 @@ export class LoginPage implements IPage {
         return this.element;
     }
 
-    public destroy(): void { }
+    public destroy(): void {
+        this.header?.destroy();
+    }
 }

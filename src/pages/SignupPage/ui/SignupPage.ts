@@ -14,7 +14,7 @@ export class SignupPage implements IPage {
     private header?: Header;
     private registerForm?: AuthForm;
 
-    private constructor(private appState: AppState) {}
+    private constructor(private appState: AppState) { }
 
     public static async create(appState: AppState): Promise<SignupPage> {
         const page = new SignupPage(appState);
@@ -66,7 +66,7 @@ export class SignupPage implements IPage {
                 id: 'password-input',
                 label: 'Введите пароль',
                 type: 'password',
-                note: 'Пароль должен содержать строчные и прописные буквы латинского алфавита, а также цифры',
+                note: 'Используйте строчные и прописные буквы латинского алфавита, а также цифры',
                 attributes: {
                     name: 'password',
                     placeholder: '********',
@@ -107,5 +107,7 @@ export class SignupPage implements IPage {
         return this.element;
     }
 
-    public destroy(): void { }
+    public destroy(): void {
+        this.header?.destroy();
+    }
 }

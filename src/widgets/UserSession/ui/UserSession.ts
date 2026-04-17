@@ -13,7 +13,7 @@ export class UserSession {
     constructor(private props: UserSessionProps) {
         if (this.props.user) {
             this.menu = new UserMenu({
-                id: 'user-menu',
+                className: styles['user-profile__menu'],
             });
         }
     }
@@ -29,6 +29,33 @@ export class UserSession {
         if (nicknameField) nicknameField.textContent = nickname;
     }
 
+    private initMenu(): void {
+        document.removeEventListener('click', this.handleGlobalClick);
+
+        const userMenuSlot = this.element?.querySelector('[data-slot="user-menu"]');
+
+        if (userMenuSlot && this.menu) {
+            userMenuSlot.replaceWith(this.menu.render());
+            document.addEventListener('click', this.handleGlobalClick);
+        }
+    }
+
+    private handleGlobalClick = (event: Event): void => {
+        const target = event.target;
+
+        if (!(target instanceof HTMLElement) || !this.menu) {
+            return;
+        }
+
+        const isClickInsideToggle = target.closest('[data-ref="nickname"') || target.closest('[data-ref="avatar"]');
+        const isClickInsideMenu = target.closest('.js-user-menu');
+
+        if (!!isClickInsideToggle) {
+            this.menu.toggle();
+        } else if (!isClickInsideMenu) {
+            this.menu.hide();
+        }
+    }
 
     public render(): HTMLElement {
         this.element = stringToElement(template({
@@ -36,12 +63,16 @@ export class UserSession {
             styles
         }));
 
-        injectComponents(this.element, {
-            'user-menu': this.menu,
-        });
+        if (this.menu) {
+            this.initMenu();
+        }
 
         this.initListeners();
 
         return this.element;
+    }
+
+    public destroy(): void {
+        document.removeEventListener('click', this.handleGlobalClick);
     }
 }

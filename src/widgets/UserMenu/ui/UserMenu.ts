@@ -45,6 +45,18 @@ export class UserMenu {
         }
     };
 
+    public hide(): void {
+        this.element?.classList.remove('user-menu--active');
+    }
+
+    public show(): void {
+        this.element?.classList.add('user-menu--active');
+    }
+
+    public toggle(): void {
+        this.element?.classList.toggle('user-menu--active');
+    }
+
     public render(): HTMLElement {
         this.element = stringToElement(template(this.props));
         this.initListeners();

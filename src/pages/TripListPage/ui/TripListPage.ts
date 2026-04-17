@@ -92,7 +92,7 @@ export class TripListPage implements IPage {
         }
     }
 
-    private handleTripUpdate = async ({ instance, data, tripId}: {
+    private handleTripUpdate = async ({ instance, data, tripId }: {
         instance: CreateTripDialog,
         data: FormData
     }): Promise<void> => {
@@ -149,5 +149,6 @@ export class TripListPage implements IPage {
     public destroy(): void {
         eventBus.off('TripCard:edit', this.handleTripEdit);
         eventBus.off('CreateTripDialog:submit', this.handleTripCreate);
+        this.header?.destroy();
     }
 }
