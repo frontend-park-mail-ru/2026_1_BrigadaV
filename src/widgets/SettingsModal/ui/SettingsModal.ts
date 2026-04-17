@@ -38,7 +38,7 @@ export class SettingsModal {
                 value: props.userAuth.login,
                 maxlength: 50,
                 placeholder: 'Почта',
-                readonly: true,
+                readonly: '',
             }
         });
 
@@ -51,7 +51,7 @@ export class SettingsModal {
                 name: 'password',
                 maxlength: 50,
                 placeholder: '*'.repeat(10),
-                readonly: true,
+                readonly: '',
             },
             rightIcon: '/icons/eye.svg',
             onRightIconClick: togglePasswordVisibility,
@@ -65,7 +65,7 @@ export class SettingsModal {
                 name: 'password-repeat',
                 maxlength: 50,
                 placeholder: '*'.repeat(10),
-                readonly: true,
+                readonly: '',
             },
             rightIcon: '/icons/eye.svg',
             onRightIconClick: togglePasswordVisibility,

@@ -102,13 +102,14 @@
             content: "";
         }
 
-        &:hover {
+        &:hover,
+        &:focus-visible {
             color: $color-text-contrast;
             background-color: $guidely-primary;
-        }
 
-        &:hover::before {
-            background-color: $color-text-contrast;
+            &::before {
+                background-color: $color-text-contrast;
+            }
         }
     }
 }

@@ -5,7 +5,8 @@
     @include typo-p;
     display: flex;
     width: max-content;
-    padding: 0.5rem 2.25rem;
+    min-height: 100px;
+    padding: 1rem 2.25rem;
     flex-direction: column;
     gap: 1rem;
     background-color: $white;
@@ -30,7 +31,8 @@
             height: 20px;
         }
 
-        &:hover {
+        &:hover,
+        &:focus-visible {
             scale: 1.05;
         }
     }

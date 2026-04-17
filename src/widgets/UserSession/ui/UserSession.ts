@@ -30,13 +30,18 @@ export class UserSession {
     }
 
     private initMenu(): void {
-        document.removeEventListener('click', this.handleGlobalClick);
-
         const userMenuSlot = this.element?.querySelector('[data-slot="user-menu"]');
 
         if (userMenuSlot && this.menu) {
             userMenuSlot.replaceWith(this.menu.render());
             document.addEventListener('click', this.handleGlobalClick);
+
+            this.element?.querySelector('.js-session-toggle')?.addEventListener('keydown', (event: KeyboardEvent) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    this.menu?.toggle();
+                }
+            })
         }
     }
 

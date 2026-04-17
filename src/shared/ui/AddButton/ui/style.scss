@@ -29,10 +29,14 @@
         content: "";
     }
 
-    &:hover::before {
-        background-color: $color-interactable-active;
-        scale: 1.05;
+    &:hover,
+    &:focus-visible {
+        &::before {
+            background-color: $color-interactable-active;
+            scale: 1.05;
+        }
     }
+
     &--active {
         rotate: 45deg;
     }

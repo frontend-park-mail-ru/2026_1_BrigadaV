@@ -1,3 +1,5 @@
+@use '@/shared/styles/variables' as *;
+
 a {
     text-decoration: none;
 }
@@ -8,4 +10,15 @@ body {
 
 .avatar--default {
     opacity: 50%;
+}
+
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 3px solid transparent;
+    outline-color: $guidely-primary;
+    outline-offset: 1px;
+    transition: outline-color $timing-animation-medium;
 }

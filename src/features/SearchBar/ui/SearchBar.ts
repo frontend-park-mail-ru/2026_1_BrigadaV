@@ -17,6 +17,7 @@ export class SearchBar {
             rightIcon: '/icons/search.svg',
             attributes: {
                 placeholder: props.placeholder,
+                disabled: '',
             }
         });
     }

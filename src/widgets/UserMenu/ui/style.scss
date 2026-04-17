@@ -26,8 +26,12 @@
 
         transition: background-color $timing-animation-medium;
 
-        &:not(&--disabled):hover {
-            background-color: $surface-1;
+        &:not(&--disabled) {
+
+            &:hover,
+            &:focus-visible {
+                background-color: $surface-1;
+            }
         }
 
         &--logout {

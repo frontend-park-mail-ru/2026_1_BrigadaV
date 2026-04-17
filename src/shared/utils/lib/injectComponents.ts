@@ -4,7 +4,6 @@ export const injectComponents = (parent: HTMLElement, slots: Record<string, ICom
     Object.entries(slots).forEach(([name, component]) => {
         const slot = parent.querySelector(`[data-slot="${name}"]`);
         if (slot && component) {
-            const classes = slot.classList;
             const renderedElement = component.render();
 
             if (slot.classList.length > 0) {

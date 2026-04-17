@@ -1,13 +1,14 @@
 <section class="about-me">
   {{!-- TODO fix month cases --}}
   <span class="about-me__join-date">В сообществе с <time datetime="{{isoDate}}">{{date}}</time></span>
+  {{#if hasSuggested}}
   <div class="about-me__suggested">
-    {{#unless user.commentCount}}
+    {{!-- {{#unless user.commentCount}}
     <button class="about-me__button">
       <img src="/icons/plus.svg">
       Добавьте первый отзыв
     </button>
-    {{/unless}}
+    {{/unless}} --}}
 
     {{#unless user.about}}
     <button class="about-me__button" command="show-modal" commandfor="{{modalId}}" data-focus-field="about">
@@ -16,4 +17,5 @@
     </button>
     {{/unless}}
   </div>
+  {{/if}}
 </section>
