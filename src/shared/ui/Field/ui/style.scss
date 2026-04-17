@@ -24,6 +24,10 @@
         width: 100%;
         min-height: 40px;
         gap: 0.25rem;
+
+        &:focus-within {
+            outline: 3px solid $guidely-primary;
+        }
     }
 
     &--rounded &__input-wrapper {

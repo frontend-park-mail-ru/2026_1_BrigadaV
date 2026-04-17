@@ -3,7 +3,7 @@
 <main class="{{s 'main'}}">
   <div class="{{s 'page-header'}}">
     <a href="{{url '/trip' tripId}}" data-link><img src="/icons/arrow-left.svg" class="{{ s 'page-header__back-img'}}"></a>
-    <input type="text" class="{{s 'page-header__filter'}}">
+    <div data-slot="filter" class="{{s 'page-header__filter'}}"></div>
   </div>
 
   <div data-slot="place-list"></div>

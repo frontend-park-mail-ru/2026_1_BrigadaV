@@ -27,9 +27,10 @@
     }
 
     &__filter {
-        @include field;
         max-width: 60vw;
         margin-inline: auto;
         flex-grow: 1;
+        opacity: 30%;
+        pointer-events: none;
     }
 }

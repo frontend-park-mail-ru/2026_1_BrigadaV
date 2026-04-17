@@ -9,9 +9,11 @@ import { eventBus } from '@/shared/lib';
 import { AddButton } from '@/shared/ui/AddButton';
 import { API } from '@/shared/api';
 import { Toast } from '@/shared/ui/Toast';
+import { Field } from '@/shared/ui';
 
 export class PlaceSelectPage implements IPage {
     private element?: HTMLElement;
+    private filter?: Field;
     private header?: Header;
     private placeList?: AnotherPlaceList;
     private addedPlaces!: Set<number>;
@@ -36,6 +38,16 @@ export class PlaceSelectPage implements IPage {
 
         this.placeList = new AnotherPlaceList({
             addedPlaces: this.addedPlaces,
+        });
+
+        this.filter = new Field({
+            type: 'text',
+            rightIcon: '/icons/search.svg',
+            onRightIconClick: focus,
+            attributes: {
+                placeholder: 'Введите название места',
+                disabled: '',
+            }
         });
     }
 
@@ -74,6 +86,7 @@ export class PlaceSelectPage implements IPage {
         injectComponents(this.element, {
             'header': this.header,
             'place-list': this.placeList,
+            'filter': this.filter,
         });
 
         this.initListeners();

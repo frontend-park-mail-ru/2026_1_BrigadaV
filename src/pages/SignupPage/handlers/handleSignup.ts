@@ -52,7 +52,7 @@ export const handleSubmit = async (instance: AuthForm, data: FormData) => {
             default:
                 Toast({
                     message: 'Произошла непредвиденная ошибка. Пожалуйста, повторите попытку позже.',
-                    type: 'warning',
+                    type: 'error',
                 })
         }
     }
