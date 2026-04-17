@@ -118,6 +118,13 @@ export const API = {
         });
     },
 
+    uploadAvatar: async (file: FormData) => {
+        return request('/profile/avatar', {
+            method: 'POST',
+            body: file,
+        })
+    },
+
     getUserTripList: async (): Promise<TripDTO[]> => {
         return request('/trips', {
             method: 'GET',

@@ -25,7 +25,6 @@ export class TripDetailPage implements IPage {
         const page = new TripDetailPage(appState);
 
         const tripData = await API.getTripById(parameters.tripId);
-        console.log(tripData);
 
         page.trip = mapTrip(tripData);
 

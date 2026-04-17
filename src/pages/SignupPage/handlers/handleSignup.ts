@@ -2,7 +2,7 @@ import { mapUserAuth } from '@/entities/User';
 import { API, ApiError } from '@/shared/api';
 import { appState } from '@/shared/config';
 import { navigate } from '@/shared/router';
-import { validateEmail, validatePassword } from '@/shared/lib';
+import { validateEmail, validateNickname, validatePassword } from '@/shared/lib';
 import { AuthForm } from '@/widgets/AuthForm';
 
 import { SignUpFormData } from '../model/types';
@@ -11,6 +11,11 @@ import { Toast } from '@/shared/ui/Toast';
 export const handleSubmit = async (instance: AuthForm, data: FormData) => {
     const rawData = Object.fromEntries(data) as SignUpFormData;
     const { nickname, login, password, 'password-repeat': passwordRepeat } = rawData;
+
+    if (!validateNickname(nickname)) {
+        instance.setFieldError('nickname', 'Ник должен быть длиной от 3 до 50 символов');
+        return;
+    }
 
     if (!validateEmail(login)) {
         instance.setFieldError('login', 'Некорректный формат email');

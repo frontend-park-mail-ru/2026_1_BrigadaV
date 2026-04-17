@@ -24,7 +24,6 @@ export class SettingsModal {
                 maxlength: 50,
                 minlength: 3,
                 placeholder: 'Никнейм',
-                required: '',
             }
         });
 
@@ -80,7 +79,6 @@ export class SettingsModal {
                 maxlength: 150,
                 placeholder: 'Поиск',
                 value: props.user.city,
-                required: '',
             },
             leftIcon: '/icons/search.svg',
         });
@@ -93,7 +91,6 @@ export class SettingsModal {
                 name: 'about',
                 maxlength: 1000,
                 placeholder: 'Напишите подробнее о себе',
-                required: '',
             },
         });
     }

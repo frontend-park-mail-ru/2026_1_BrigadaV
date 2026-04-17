@@ -80,10 +80,8 @@
 
     }
 
-    &:hover,
-    &:focus-visible {
-        &__overlay {
-            opacity: 1;
-        }
+    &:hover &__overlay,
+    &:focus-visible &__overlay {
+        opacity: 1;
     }
 }

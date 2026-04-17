@@ -149,6 +149,8 @@ export class TripListPage implements IPage {
     public destroy(): void {
         eventBus.off('TripCard:edit', this.handleTripEdit);
         eventBus.off('CreateTripDialog:submit', this.handleTripCreate);
+        eventBus.off('EditTripDialog:submit', this.handleTripUpdate);
+        eventBus.off('EditTripDialog:delete', this.handleTripDelete);
         this.header?.destroy();
     }
 }

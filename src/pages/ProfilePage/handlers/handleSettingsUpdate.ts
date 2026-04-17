@@ -1,12 +1,17 @@
 import { SettingsModal } from "@/widgets/SettingsModal";
 import { SettingsModalFormData } from "../model/types";
-import { eventBus, validateEmail, validatePassword } from "@/shared/lib";
+import { eventBus, validateEmail, validateNickname, validatePassword } from "@/shared/lib";
 import { API } from "@/shared/api";
 import { User } from "@/entities/User";
 
 export const handleSubmit = async (instance: SettingsModal, data: FormData, user: User): Promise<void> => {
     const rawData = Object.fromEntries(data) as SettingsModalFormData;
     const { avatar, nickname, login, password, 'password-repeat': passwordRepeat, city, about } = rawData;
+
+    if (!validateNickname(nickname)) {
+        instance.setFieldError('nickname', 'Ник должен быть длиной от 3 до 50 символов');
+        return;
+    }
 
     const patch = {};
 

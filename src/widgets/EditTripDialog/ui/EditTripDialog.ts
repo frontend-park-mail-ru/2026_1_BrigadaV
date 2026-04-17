@@ -124,5 +124,4 @@ export class EditTripDialog {
         this.initListeners();
         return this.element;
     }
-
 }

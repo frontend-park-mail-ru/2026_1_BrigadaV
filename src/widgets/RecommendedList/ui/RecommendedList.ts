@@ -14,12 +14,24 @@ export class RecommendedList {
 
     constructor(private props: RecommendedListProps) { }
 
+    private getRandom(array: unknown[], amount: number) {
+        if (array.length <= amount) return array;
+
+        const result = [];
+
+        for (let i = 0; i < amount; i++) {
+            result.push(array[Math.floor(Math.random() * array.length)]);
+        }
+
+        return result;
+    }
+
     private async loadPlaces(): Promise<void> {
         try {
             const placesData = await API.getPlaces();
             const authorized = this.props.user !== null;
 
-            const places = placesData.map(mapPlace);
+            const places = placesData.map(this.getRandom(mapPlace, 8));
 
             places.forEach(place => {
                 const card = new PlaceCard({

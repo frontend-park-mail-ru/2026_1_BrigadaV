@@ -45,7 +45,7 @@
 
         transition: background-color $timing-animation-medium;
 
-        &:enabled {
+        &:not([disabled]) {
             &:hover,
             &:focus-visible {
                 background-color: $surface-1;

@@ -15,8 +15,6 @@ export class PlacePlacard {
     }
 
     public render(): HTMLElement {
-        console.log(this.place);
-        
         this.element = stringToElement(template({
             ...this.props,
             styles,

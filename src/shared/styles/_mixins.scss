@@ -76,7 +76,7 @@
         cursor: default;
     }
 
-    &:enabled {
+    &:not([disabled]) {
 
         &:hover,
         &:focus-visible {
@@ -105,7 +105,7 @@
         cursor: default;
     }
 
-    &:enabled {
+    &:not([disabled]) {
 
         &:hover,
         &:focus-visible {
