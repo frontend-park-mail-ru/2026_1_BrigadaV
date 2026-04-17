@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import { handlebarsPrecompile } from 'vite-plugin-handlebars-precompile';
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import * as path from 'path';
 
 export default defineConfig({
@@ -15,5 +16,6 @@ export default defineConfig({
         handlebarsPrecompile({
             partialsDir: path.resolve(__dirname, './src/shared/ui/Handlebars'),
         }),
+        ViteImageOptimizer(),
     ],
 });
