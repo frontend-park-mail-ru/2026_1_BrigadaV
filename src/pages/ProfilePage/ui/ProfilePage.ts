@@ -2,16 +2,16 @@ import { mapUser, UserBio } from '@/entities/User';
 import { User } from '@/entities/User/model/types';
 import { ProfileNavigation } from '@/features/ProfileNavigation';
 import { API } from '@/shared/api';
-import { AppState, IPage } from '@/shared/model';
+import { AppState, IComponent, IPage } from '@/shared/model';
 import { injectComponents } from '@/shared/utils';
 import { AboutMe } from '@/widgets/AboutMe';
 import { Header } from '@/widgets/Header';
 import { SettingsModal } from '@/widgets/SettingsModal';
 
-import { handleTabChange } from '../handlers/handleTabChange';
 import template from './ProfilePage.hbs?compiled';
 import styles from './style.module.scss';
 import { handleSubmit } from '../handlers/handleSettingsUpdate';
+import { DummyProfileSection } from '@/widgets/DummyProfileSection';
 
 const SETTINGS_MODAL_ID = 'settings';
 
@@ -20,8 +20,9 @@ export class ProfilePage implements IPage {
     private element?: HTMLElement;
     private header?: Header;
     private userBio?: UserBio;
+    private dummySection?: DummyProfileSection;
     private navigation?: ProfileNavigation;
-    private activeSection?: AboutMe;
+    private activeSection?: IComponent;
     private settingsModal?: SettingsModal;
 
     private constructor(private appState: AppState) { }
@@ -50,7 +51,7 @@ export class ProfilePage implements IPage {
         });
 
         this.navigation = new ProfileNavigation({
-            onTabChange: handleTabChange,
+            onTabChange: this.handleTabChange,
         });
 
         this.activeSection = new AboutMe({
@@ -58,14 +59,40 @@ export class ProfilePage implements IPage {
             modalId: SETTINGS_MODAL_ID,
         });
 
+        this.dummySection = new DummyProfileSection();
+
         this.settingsModal = new SettingsModal({
             user: this.user,
             userAuth: this.appState.currentUser!,
             id: SETTINGS_MODAL_ID,
-            onSubmit: ( instance, props) => handleSubmit(instance, props, this.user),
+            onSubmit: (instance, props) => handleSubmit(instance, props, this.user),
         });
     }
 
+    private handleTabChange = (tabId: string) => {
+        const container = this.element?.querySelector('.js-active-section');
+        if (!container) return;
+
+        if (this.activeSection && typeof this.activeSection.destroy === 'function') {
+            this.activeSection.destroy();
+        }
+
+        switch (tabId) {
+            case 'about':
+                this.activeSection = new AboutMe({ user: this.user, modalId: SETTINGS_MODAL_ID });
+                break;
+            case 'trips':
+            case 'comments':
+                this.activeSection = new DummyProfileSection();
+                break;
+            default:
+                this.activeSection = new AboutMe({ user: this.user, modalId: SETTINGS_MODAL_ID });
+        }
+
+        const renderedSection = this.activeSection.render();
+        renderedSection.classList.add('js-active-section');
+        container.replaceWith(renderedSection);
+    };
     public render(): HTMLElement {
         this.element = document.createElement('div');
         const html = template({
