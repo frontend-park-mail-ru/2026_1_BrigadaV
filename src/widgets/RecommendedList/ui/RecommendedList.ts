@@ -15,15 +15,16 @@ export class RecommendedList {
     constructor(private props: RecommendedListProps) { }
 
     private getRandom(array: unknown[], amount: number) {
-        if (array.length <= amount) return array;
+        if (array.length <= amount) return [...array];
 
-        const result = [];
+        const result = [...array];
 
         for (let i = 0; i < amount; i++) {
-            result.push(array[Math.floor(Math.random() * array.length)]);
+            const randomIndex = Math.floor(Math.random() * (result.length - i)) + i;
+            [result[i], result[randomIndex]] = [result[randomIndex], result[i]];
         }
 
-        return result;
+        return result.slice(0, amount);
     }
 
     private async loadPlaces(): Promise<void> {
