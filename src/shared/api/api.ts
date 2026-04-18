@@ -152,7 +152,7 @@ export const API = {
     }) => {
         return request('/reviews', {
             method: 'POST',
-            body: JSON.stringify({ place_id: placeId, title, rating, content, visit_data: createdAt }),
+            body: JSON.stringify({ place_id: placeId, title, rating, content, visit_date: createdAt }),
         })
     },
 
