@@ -19,7 +19,6 @@ export class EditTripDialog {
             attributes: {
                 name: 'title',
                 maxlength: 20,
-                required: '',
             }
         });
 
@@ -42,7 +41,6 @@ export class EditTripDialog {
             type: 'date',
             attributes: {
                 name: 'start-date',
-                required: '',
             }
         });
 
@@ -52,7 +50,6 @@ export class EditTripDialog {
             type: 'date',
             attributes: {
                 name: 'end-date',
-                required: '',
             }
         });
 
@@ -63,7 +60,6 @@ export class EditTripDialog {
                 name: 'description',
                 maxlength: 1000,
                 placeholder: 'Запишите свои заметки',
-                required: '',
             }
         });
     }
