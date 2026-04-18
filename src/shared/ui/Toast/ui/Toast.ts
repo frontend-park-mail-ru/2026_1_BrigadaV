@@ -8,6 +8,7 @@ import template from './Toast.hbs?compiled';
 export const Toast = (props: ToastProps) => {
     const toast = stringToElement(template(props));
     document.body.appendChild(toast);
+    toast.showPopover();
     setTimeout(() => fade(toast), 3000);
 }
 

@@ -7,6 +7,7 @@ import { injectComponents, stringToElement } from '@/shared/utils';
 import { SettingsModalProps } from '../model/types';
 import template from './SettingsModal.hbs?compiled';
 import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
+import { Toast } from '@/shared/ui/Toast';
 
 export class SettingsModal {
     private element?: HTMLDialogElement;
@@ -123,8 +124,13 @@ export class SettingsModal {
         const file = target.files[0];
 
         if (file.size > 10 * 1024 * 1024) {
-            // TODO make a toast
-            alert("Файл слишком большой! Лимит 10 Мб.");
+            Toast({ message: 'Файл слишком большой! Лимит 10 Мб.', type: 'error' })
+            target.value = '';
+            return;
+        }
+
+        if (!file.type.startsWith("image/")) {
+            Toast({ message: 'Известный формат изображения', type: 'error' })
             target.value = '';
             return;
         }

@@ -4,9 +4,9 @@
     --border-color: #{$color-text-main};
 
     position: fixed;
-    right: 20px;
-    bottom: 60px;
+    inset: auto 20px 60px auto;
     z-index: 999;
+    margin: 0;
     padding: 1rem;
 
     background-color: $surface-0;
