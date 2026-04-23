@@ -1,6 +1,6 @@
 import { ApiError } from './lib/ApiError';
 
-const API_URL = import.meta.env.DEV ? 'http://localhost:8080/api' : 'http://guidely.ru/api';
+const API_URL = import.meta.env.DEV ? 'http://localhost:8080/api' : 'http://guidely.ru:8080/api';
 
 let cachedCSRFToken: string | null = null;
 
