@@ -7,7 +7,7 @@ export type AppState = {
 
 export interface IComponent {
     render(): HTMLElement;
-    destroy?(): void;
+    destroy(): void;
 }
 
 export interface IPage {
@@ -18,3 +18,8 @@ export interface IPage {
 export interface IPageConstructor {
     create(appState: AppState, parameters?: Record<string, string | number>): Promise<IPage>;
 }
+
+export type FormSubmitPayload<TInstance, TData> = {
+    instance: TInstance;
+    data: TData;
+};

@@ -16,6 +16,7 @@
         "@eslint/js": "^10.0.1",
         "@types/node": "^25.3.3",
         "eslint": "^10.0.3",
+        "eslint-plugin-unused-imports": "^4.4.1",
         "globals": "^17.4.0",
         "handlebars": "^4.7.8",
         "sass-embedded": "^1.97.3",

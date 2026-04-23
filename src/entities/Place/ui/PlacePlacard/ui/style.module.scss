@@ -7,16 +7,24 @@
     display: flex;
     max-height: 250px;
     gap: 1.25rem;
-    // TODO figure out color naming
     border: 1px solid $color-border-button;
 
+    &__preview {
+        display: block;
+        height: 100%;
+        flex: 0 0 300px;
+    }
+
     &__image {
+        width: 100%;
+        height: 100%;
         object-fit: cover;
     }
 
     &__content {
         display: flex;
         padding-block: 1.5rem;
+        flex-grow: 1;
         flex-direction: column;
         align-items: start;
         gap: 0.25rem;

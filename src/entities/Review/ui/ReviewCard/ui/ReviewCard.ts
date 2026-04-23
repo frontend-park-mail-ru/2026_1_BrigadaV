@@ -1,36 +1,31 @@
 import { eventBus } from '@/shared/lib';
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
 import { formatDate, stringToElement } from '@/shared/utils';
 
 import { ReviewCardProps } from '../model/types';
 import template from './ReviewCard.hbs?compiled';
 import styles from './style.module.scss';
 
-export class ReviewCard {
-    element?: HTMLElement;
+export class ReviewCard extends BaseComponent {
 
-    constructor(private props: ReviewCardProps) { }
+    constructor(private props: ReviewCardProps) { super(); }
 
-    private initListeners(): void {
-        if (!this.element) return;
+    protected override initListeners(): void {
+        super.initListeners();
 
-        this.element.querySelector<HTMLButtonElement>('[data-details-button')?.addEventListener('click', this.handleEditButtonClick);
+        const detailsButton = this.element?.querySelector<HTMLButtonElement>('[data-details-button');
+        detailsButton?.addEventListener('click', this.handleEditButtonClick);
     }
 
     private handleEditButtonClick = (): void => {
-        // TODO pass review id and stuff
-        eventBus.emit('ReviewCard:showDetails', this.props.review);
+        eventBus.emit('ReviewCard:show-details', { ...this.props.review });
     };
 
-    public render(): HTMLElement {
-        this.element = stringToElement(template({
+    protected override _render(): HTMLElement {
+        return stringToElement(template({
             ...this.props,
             ...formatDate(this.props.review.createdAt),
             styles
         }));
-
-        this.initListeners();
-
-        this.element.style.setProperty('--rating', this.props.review.rating.toString());
-        return this.element;
     }
 }

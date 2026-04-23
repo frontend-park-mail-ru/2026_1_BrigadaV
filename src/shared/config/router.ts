@@ -1,13 +1,13 @@
 import { AttractionPage } from '@/pages/AttractionPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { LoginPage } from '@/pages/LoginPage';
+import { PlaceSelectPage } from '@/pages/PlaceSelectPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { SignupPage } from '@/pages/SignupPage';
 import { TripDetailPage } from '@/pages/TripDetailPage';
 import { TripListPage } from '@/pages/TripListPage';
 
 import { AppState, IPageConstructor } from '../model';
-import { PlaceSelectPage } from '@/pages/PlaceSelectPage';
 
 export type Route = {
     href: string;

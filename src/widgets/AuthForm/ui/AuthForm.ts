@@ -1,20 +1,25 @@
 import './style.scss';
 
+import { LoginFields, LoginPayload } from '@/pages/LoginPage/model/types';
+import { SignUpFields, SignUpPayload } from '@/pages/SignupPage/model/types';
+import { eventBus } from '@/shared/lib';
+import { BaseForm } from '@/shared/lib/component/BaseForm';
 import { Field } from '@/shared/ui';
 import { stringToElement } from '@/shared/utils';
 
 import { AuthFormProps } from '../model/types';
 import template from './AuthForm.hbs?compiled';
 
-export class AuthForm {
-    private element?: HTMLElement;
-    private fields: Record<string, Field> = {};
+export class AuthForm extends BaseForm<LoginPayload | SignUpPayload> {
+    declare children: Record<string, Field>;
 
     constructor(private props: AuthFormProps) {
-        this.props.fields.forEach((fieldProps) => {
+        super();
+
+        props.fields.forEach((fieldProps) => {
             const fieldName = fieldProps.attributes?.name;
             if (fieldName) {
-                this.fields[fieldName] = new Field({
+                this.children[fieldName] = new Field({
                     ...fieldProps,
                     className: 'auth-form__field',
                 });
@@ -22,38 +27,12 @@ export class AuthForm {
         });
     }
 
-    private handleSubmit = async (event: Event): Promise<void> => {
-        const target = event.target;
-        if (!(target instanceof HTMLFormElement)) {
-            return;
-        }
-
-        event.preventDefault();
-        this.clearErrors();
-
-        const formData = new FormData(target);
-        await this.props.onSubmit(this, formData);
+    protected override handleSubmit = (data: LoginFields | SignUpFields): void => {
+        eventBus.emit(this.props.submitEventName, { instance: this, data });
     };
 
-    public setFieldError(field: string, message: string): void {
-        if (field in this.fields) {
-            this.fields[field].setError(message);
-        }
-    }
-
-    public clearErrors(): void {
-        Object.values(this.fields).forEach((field) => field.clearError());
-    }
-
-    public render(): HTMLElement {
+    protected _render(): HTMLElement {
         this.element = stringToElement(template(this.props));
-
-        Object.entries(this.fields).forEach(([name, field]) => {
-            this.element?.querySelector(`[data-slot="${name}"]`)
-                ?.replaceWith(field.render());
-        });
-
-        this.element?.addEventListener('submit', this.handleSubmit);
 
         return this.element;
     }

@@ -1,5 +1,6 @@
 import './style.scss';
 
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
 import { formatHours, stringToElement, WorkingHour } from '@/shared/utils';
 
 import { WorkingHoursProps } from '../model/types';
@@ -15,13 +16,10 @@ const workingHours: WorkingHour[] = [
     { day: 6, start: '11:00', end: '18:00' },
 ];
 
-export class WorkingHours {
-    element?: HTMLElement;
+export class WorkingHours extends BaseComponent {
+    constructor(private props: WorkingHoursProps) { super(); }
 
-    constructor(private props: WorkingHoursProps) { }
-
-    public render(): HTMLElement {
-
+    protected override _render(): HTMLElement {
         return stringToElement(template({
             ...this.props,
             workingHours: formatHours(workingHours),

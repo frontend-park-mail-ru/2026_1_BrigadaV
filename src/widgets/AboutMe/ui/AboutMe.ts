@@ -1,22 +1,20 @@
 import './style.scss';
 
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
 import { formatDate, stringToElement } from '@/shared/utils';
 
 import { AboutMeProps } from '../model/types';
 import template from './AboutMe.hbs?compiled';
-import { IComponent } from '@/shared/model';
 
-export class AboutMe implements IComponent {
-    private element?: HTMLElement;
+export class AboutMe extends BaseComponent {
+    constructor(private props: AboutMeProps) { super(); }
 
-    constructor(private props: AboutMeProps) { }
-
-    public render(): HTMLElement {
-        this.element = stringToElement(template({
+    protected override _render(): HTMLElement {
+        return stringToElement(template({
             ...this.props,
-            ...formatDate(this.props.user.createdAt),
-            hasSuggested: !this.props.user.about,
+            ...formatDate(this.props.joinDate),
+            noSuggested: this.props.hasAbout,
+            // noSuggested: this.props.hasAbout & this.props.hasReviews
         }));
-        return this.element;
     }
 }

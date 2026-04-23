@@ -4,7 +4,7 @@
   <section class="{{s 'attraction-meta'}}">
     <h1 class="{{s 'attraction-meta__name'}}">{{place.name}}</h1>
     <div class="{{s 'attraction-meta__rating'}}">
-      <h3 class="{{s 'attraction-meta__rating-value'}}">{{place.rating}}</h3>
+      <h3 class="{{s 'attraction-meta__rating-value'}}" style="--rating: {{place.rating}}">{{place.rating}}</h3>
       <span class="{{s 'attraction-meta__review-count'}}">{{reviewCount}}</span>
     </div>
     <div data-slot="like-button"></div>

@@ -11,8 +11,8 @@
                 "./src/*"
             ]
         },
-
         "forceConsistentCasingInFileNames": true,
         "strict": true,
+        "noImplicitOverride": true
     }
 }

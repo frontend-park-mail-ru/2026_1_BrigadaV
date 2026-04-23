@@ -2,13 +2,13 @@
 
 <main class="{{s 'main'}}">
   <section class="{{s 'user-profile'}}">
-    <div data-slot="bio"></div>
-    <button class="{{s 'user-profile__edit'}}" command="show-modal" commandfor="{{settingsModalId}}">Редактировать профиль</button>
+    <div data-slot="user-bio"></div>
+    <button class="{{s 'user-profile__edit'}}" command="show-modal" commandfor="{{settingsModalId}}">Редактировать
+      профиль</button>
     <div data-slot="navigation"></div>
   </section>
 
   <div data-slot="active-section" class="js-active-section"></div>
-
 </main>
 
 <div data-slot="settings-modal"></div>

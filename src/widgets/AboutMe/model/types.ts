@@ -1,6 +1,7 @@
-import { UserAuth } from '@/entities/User';
 
 export type AboutMeProps = {
-    user: User;
-    modalId: string;
+    id: string;
+    hasAbout: boolean;
+    hasReviews: boolean;
+    joinDate: Date;
 }

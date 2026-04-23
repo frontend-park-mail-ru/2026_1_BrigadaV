@@ -1,5 +1,5 @@
-import { AppState, IPage } from '@/shared/model';
-import { injectComponents } from '@/shared/utils';
+import { BasePage } from '@/shared/lib/page/BasePage';
+import { AppState } from '@/shared/model';
 import { Header } from '@/widgets/Header';
 import { Hero } from '@/widgets/Hero';
 import { RecommendedList } from '@/widgets/RecommendedList';
@@ -7,13 +7,16 @@ import { RecommendedList } from '@/widgets/RecommendedList';
 import template from './LandingPage.hbs?compiled';
 import styles from './style.module.scss';
 
-export class LandingPage implements IPage {
-    private element?: HTMLElement;
-    private header?: Header;
-    private hero?: Hero;
-    private recommendedList?: RecommendedList;
+export class LandingPage extends BasePage {
+    protected template = template;
+    protected styles = styles;
+    protected pageClassName = 'landing-page';
 
-    private constructor(private appState: AppState) {}
+    declare children: {
+        header: Header,
+        hero: Hero,
+        recommendedList: RecommendedList,
+    };
 
     public static async create(appState: AppState): Promise<LandingPage> {
         const page = new LandingPage(appState);
@@ -22,36 +25,16 @@ export class LandingPage implements IPage {
     }
 
     private setupComponents() {
-        this.header = new Header({
-            userSessionProps: {
-                user: this.appState.currentUser
-            }
-        });
+        this.children = {
+            header: new Header({
+                user: this.appState.currentUser,
+            }),
 
-        this.hero = new Hero();
+            hero: new Hero(),
 
-        this.recommendedList = new RecommendedList({
-            user: this.appState.currentUser
-        });
-    }
-
-    public render(): HTMLElement {
-        this.element = document.createElement('div');
-        const html = template({ styles });
-
-        this.element.classList.add(styles['landing-page']);
-        this.element.innerHTML = html;
-
-        injectComponents(this.element, {
-            'header': this.header,
-            'hero': this.hero,
-            'recommended-list': this.recommendedList,
-        });
-
-        return this.element;
-    }
-
-    public destroy(): void {
-        this.header?.destroy();
+            recommendedList: new RecommendedList({
+                authorized: Boolean(this.appState.currentUser),
+            }),
+        };
     }
 }

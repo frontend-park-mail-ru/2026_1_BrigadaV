@@ -1,26 +1,23 @@
-import { Place } from '@/entities/Place/model/types';
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
 import { stringToElement } from '@/shared/utils';
 
 import { PlacePlacardProps } from '../model/types';
 import template from './PlacePlacard.hbs?compiled';
 import styles from './style.module.scss';
 
-export class PlacePlacard {
-    element?: HTMLElement;
+export class PlacePlacard extends BaseComponent {
+    constructor(private props: PlacePlacardProps) { super(); }
 
-    constructor(private props: PlacePlacardProps) { }
-
-    private get place(): Place {
+    private get place() {
         return this.props.place;
     }
 
-    public render(): HTMLElement {
-        this.element = stringToElement(template({
+    protected override _render(): HTMLElement {
+        const element = stringToElement(template({
             ...this.props,
             styles,
         }));
-        this.element.style.setProperty('--rating', this.place.rating.toString());
-
-        return this.element;
+        element.style.setProperty('--rating', this.place.rating.toString());
+        return element;
     }
 }

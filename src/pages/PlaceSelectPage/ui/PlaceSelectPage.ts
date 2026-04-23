@@ -1,102 +1,76 @@
-import styles from './style.module.scss';
-import template from './PlaceSelectPage.hbs?compiled';
-import { AppState, IPage } from '@/shared/model';
-import { Header } from '@/widgets/Header';
-import { AnotherPlaceList } from '@/widgets/AnotherPlaceList';
-import { injectComponents } from '@/shared/utils';
-import { PlaceSelectPageParams } from '../model/types';
-import { eventBus } from '@/shared/lib';
-import { AddButton } from '@/shared/ui/AddButton';
-import { API } from '@/shared/api';
-import { Toast } from '@/shared/ui/Toast';
+import { fetchAddedPlaces } from '@/entities/Place';
+import { Callback } from '@/shared/lib/eventBus/eventBus';
+import { BasePage } from '@/shared/lib/page/BasePage';
+import { AppState } from '@/shared/model';
 import { Field } from '@/shared/ui';
+import { injectHandlerContext } from '@/shared/utils/lib/injectHandlerContext';
+import { Header } from '@/widgets/Header';
+import { PlaceSelectList } from '@/widgets/PlaceSelectList';
 
-export class PlaceSelectPage implements IPage {
-    private element?: HTMLElement;
-    private filter?: Field;
-    private header?: Header;
-    private placeList?: AnotherPlaceList;
+import { handlePlaceAdd } from '../handlers/handlePlaceAdd';
+import { handlePlaceRemove } from '../handlers/handlePlaceRemove';
+import { PlaceSelectPageParams } from '../model/types';
+import template from './PlaceSelectPage.hbs?compiled';
+import styles from './style.module.scss';
+
+export class PlaceSelectPage extends BasePage {
+    protected override template = template;
+    protected override styles = styles;
+    protected override pageClassName = 'place-select-page';
+
+    declare children: {
+        header: Header;
+        filter: Field;
+        placeList: PlaceSelectList;
+    };
+
+    protected override get eventHandlers(): Record<string, Callback> {
+        return {
+            'PlaceCard:add': injectHandlerContext(handlePlaceAdd, { tripId: this.tripId, addedPlaces: this.addedPlaces }),
+            'PlaceCard:remove': injectHandlerContext(handlePlaceRemove, { tripId: this.tripId, addedPlaces: this.addedPlaces }),
+        };
+    }
+
     private addedPlaces!: Set<number>;
-
-    private constructor(private appState: AppState, private tripId: number) { }
+    private tripId!: number;
 
     public static async create(appState: AppState, parameters: PlaceSelectPageParams) {
-        const page = new PlaceSelectPage(appState, parameters.tripId);
+        const page = new PlaceSelectPage(appState);
 
-        page.addedPlaces = new Set(await API.getAddedPlaces(parameters.tripId));
+        page.addedPlaces = new Set(await fetchAddedPlaces(parameters.tripId));
+       
+        page.tripId = parameters.tripId;
 
         page.setupComponents();
         return page;
     }
 
     private setupComponents() {
-        this.header = new Header({
-            userSessionProps: {
+        this.children = {
+            header: new Header({
                 user: this.appState.currentUser,
-            }
-        });
+            }),
 
-        this.placeList = new AnotherPlaceList({
-            addedPlaces: this.addedPlaces,
-        });
+            filter: new Field({
+                type: 'text',
+                rightIcon: '/icons/search.svg',
+                onRightIconClick: focus,
+                attributes: {
+                    placeholder: 'Введите название места',
+                    disabled: '',
+                }
+            }),
 
-        this.filter = new Field({
-            type: 'text',
-            rightIcon: '/icons/search.svg',
-            onRightIconClick: focus,
-            attributes: {
-                placeholder: 'Введите название места',
-                disabled: '',
-            }
-        });
+            placeList: new PlaceSelectList({
+                addedPlaces: this.addedPlaces,
+            }),
+        };
     }
 
-    private initListeners() {
-        eventBus.on('PlaceCard:add', this.handleAdd);
-        eventBus.on('PlaceCard:remove', this.handleRemove);
-    }
-
-    private handleAdd = async ({ placeId }: { placeId: number }) => {
-        const success = await API.addPlaceToTrip(this.tripId, placeId, this.addedPlaces.size);
-        if (success) {
-            this.addedPlaces.add(placeId);
-            Toast({ message: 'Место добавлено', type: 'success' })
-        }
-    }
-
-    private handleRemove = async ({ placeId }: { placeId: number }) => {
-        const error = await API.removePlaceFromTrip(this.tripId, placeId);
-        if (!error) {
-            this.addedPlaces.delete(placeId);
-            Toast({ message: 'Место удалено', type: 'error' })
-        }
-    }
-
-    public render(): HTMLElement {
-        this.element = document.createElement('div');
-
-        const html = template({
+    protected override getTemplateData(): Record<string, any> {
+        return {
             styles,
-            tripId: this.tripId,
-        });
-
-        this.element.classList.add(styles['place-select-page']);
-        this.element.innerHTML = html;
-
-        injectComponents(this.element, {
-            'header': this.header,
-            'place-list': this.placeList,
-            'filter': this.filter,
-        });
-
-        this.initListeners();
-
-        return this.element;
-    }
-
-    public destroy(): void {
-        eventBus.off('PlaceCard:add', this.handleAdd);
-        eventBus.off('PlaceCard:remove', this.handleRemove);
-        this.header?.destroy();
+            tripId: this.tripId
+        };
     }
 }

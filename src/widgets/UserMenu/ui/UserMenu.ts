@@ -1,7 +1,8 @@
 import './style.scss';
 
-import { API } from '@/shared/api';
+import { logoutUser } from '@/entities/User';
 import { appState } from '@/shared/config';
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
 import { navigate } from '@/shared/router';
 import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 import { stringToElement } from '@/shared/utils';
@@ -9,12 +10,11 @@ import { stringToElement } from '@/shared/utils';
 import { UserMenuProps } from '../model/types';
 import template from './UserMenu.hbs?compiled';
 
-export class UserMenu {
-    private element?: HTMLElement;
+export class UserMenu extends BaseComponent {
+    constructor(private props: UserMenuProps) { super(); }
 
-    constructor(private props: UserMenuProps) { }
-
-    initListeners(): void {
+    protected override initListeners(): void {
+        super.initListeners();
         this.element?.addEventListener('click', this.handleClick);
     }
 
@@ -35,7 +35,7 @@ export class UserMenu {
                 });
 
                 if (confirmed) {
-                    await API.logout();
+                    await logoutUser();
                     appState.currentUser = null;
                     navigate(window.location.pathname);
                 }
@@ -57,9 +57,7 @@ export class UserMenu {
         this.element?.classList.toggle('user-menu--active');
     }
 
-    public render(): HTMLElement {
-        this.element = stringToElement(template(this.props));
-        this.initListeners();
-        return this.element;
+    protected override _render(): HTMLElement {
+        return stringToElement(template(this.props));
     }
 }

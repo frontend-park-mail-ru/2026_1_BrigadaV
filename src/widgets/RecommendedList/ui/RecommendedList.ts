@@ -1,69 +1,39 @@
 import './style.scss';
 
-import { mapPlace, PlaceCard } from '@/entities/Place';
-import { API } from '@/shared/api';
-import { stringToElement } from '@/shared/utils';
+import { PlaceCard } from '@/entities/Place';
+import { getPlaces } from '@/entities/Place/api';
+import { Place } from '@/entities/Place/model/types';
+import { BaseList } from '@/shared/lib/component/BaseList';
+import { IComponent } from '@/shared/model';
+import { LikeButton } from '@/shared/ui';
+import { getRandomElements } from '@/shared/utils';
 
 import { RecommendedListProps } from '../model/types';
-import template from './RecommendedList.hbs?compiled';
-import { LikeButton } from '@/shared/ui';
 
-export class RecommendedList {
-    private element?: HTMLElement;
-    private listContainer: HTMLElement | null = null;
+export class RecommendedList extends BaseList<Place, RecommendedListProps> {
+    protected listClassName = 'recommended-list';
+    protected itemClassName = 'recommended__item';
 
-    constructor(private props: RecommendedListProps) { }
-
-    private getRandom(array: unknown[], amount: number) {
-        if (array.length <= amount) return [...array];
-
-        const result = [...array];
-
-        for (let i = 0; i < amount; i++) {
-            const randomIndex = Math.floor(Math.random() * (result.length - i)) + i;
-            [result[i], result[randomIndex]] = [result[randomIndex], result[i]];
-        }
-
-        return result.slice(0, amount);
-    }
-
-    private async loadPlaces(): Promise<void> {
+    protected async loadData() {
         try {
-            const placesData = await API.getPlaces();
-            const authorized = this.props.user !== null;
+            const places = await getPlaces();
+            return getRandomElements(places, 8);
 
-            const places = this.getRandom(placesData, 8).map(mapPlace);
+        } catch { }
 
-            places.forEach(place => {
-                const card = new PlaceCard({
-                    place,
-                    authorized,
-                    ...(authorized && {
-                        actionComponent: new LikeButton({ isLiked: place.isLiked })
-                    })
-                });
-
-                const li = document.createElement('li');
-                li.className = 'recommended__item';
-                li.appendChild(card.render());
-
-                // TODO Сразу создавать listContainer с анимацией загрузки
-                this.listContainer?.appendChild(li);
-            });
-
-        } catch {
-            // TODO Добавить empty state для карточек
-        }
+        return [];
     }
 
-    public render(): HTMLElement {
-        this.element = stringToElement(template());
-        this.listContainer = this.element.querySelector('[data-slot="list-container"]');
+    protected getItemId(place: Place): number {
+        return place.id;
+    }
 
-        if (this.listContainer) {
-            this.loadPlaces();
-        }
-
-        return this.element;
+    protected createItemComponent(place: Place): IComponent {
+        return new PlaceCard({
+            place,
+            ...(this.props.authorized && {
+                action: new LikeButton({ isLiked: place.isLiked })
+            })
+        });
     }
 }

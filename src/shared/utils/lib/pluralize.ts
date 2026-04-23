@@ -10,4 +10,4 @@ type wordForms = {
 export const pluralize = (number: number, forms: wordForms): string => {
     const rule = pluralRules.select(number) as keyof wordForms;
     return forms[rule] || forms.many;
-}
+};

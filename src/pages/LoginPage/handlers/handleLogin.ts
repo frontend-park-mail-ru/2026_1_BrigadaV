@@ -1,25 +1,21 @@
-import { mapUserAuth } from '@/entities/User';
-import { API, ApiError } from '@/shared/api';
+import { loginUser } from '@/entities/User';
+import { ApiError } from '@/shared/api';
 import { appState } from '@/shared/config';
 import { navigate } from '@/shared/router';
+import { Toast } from '@/shared/ui/Toast';
 import { AuthForm } from '@/widgets/AuthForm';
 
-import { LoginFormData } from '../model/types';
-import { Toast } from '@/shared/ui/Toast';
+import { LoginPayload } from '../model/types';
 
-export const handleSubmit = async (instance: AuthForm, data: FormData) => {
-    const rawData = Object.fromEntries(data) as LoginFormData;
-
-    const { login, password } = rawData;
-
+export const handleLogin = async ({ instance, data }: { instance: AuthForm, data: LoginPayload }) => {
     try {
-        const result = mapUserAuth(await API.login(login, password));
+        const result = await loginUser(data);
         appState.currentUser = result;
         navigate('/');
 
     } catch (error) {
         if (!(error instanceof ApiError) || error.error === 'SERVER_ERROR') {
-            Toast({message: 'Наблюдаются проблемы со входом. Попробуйте зайти позже'})
+            Toast({ message: 'Наблюдаются проблемы со входом. Попробуйте зайти позже' });
         }
 
         instance.setFieldError('password', 'Введен неверный логин или пароль');

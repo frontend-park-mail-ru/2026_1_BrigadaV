@@ -4,3 +4,5 @@ export type TripBannerProps = {
     className?: string;
     trip: Trip;
 }
+
+export type TripBannerPayload = Pick<Trip, 'id'>;

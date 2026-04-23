@@ -1,26 +1,48 @@
-import { TripCardProps } from '@/entities/Trip';
-import { eventBus } from '@/shared/lib';
-import { AppState, IPage } from '@/shared/model';
-import { injectComponents } from '@/shared/utils';
+import { TripCardPayload } from '@/entities/Trip/ui/TripCard/model/types';
+import { Callback } from '@/shared/lib/eventBus/eventBus';
+import { BasePage } from '@/shared/lib/page/BasePage';
+import { AppState } from '@/shared/model';
+import { injectHandlerContext } from '@/shared/utils/lib/injectHandlerContext';
 import { CreateTripDialog } from '@/widgets/CreateTripDialog';
 import { EditTripDialog, EditTripInitValues } from '@/widgets/EditTripDialog';
 import { Header } from '@/widgets/Header';
 import { UserTripList } from '@/widgets/UserTripList';
 
+import { handleTripCreate } from '../handlers/handleTripCreate';
+import { handleTripDelete } from '../handlers/handleTripDelete';
+import { handleTripUpdate } from '../handlers/handleTripUpdate';
 import styles from './style.module.scss';
 import template from './TripListPage.hbs?compiled';
-import { API } from '@/shared/api';
 
 const CREATE_TRIP_DIALOG_ID = 'create-trip';
 
-export class TripListPage implements IPage {
-    private element?: HTMLElement;
-    private header?: Header;
-    private createTripDialog?: CreateTripDialog;
-    private userTripList?: UserTripList;
-    private editTripDialog?: EditTripDialog;
+export class TripListPage extends BasePage {
+    protected override template = template;
+    protected override styles = styles;
+    protected override pageClassName = 'trip-list-page';
 
-    private constructor(private appState: AppState) { }
+    declare children: {
+        header: Header;
+        createTripDialog: CreateTripDialog;
+        editTripDialog: EditTripDialog;
+        userTripList: UserTripList;
+    };
+
+    protected override get eventHandlers(): Record<string, Callback> {
+        return {
+            'TripCard:open-edit': this.handleEditOpen,
+            'CreateTripDialog:submit': injectHandlerContext(handleTripCreate, { tripList: this.children.userTripList }),
+            'EditTripDialog:submit': injectHandlerContext(handleTripUpdate, { tripList: this.children.userTripList }),
+            'EditTripDialog:delete': injectHandlerContext(handleTripDelete, { tripList: this.children.userTripList }),
+        };
+    }
+
+    protected override getTemplateData(): Record<string, any> {
+        return {
+            createTripDialogId: CREATE_TRIP_DIALOG_ID,
+            styles,
+        };
+    }
 
     public static async create(appState: AppState): Promise<TripListPage> {
         const page = new TripListPage(appState);
@@ -29,128 +51,60 @@ export class TripListPage implements IPage {
     }
 
     private setupComponents() {
-        this.header = new Header({
-            userSessionProps: {
+        this.children = {
+            header: new Header({
                 user: this.appState.currentUser,
-            },
-        });
+            }),
 
-        this.createTripDialog = new CreateTripDialog({
-            id: CREATE_TRIP_DIALOG_ID,
-            user: this.user,
-        });
+            createTripDialog: new CreateTripDialog({
+                id: CREATE_TRIP_DIALOG_ID,
+            }),
 
-        this.userTripList = new UserTripList({
-            user: this.user,
-        });
+            editTripDialog: new EditTripDialog({
+                modalId: 'trip-edit',
+            }),
 
-        this.editTripDialog = new EditTripDialog({
-            id: 'trip-edit',
-            user: this.user,
-        });
+            userTripList: new UserTripList(),
+        };
     }
 
-    private get user() {
-        return this.appState.currentUser!;
-    }
-
-    private initListeners(): void {
-        eventBus.on('TripCard:edit', this.handleTripEdit);
-        eventBus.on('CreateTripDialog:submit', this.handleTripCreate);
-        eventBus.on('EditTripDialog:submit', this.handleTripUpdate);
-        eventBus.on('EditTripDialog:delete', this.handleTripDelete);
-    }
-
-    private handleTripEdit = ({ trip }: TripCardProps): void => {
-        if (!this.editTripDialog) return;
-
+    private handleEditOpen = (data: TripCardPayload): void => {
         const editData: EditTripInitValues = {
-            tripId: trip.id,
-            title: trip.title,
-            location: trip.location,
-            startDate: trip.startDate,
-            endDate: trip.endDate,
-            description: trip.description,
+            id: data.id,
+            title: data.title,
+            location: data.location,
+            startDate: data.startDate,
+            endDate: data.endDate,
+            description: data.description,
         };
 
-        this.editTripDialog.show(editData);
+        this.children.editTripDialog.show(editData);
     };
 
-    private handleTripCreate = async ({ instance, data }: {
-        instance: CreateTripDialog,
-        data: FormData
-    }): Promise<void> => {
-        const success = await API.createTrip({ title: data.title, location: data.location, isPublic: false });
+    // private handleTripCreate = async ({ instance, data }: {
+    //     instance: CreateTripDialog,
+    //     data: FormData
+    // }): Promise<void> => {
+    // }
 
-        if (success) {
-            this.userTripList?.addTrip('afterbegin', {
-                id: success.id,
-                title: data.title,
-                location: data.location,
-            })
-            instance.close();
-        }
-    }
+    // private handleTripUpdate = async ({ instance, data, tripId }: {
+    //     instance: CreateTripDialog,
+    //     data: FormData
+    // }): Promise<void> => {
 
-    private handleTripUpdate = async ({ instance, data, tripId }: {
-        instance: CreateTripDialog,
-        data: FormData
-    }): Promise<void> => {
+    //     const success = await API.updateTrip(tripId, data.title, data.description, data.location, new Date(data['start-date']), new Date(data['end-date']));
 
-        const success = await API.updateTrip(tripId, data.title, data.description, data.location, new Date(data['start-date']), new Date(data['end-date']));
+    //     if (success.message === 'ok') {
+    //         this.userTripList?.updateTrip(tripId, {
+    //             id: tripId,
+    //             title: data.title,
+    //             description: data.description,
+    //             location: data.location,
+    //             startDate: new Date(data['start-date']),
+    //             endDate: new Date(data['end-date']),
+    //         })
+    //         instance.close();
+    //     }
+    // }
 
-        if (success.message === 'ok') {
-            this.userTripList?.updateTrip(tripId, {
-                id: tripId,
-                title: data.title,
-                description: data.description,
-                location: data.location,
-                startDate: new Date(data['start-date']),
-                endDate: new Date(data['end-date']),
-            })
-            instance.close();
-        }
-    }
-
-    private handleTripDelete = async ({ instance, tripId }: {
-        instance: CreateTripDialog,
-    }): Promise<void> => {
-        const error = await API.deleteTrip(tripId);
-
-        if (!error) {
-            this.userTripList?.removeTrip(tripId);
-            instance.close();
-        }
-    }
-
-    public render(): HTMLElement {
-        this.element = document.createElement('div');
-
-        const html = template({
-            createTripDialogId: CREATE_TRIP_DIALOG_ID,
-            styles,
-        });
-
-        this.element.classList.add(styles['trip-list-page']);
-        this.element.innerHTML = html;
-
-        injectComponents(this.element, {
-            'header': this.header,
-            'create-trip-dialog': this.createTripDialog,
-            'user-trip-list': this.userTripList,
-            'edit-trip-dialog': this.editTripDialog,
-        });
-
-        this.initListeners();
-
-        return this.element;
-    }
-
-    public destroy(): void {
-        eventBus.off('TripCard:edit', this.handleTripEdit);
-        eventBus.off('CreateTripDialog:submit', this.handleTripCreate);
-        eventBus.off('EditTripDialog:submit', this.handleTripUpdate);
-        eventBus.off('EditTripDialog:delete', this.handleTripDelete);
-        this.header?.destroy();
-    }
 }

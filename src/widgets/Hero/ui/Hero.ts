@@ -1,30 +1,29 @@
 import './style.scss';
 
 import { SearchBar } from '@/features/SearchBar';
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
 import { stringToElement } from '@/shared/utils';
 
 import template from './Hero.hbs?compiled';
 
-export class Hero {
-    private element?: HTMLElement;
-    private searchBar?: SearchBar;
+export class Hero extends BaseComponent {
+    declare protected children: {
+        searchBar: SearchBar;
+    };
 
     constructor() {
-        this.searchBar = new SearchBar({
-            className: 'hero__search',
-            withButton: true,
-            placeholder: 'Куда бы вы хотели отправиться?',
-        });
+        super();
+
+        this.children = {
+            searchBar: new SearchBar({
+                className: 'hero__search',
+                withButton: true,
+                placeholder: 'Куда бы вы хотели отправиться?',
+            })
+        };
     }
 
-    public render(): HTMLElement {
-        this.element = stringToElement(template());
-
-        if (this.searchBar) {
-            this.element.querySelector('[data-slot="search-bar"]')
-                ?.replaceWith(this.searchBar.render());
-        }
-
-        return this.element;
+    protected override _render(): HTMLElement {
+        return stringToElement((template()));
     }
 }

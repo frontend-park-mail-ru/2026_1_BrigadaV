@@ -1,43 +1,53 @@
-import { SettingsModal } from "@/widgets/SettingsModal";
-import { SettingsModalFormData } from "../model/types";
-import { eventBus, validateEmail, validateNickname, validatePassword } from "@/shared/lib";
-import { API } from "@/shared/api";
-import { User } from "@/entities/User";
+import { UpdateRequest, updateUser, uploadAvatar, User } from '@/entities/User';
+import { eventBus, validateAvatar, validateNickname } from '@/shared/lib';
+import { SettingsModal } from '@/widgets/SettingsModal';
+import { SettingsModalPayload } from '@/widgets/SettingsModal/model/types';
 
-export const handleSubmit = async (instance: SettingsModal, data: FormData, user: User): Promise<void> => {
-    const rawData = Object.fromEntries(data) as SettingsModalFormData;
-    const { avatar, nickname, login, password, 'password-repeat': passwordRepeat, city, about } = rawData;
+export const handleSettingsUpdate = async ({ instance, data, user }: { instance: SettingsModal, data: SettingsModalPayload, user: User }): Promise<void> => {
+    const { avatar, nickname, login, city, about } = data;
 
-    if (!validateNickname(nickname)) {
+    if (nickname && !validateNickname(nickname)) {
         instance.setFieldError('nickname', 'Ник должен быть длиной от 3 до 50 символов');
         return;
     }
 
-    const patch = {};
+    // TODO wait for backend to update their API to return user login
+    // if (login && !validateEmail(login)) {
+    //     instance.setFieldError('login', 'Некорректный формат email');
+    //     return;
+    // }
 
-    if (user.nickname !== nickname) {
-        patch.nickname = nickname;
-    }
-
-    if (user.city !== city) {
-        patch.city = city;
-    }
-
-    if (user.about !== about) {
-        patch.about = about;
-    }
-
-    if (Object.keys(patch).length === 0) {
-        instance.close();
+    if (avatar?.size && !validateAvatar(avatar)) {
+        // TODO Toast the error
         return;
     }
 
-    try {
-        const result = await API.updateUser(patch);
-        if (result) {
-            instance.close();
-            eventBus.emit('user:update', { nickname, city, about })
-        }
-    } catch {
+    let avatarPromise: Promise<string | void> = Promise.resolve();
+    const patch = {} as UpdateRequest;
+
+    if (avatar?.size) {
+        avatarPromise = uploadAvatar(avatar);
     }
+
+    if (user.nickname !== nickname) patch.nickname = nickname;
+    // if (user.login !== login) patch.login = login;
+    if (user.city !== city) patch.city = city;
+    if (user.about !== about) patch.about = about;
+
+
+    try {
+        const [newAvatarUrl, userResult] = await Promise.all([
+            avatarPromise,
+            Object.keys(patch).length > 0 ? updateUser(patch) : Promise.resolve(null)
+        ]);
+
+
+        if (newAvatarUrl || userResult) {
+            instance.close();
+            eventBus.emit('user:update', {
+                ...patch,
+                ...(newAvatarUrl ? { avatar: newAvatarUrl } : {})
+            });
+        }
+    } catch { }
 };

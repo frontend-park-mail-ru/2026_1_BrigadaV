@@ -1,19 +1,28 @@
 import { togglePasswordVisibility } from '@/shared/lib';
-import { AppState, IPage } from '@/shared/model';
-import { injectComponents } from '@/shared/utils';
+import { BasePage } from '@/shared/lib/page/BasePage';
+import { AppState } from '@/shared/model';
 import { AuthForm } from '@/widgets/AuthForm';
 import { Header } from '@/widgets/Header';
 
-import { handleSubmit } from '../handlers/handleLogin';
+import { handleLogin } from '../handlers/handleLogin';
 import template from './LoginPage.hbs?compiled';
 import styles from './style.module.scss';
 
-export class LoginPage implements IPage {
-    private element?: HTMLElement;
-    private header?: Header;
-    private loginForm?: AuthForm;
+export class LoginPage extends BasePage {
+    protected template = template;
+    protected styles = styles;
+    protected pageClassName = 'login-page';
 
-    private constructor(private appState: AppState) { }
+    declare children: {
+        header: Header;
+        loginForm: AuthForm;
+    };
+
+    protected override get eventHandlers() {
+        return {
+            'auth:login': handleLogin,
+        };
+    }
 
     public static async create(appState: AppState): Promise<LoginPage> {
         const page = new LoginPage(appState);
@@ -22,66 +31,47 @@ export class LoginPage implements IPage {
     }
 
     private setupComponents() {
-        this.header = new Header({
-            userSessionProps: {
+        this.children = {
+            header: new Header({
                 user: this.appState.currentUser,
                 authPrompt: {
                     prompt: 'Ещё нет аккаунта?',
                     href: '/sign-up',
                     buttonText: 'Регистрация'
                 }
-            }
-        });
+            }),
 
-        this.loginForm = new AuthForm({
-            className: styles['main__form'],
-            title: 'Вход в аккаунт',
-            submitText: 'Войти',
-            redirectText: 'Создать аккаунт',
-            redirectHref: '/sign-up',
-            fields: [{
-                id: 'login-input',
-                label: 'Введите почту',
-                type: 'email',
-                attributes: {
-                    name: 'login',
-                    placeholder: 'myemail@gmail.com',
-                    autocomplete: 'email',
-                    maxlength: 50,
-                },
-            }, {
-                id: 'password-input',
-                label: 'Введите пароль',
-                type: 'password',
-                attributes: {
-                    name: 'password',
-                    placeholder: '********',
-                    autocomplete: 'current-password',
-                    maxlength: 50,
-                },
-                rightIcon: '/icons/eye.svg',
-                onRightIconClick: togglePasswordVisibility,
-            }],
-            onSubmit: handleSubmit
-        });
-    }
-
-    public render(): HTMLElement {
-        this.element = document.createElement('div');
-        const html = template({ styles });
-
-        this.element.classList.add(styles['login-page']);
-        this.element.innerHTML = html;
-
-        injectComponents(this.element, {
-            'header': this.header,
-            'auth-form': this.loginForm,
-        });
-
-        return this.element;
-    }
-
-    public destroy(): void {
-        this.header?.destroy();
+            loginForm: new AuthForm({
+                className: styles['main__form'],
+                submitEventName: 'auth:login',
+                title: 'Вход в аккаунт',
+                submitText: 'Войти',
+                redirectText: 'Создать аккаунт',
+                redirectHref: '/sign-up',
+                fields: [{
+                    id: 'login-input',
+                    label: 'Введите почту',
+                    type: 'email',
+                    attributes: {
+                        name: 'login',
+                        placeholder: 'myemail@gmail.com',
+                        autocomplete: 'email',
+                        maxlength: 50,
+                    },
+                }, {
+                    id: 'password-input',
+                    label: 'Введите пароль',
+                    type: 'password',
+                    attributes: {
+                        name: 'password',
+                        placeholder: '********',
+                        autocomplete: 'current-password',
+                        maxlength: 50,
+                    },
+                    rightIcon: '/icons/eye.svg',
+                    onRightIconClick: togglePasswordVisibility,
+                }],
+            }),
+        };
     }
 }

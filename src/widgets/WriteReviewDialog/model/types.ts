@@ -1,8 +1,13 @@
-import { Place } from '@/entities/Place';
-import { WriteReviewDialog } from '../ui/WriteReviewDialog';
+import { PlaceSummary } from '@/entities/Place/model/types';
 
 export type WriteReviewDialogProps = {
     id: string;
-    place: Place;
-    onSubmit: (instance: WriteReviewDialog, data: FormData) => Promise<void>;
+    place: PlaceSummary;
 }
+
+export type WriteReviewFields = {
+    [K in 'title' | 'rating' | 'content' ]: string;
+};
+
+export type WriteReviewPayload = WriteReviewFields;
+

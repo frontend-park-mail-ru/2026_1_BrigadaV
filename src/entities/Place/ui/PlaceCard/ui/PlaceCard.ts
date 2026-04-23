@@ -1,28 +1,36 @@
 import './style.scss';
 
-import { formatNumber, injectComponents, stringToElement } from '@/shared/utils';
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
+import { IComponent } from '@/shared/model';
+import { formatNumber, stringToElement } from '@/shared/utils';
 
 import { PlaceCardProps } from '../model/types';
 import template from './PlaceCard.hbs?compiled';
-import { IComponent } from '@/shared/model';
 
-export class PlaceCard {
-    private element?: HTMLElement;
-    private actionElement?: IComponent;
+export class PlaceCard extends BaseComponent {
+    declare children: {
+        action?: IComponent;
+    };
 
-    constructor(private props: PlaceCardProps) {
-        this.actionElement = props.actionComponent;
+    private get place() {
+        return this.props.place;
     }
 
-    public render(): HTMLElement {
-        this.element = stringToElement(template({
-            ...this.props,
-            formattedPrice: this.props.place.price === 0 ? 'Бесплатно' : `от ${formatNumber(this.props.place.price)} ₽`,
-        }));
-        injectComponents(this.element, {
-            'action': this.actionElement,
-        })
+    constructor(private props: PlaceCardProps) {
+        super();
+        this.children = {
+            ...(props.action && { action: props.action }),
+        };
+    }
 
-        return this.element;
+    private formatPrice() {
+        return this.place.price === 0 ? 'Бесплатно' : `от ${formatNumber(this.place.price)} ₽`;
+    }
+
+    protected override _render(): HTMLElement {
+        return stringToElement(template({
+            ...this.props,
+            formattedPrice: this.formatPrice(),
+        }));
     }
 }

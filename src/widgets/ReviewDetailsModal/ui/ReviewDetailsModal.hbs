@@ -1,4 +1,4 @@
-<dialog class="{{s 'review-details'}}" id="{{id}}" closedby="any">
+<dialog class="{{s 'review-details'}}" id="{{modalId}}" closedby="any">
   <aside class="{{s 'review-details__aside'}}">
     {{> UserAvatar
       className=(s 'review-details__avatar')
@@ -16,7 +16,7 @@
     <h3 class="{{s 'review-details__title'}}" data-ref="title"></h3>
     <p class="{{s 'review-details__content'}}" data-ref="content"></p>
 
-    <button class="{{s 'review-details__show-all'}}" command="close" commandfor="{{id}}" data-ref="show-all-button">
+    <button class="{{s 'review-details__show-all'}}" command="close" commandfor="{{modalId}}" data-ref="show-all-button">
       Показать все <span data-ref="review-count"></span>
     </button>
   </section>

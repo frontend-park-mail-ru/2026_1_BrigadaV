@@ -1,35 +1,31 @@
-import './style.scss';
-
-import { AbstractList } from '@/shared/ui/AbstractList';
+import { BaseList } from '@/shared/lib/component/BaseList';
+import { IComponent } from '@/shared/model';
 
 import { GalleryProps } from '../model/types';
+import { GalleryImage } from './GalleryImage';
 
-export class Gallery extends AbstractList<HTMLImageElement, GalleryProps> {
+type PhotoEntity = { url: string; id: number };
+
+export class Gallery extends BaseList<PhotoEntity, GalleryProps> {
+    protected listClassName = 'gallery';
+    protected itemClassName = 'gallery__item';
+
     constructor(props: GalleryProps) {
         super(props);
-        this.element.classList.add('gallery');
     }
 
-    protected async loadData(): Promise<HTMLImageElement[]> {
-        const result = [];
-        for (const photo of this.props.photos) {
-            const image = new Image();
-            image.src = photo;
-
-            result.push(image);
-        }
-        return result;
+    protected async loadData(): Promise<PhotoEntity[]> {
+        return this.props.photos.map((url, index) => ({
+            url,
+            id: index
+        }));
     }
 
-    protected renderItem(item: HTMLImageElement): HTMLElement {
-        const li = document.createElement('li');
-        li.classList.add('gallery__item');
-        li.appendChild(item);
-
-        return li;
+    protected getItemId(item: PhotoEntity): number {
+        return item.id;
     }
 
-    public addAttribute(name: string, value: string): void {
-        this.element.setAttribute(name, value);
+    protected createItemComponent(item: PhotoEntity): IComponent {
+        return new GalleryImage(item.url);
     }
 }

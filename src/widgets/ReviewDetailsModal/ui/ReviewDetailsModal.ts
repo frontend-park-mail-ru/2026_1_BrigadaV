@@ -1,53 +1,44 @@
-import { formatDate, pluralize, stringToElement } from '@/shared/utils';
+import { eventBus } from '@/shared/lib';
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
+import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
+import { stringToElement } from '@/shared/utils';
 
 import { ReviewDetailsModalInitValues, ReviewDetailsModalProps } from '../model/types';
 import template from './ReviewDetailsModal.hbs?compiled';
 import styles from './style.module.scss';
-import { Review } from '@/entities/Review/model/types';
-import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 
-export class ReviewDetailsModal {
-    private review?: Review;
-    private element?: HTMLDialogElement;
+export class ReviewDetailsModal extends BaseComponent<HTMLDialogElement> {
+    private reviewId?: number;
     private fields: Record<string, HTMLElement> = {};
 
-    constructor(private props: ReviewDetailsModalProps) { }
+    constructor(private props: ReviewDetailsModalProps) { super(); }
 
-    // TODO add confirmation on form submit
-    public show(reviewInfo: ReviewDetailsModalInitValues): void {
+    public show({ data }: ReviewDetailsModalInitValues): void {
         if (!this.element) return;
 
-        if (this.fields['avatar'] instanceof HTMLImageElement && reviewInfo.review.author.avatar) {
-            this.fields['avatar'].src = reviewInfo.review.author.avatar;
+        if (this.fields['avatar'] instanceof HTMLImageElement) {
+            this.fields['avatar'].src = data.avatarUrl || '/icons/default-avatar.svg';
         }
 
-        const formattedDate = formatDate(reviewInfo.review.createdAt);
+        this.fields['author'].textContent = data.authorName;
+        this.fields['place-name'].textContent = data.placeName;
+        this.fields['date'].textContent = data.dateText;
+        this.fields['date'].setAttribute('datetime', data.dateIso);
+        this.fields['rating'].textContent = data.rating.toString();
+        this.fields['title'].textContent = data.title;
+        this.fields['content'].textContent = data.content;
+        this.fields['review-count'].textContent = data.reviewCountText;
 
-        this.fields['author'].textContent = reviewInfo.review.author.nickname;
-        this.fields['place-name'].textContent = reviewInfo.placeName;
-        this.fields['date'].textContent = formattedDate.date;
-        this.fields['date'].setAttribute('datetime', formattedDate.isoDate);
-        this.fields['rating'].textContent = reviewInfo.review.rating.toString();
-        this.fields['title'].textContent = reviewInfo.review.title;
-        this.fields['content'].textContent = reviewInfo.review.content || '';
-        this.fields['review-count'].textContent = `${reviewInfo.reviewCount} ${pluralize(reviewInfo.reviewCount, { one: 'отзыв', few: 'отзыва', many: 'отзывов' })}`;
+        this.reviewId = data.id;
 
-        this.review = reviewInfo.review;
-
-        this.element.style.setProperty('--rating', reviewInfo.review.rating.toString());
-
-        if (this.props.user) {
-            const isOwner = this.props.user.id === reviewInfo.review.author.id;
-            this.element.classList.toggle(styles['review-details--own'], isOwner);
-        }
+        this.element.style.setProperty('--rating', data.rating.toString());
+        this.element.classList.toggle(styles['review-details--own'], data.isOwner);
 
         this.element.showModal();
     }
 
-    private initFields(): void {
-        if (!this.element) return;
-
-        const refs = this.element.querySelectorAll<HTMLElement>('[data-ref]');
+    private initFields(element: HTMLDialogElement): void {
+        const refs = element.querySelectorAll<HTMLElement>('[data-ref]');
         refs.forEach((item) => {
             const key = item.getAttribute('data-ref');
             if (key) {
@@ -56,8 +47,10 @@ export class ReviewDetailsModal {
         });
     }
 
-    private initListeners(): void {
-        this.element?.querySelector('[data-ref="delete-button"]')?.addEventListener('click', this.handleDelete);
+    protected override initListeners(): void {
+        super.initListeners();
+        const deleteButton = this.element?.querySelector('[data-ref="delete-button"]');
+        deleteButton?.addEventListener('click', this.handleDelete);
     }
 
     private handleDelete = async (event: Event): Promise<void> => {
@@ -70,23 +63,21 @@ export class ReviewDetailsModal {
         });
 
         if (confirmed) {
-            await this.props.onDelete(this, this.review?.id!);
+            eventBus.emit('ReviewDetailsModal:delete', { instance: this, data: { id: this.reviewId } });
         }
-    }
+    };
 
     public close(): void {
         this.element?.close();
     }
-    public render(): HTMLElement {
-        this.element = stringToElement<HTMLDialogElement>(template({
+
+    protected override _render(): HTMLDialogElement {
+        const element = stringToElement<HTMLDialogElement>(template({
             ...this.props,
             styles,
         }));
 
-        this.initFields();
-        this.initListeners();
-
-        return this.element;
+        this.initFields(element);
+        return element;
     }
-
 }

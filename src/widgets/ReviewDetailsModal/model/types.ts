@@ -1,15 +1,26 @@
-import { Review } from '@/entities/Review/model/types';
-import { UserAuth } from '@/entities/User';
-import { ReviewDetailsModal } from '../ui/ReviewDetailsModal';
+
+export type ReviewDetailsVM = {
+    id: number;
+    authorName: string;
+    avatarUrl?: string;
+    placeName: string;
+    dateText: string;
+    dateIso: string;
+    rating: number;
+    title: string;
+    content: string;
+    reviewCountText: string;
+    isOwner: boolean;
+}
 
 export type ReviewDetailsModalProps = {
-    id: string;
-    user: UserAuth | null;
-    onDelete: (instance: ReviewDetailsModal, reviewId: number) => Promise<void>;
+    modalId: string;
 }
 
 export type ReviewDetailsModalInitValues = {
-    review: Review;
-    placeName: string;
-    reviewCount: number;
+    data: ReviewDetailsVM;
+}
+
+export type ReviewDetailsModalPayload = {
+    id: number;
 }

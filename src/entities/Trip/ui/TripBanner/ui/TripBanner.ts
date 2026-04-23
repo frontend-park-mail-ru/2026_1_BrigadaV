@@ -1,25 +1,24 @@
-import { Trip } from '@/entities/Trip/model/types';
+import { eventBus } from '@/shared/lib';
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
 import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 import { formatDateRange, stringToElement } from '@/shared/utils';
 
 import { TripBannerProps } from '../model/types';
 import styles from './style.module.scss';
 import template from './TripBanner.hbs?compiled';
-import { eventBus } from '@/shared/lib';
 
-export class TripBanner {
-    element?: HTMLElement;
+export class TripBanner extends BaseComponent {
+    constructor(private props: TripBannerProps) { super(); }
 
-    constructor(private props: TripBannerProps) { }
-
-    private get trip(): Trip {
+    private get trip() {
         return this.props.trip;
     }
 
-    private initListeners(): void {
-        if (!this.element) return;
+    protected override initListeners(): void {
+        super.initListeners();
 
-        this.element.querySelector<HTMLButtonElement>('[data-delete-button]')?.addEventListener('click', this.handleDeleteButtonClick);
+        const deleteButton = this.element?.querySelector('[data-delete-button]');
+        deleteButton?.addEventListener('click', this.handleDeleteButtonClick);
     }
 
     private handleDeleteButtonClick = async (): Promise<void> => {
@@ -32,9 +31,9 @@ export class TripBanner {
         });
 
         if (confirmed) {
-            eventBus.emit('TripBanner:delete', this.trip.id);
+            eventBus.emit('TripBanner:delete', { id: this.trip.id });
         }
-    }
+    };
 
     private makeTemplateDates(): Record<string, string | boolean> {
         const { startDate, endDate } = this.trip;
@@ -53,14 +52,11 @@ export class TripBanner {
         };
     }
 
-    public render(): HTMLElement {
-        this.element = stringToElement(template({
+    protected override _render(): HTMLElement {
+        return stringToElement(template({
             ...this.props,
             ...this.makeTemplateDates(),
             styles,
         }));
-
-        this.initListeners();
-        return this.element;
     }
 }

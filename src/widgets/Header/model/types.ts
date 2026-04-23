@@ -1,6 +1,11 @@
-import { UserSessionProps } from '@/widgets/UserSession';
+import { UserSummary } from '@/entities/User';
 
 export type HeaderProps = {
-    userSessionProps: UserSessionProps;
+    user: Pick<UserSummary, 'nickname' | 'avatar'> | null;
     withSearch?: boolean;
+    authPrompt?: {
+        prompt: string;
+        buttonText: string;
+        href: string;
+    }
 }

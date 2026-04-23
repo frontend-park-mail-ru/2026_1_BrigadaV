@@ -1,8 +1,8 @@
-import { UserAuth } from '@/entities/User';
+import { UserSummary } from '@/entities/User';
 
 export type UserSessionProps = {
     className?: string;
-    user?: UserAuth | null;
+    user?: Pick<UserSummary, 'nickname' | 'avatar'> | null;
     authPrompt?: {
         prompt: string;
         buttonText: string;

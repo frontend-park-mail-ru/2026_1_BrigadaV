@@ -59,29 +59,3 @@
     }
 }
 
-.avatar-upload {
-    position: relative;
-    width: 128px;
-    height: 128px;
-    border-radius: 8px;
-    overflow: hidden;
-
-    &__overlay {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        padding: 1rem;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        background-color: hsl(0 0% 0% / 0.2);
-        opacity: 0;
-        transition: opacity $timing-animation-short;
-
-    }
-
-    &:hover &__overlay,
-    &:focus-visible &__overlay {
-        opacity: 1;
-    }
-}

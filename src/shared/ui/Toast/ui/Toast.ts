@@ -10,9 +10,9 @@ export const Toast = (props: ToastProps) => {
     document.body.appendChild(toast);
     toast.showPopover();
     setTimeout(() => fade(toast), 3000);
-}
+};
 
 const fade = (toast: HTMLElement) => {
     toast.style.opacity = '0';
-    setTimeout(() => toast.remove(), 300)
-}
+    setTimeout(() => toast.remove(), 300);
+};
