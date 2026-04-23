@@ -43,7 +43,10 @@ export class UserSession extends BaseComponent {
         if (!this.props.user) return;
 
         if (data.nickname) this.fields['nickname'].textContent = data.nickname;
-        if (data.avatar && this.fields['avatar'] instanceof HTMLImageElement) this.fields['avatar'].src = data.avatar;
+        if (data.avatar && this.fields['avatar'] instanceof HTMLImageElement) {
+            this.fields['avatar'].src = data.avatar;
+            this.fields['avatar'].classList.remove('avatar--default');
+        }
     };
 
     private handleGlobalClick = (event: Event): void => {

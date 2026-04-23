@@ -1,5 +1,6 @@
 import { UpdateRequest, updateUser, uploadAvatar, User } from '@/entities/User';
 import { eventBus, validateAvatar, validateNickname } from '@/shared/lib';
+import { resolveStaticPath } from '@/shared/utils';
 import { SettingsModal } from '@/widgets/SettingsModal';
 import { SettingsModalPayload } from '@/widgets/SettingsModal/model/types';
 
@@ -46,7 +47,7 @@ export const handleSettingsUpdate = async ({ instance, data, user }: { instance:
             instance.close();
             eventBus.emit('user:update', {
                 ...patch,
-                ...(newAvatarUrl ? { avatar: newAvatarUrl } : {})
+                ...(newAvatarUrl ? { avatar: resolveStaticPath(newAvatarUrl) } : {})
             });
         }
     } catch { }

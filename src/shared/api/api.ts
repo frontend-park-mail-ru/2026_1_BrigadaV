@@ -1,11 +1,14 @@
 import { ApiError } from './lib/ApiError';
 
-const API_URL = import.meta.env.DEV ? 'http://localhost:8080/api' : 'http://guidely.ru:8080/api';
+export const BACKEND_ORIGIN = import.meta.env.DEV
+    ? 'http://localhost:8080'
+    : 'http://guidely.ru:8080';
+
+export const API_URL = `${BACKEND_ORIGIN}/api`;
 
 let cachedCSRFToken: string | null = null;
 
 const getCSRFToken = async (): Promise<string> => {
-
     if (cachedCSRFToken) return cachedCSRFToken;
 
     try {

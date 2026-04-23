@@ -1,10 +1,20 @@
-import { User, UserAuth, UserSummary } from '../model/types';
-import { LoginDTO, RegisterDTO, UserDTO, UserSummaryDTO } from './types';
+import { resolveStaticPath } from '@/shared/utils';
+import {
+    User,
+    UserAuth,
+    UserSummary,
+} from '../model/types';
+import {
+    LoginDTO,
+    RegisterDTO,
+    UserDTO,
+    UserSummaryDTO,
+} from './types';
 
 export const mapUserSummary = (dto: UserSummaryDTO): UserSummary => ({
     id: dto.id,
     nickname: dto.nickname,
-    avatar: dto.avatar_url,
+    avatar: resolveStaticPath(dto.avatar_url),
 });
 
 export const mapUser = (dto: UserDTO): User => ({

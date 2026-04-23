@@ -47,8 +47,11 @@ export class UserBio extends BaseComponent {
         if (data.about) this.fields['about'].textContent = data.about;
 
         console.log(this.fields);
-        
-        if (data.avatar && this.fields['avatar'] instanceof HTMLImageElement) this.fields['avatar'].src = data.avatar;
+
+        if (data.avatar && this.fields['avatar'] instanceof HTMLImageElement) {
+            this.fields['avatar'].src = data.avatar;
+            this.fields['avatar'].classList.remove('avatar--default');
+        }
     };
 
     protected override _render(): HTMLElement {

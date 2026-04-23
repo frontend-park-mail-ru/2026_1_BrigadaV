@@ -1,8 +1,9 @@
 export { stringToElement } from './lib/stringToElement';
+export { pluralize } from './lib/pluralize';
 export { injectComponents } from './lib/injectComponents';
 export { formatDate, formatDateRange } from './lib/formatDate';
 export { formatNumber } from './lib/formatNumber';
-export { pluralize } from './lib/pluralize';
 export { getRandomElements } from './lib/getRandomElements';
-export {} from './lib/injectHandlerContext';
+export { injectHandlerContext } from './lib/injectHandlerContext'
+export { resolveStaticPath } from './lib/resolveStaticPath'
 export * from './lib/formatHours';
