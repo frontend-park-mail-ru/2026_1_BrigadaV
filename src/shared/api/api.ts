@@ -29,14 +29,15 @@ const getCSRFToken = async (): Promise<string> => {
 
 export const request = async <T = unknown>(path: string, options: RequestInit) => {
     const url = `${API_URL}${path}`;
-    // const needCSRF = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method);
+
+    const method = options.method?.toUpperCase() ?? 'GET';
+    const needCSRF = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method);
 
     const headers: HeadersInit = {
         'Content-Type': 'application/json',
-        // ...(needCSRF ? { 'X-CSRF-Token': await getCSRFToken() } : {}),
+        ...(needCSRF ? { 'X-CSRF-Token': await getCSRFToken() } : {}),
     };
 
-    const method = options.method?.toUpperCase() ?? 'GET';
 
     if (options.body instanceof FormData) {
         delete headers['Content-Type'];
