@@ -4,6 +4,7 @@ import { appState } from '../config';
 import { Route } from '../config/router';
 import { IPage } from '../model';
 import { findMatch } from './findMatch';
+import { UserAuth } from '@/entities/User';
 
 export type Match = {
     page: Route;
@@ -11,6 +12,8 @@ export type Match = {
 }
 
 let pageInstance: IPage | null = null;
+let currentMatch: Match | null = null;
+let currentUser: UserAuth | null = null;
 
 export const router = async (path = '/') => {
     const root = document.getElementById('root');
@@ -18,11 +21,21 @@ export const router = async (path = '/') => {
         return;
     }
 
+    const match: Match | null = findMatch(path);
+
+    const isSamePage = currentMatch && match &&
+        currentMatch.page === match.page &&
+        JSON.stringify(currentMatch.parameters) === JSON.stringify(match.parameters) &&
+        currentUser === appState.currentUser;
+
+    if (isSamePage) return;
+
     if (pageInstance) {
         pageInstance.destroy();
     }
 
-    const match: Match | null = findMatch(path);
+    currentMatch = match;
+    currentUser = appState.currentUser;
 
     let redirectPath: string | null = null;
 

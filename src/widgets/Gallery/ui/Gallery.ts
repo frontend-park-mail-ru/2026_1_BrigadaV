@@ -1,3 +1,5 @@
+import './style.scss';
+
 import { BaseList } from '@/shared/lib/component/BaseList';
 import { IComponent } from '@/shared/model';
 
@@ -27,5 +29,11 @@ export class Gallery extends BaseList<PhotoEntity, GalleryProps> {
 
     protected createItemComponent(item: PhotoEntity): IComponent {
         return new GalleryImage(item.url);
+    }
+
+    protected override _render(): HTMLUListElement | HTMLOListElement {
+        const element = super._render();
+        element.setAttribute('data-count', this.props.photos.length.toString());
+        return element;
     }
 }

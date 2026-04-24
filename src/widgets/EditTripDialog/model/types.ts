@@ -1,4 +1,4 @@
-import { Trip } from '@/entities/Trip/model/types';
+
 
 export type EditTripDialogProps = {
     modalId: string;

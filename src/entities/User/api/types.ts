@@ -30,6 +30,7 @@ export type UserSummaryDTO = {
     id: number;
     nickname: string;
     avatar_url?: string,
+    avatar?: string;
 }
 
 export type UserDTO = UserSummaryDTO & {

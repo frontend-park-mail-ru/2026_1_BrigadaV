@@ -3,7 +3,12 @@ import { request } from '@/shared/api';
 import { User, UserAuth } from '../model/types';
 import { mapUser, mapUserAuth } from './mappers';
 import {
-    LoginDTO, LoginRequest, RegisterDTO, RegisterRequest, UpdateRequest, UserDTO
+    LoginDTO,
+    LoginRequest,
+    RegisterDTO,
+    RegisterRequest,
+    UpdateRequest,
+    UserDTO
 } from './types';
 
 export const registerUser = async (data: RegisterRequest): Promise<UserAuth> => {

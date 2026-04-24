@@ -7,7 +7,7 @@ export type ReviewDTO = {
     author: UserSummaryDTO;
     place_id: number;
     rating: number;
-    title?: string;
+    title: string;
     content: string;
     visit_date?: string;
     createdAt: string;

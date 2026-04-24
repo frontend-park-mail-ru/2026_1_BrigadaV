@@ -54,36 +54,36 @@ export class CreateTripDialog extends BaseForm<CreateTripDialogFields, HTMLDialo
         let command: string | undefined;
 
         switch (true) {
-        case event.type === 'cancel':
-            command = 'close';
-            break;
-        case 'command' in event:
-            command = (event as CommandEvent).command;
-            break;
-        default: return;
+            case event.type === 'cancel':
+                command = 'close';
+                break;
+            case 'command' in event:
+                command = (event as CommandEvent).command;
+                break;
+            default: return;
         }
 
         event.preventDefault();
 
         switch (command) {
-        case 'show-modal':
-            this.element.showModal();
-            this.element.classList.add(styles['is-visible']);
-            break;
+            case 'show-modal':
+                this.element.showModal();
+                this.element.classList.add(styles['is-visible']);
+                break;
 
-        case 'close':
-            this.element.classList.remove(styles['is-visible']);
-
-            const handleTransitionEnd = (e: TransitionEvent) => {
-                    this.element!.close();
-            };
-            this.element.addEventListener('transitionend', handleTransitionEnd, { once: true });
-            break;
+            case 'close':
+                this.close();
+                break;
         }
     };
 
     public close(): void {
-        this.element?.close();
+        this.element?.classList.remove(styles['is-visible']);
+
+        const handleTransitionEnd = (e: TransitionEvent) => {
+            this.element?.close();
+        };
+        this.element?.addEventListener('transitionend', handleTransitionEnd, { once: true });
     }
 
     protected override handleSubmit(data: CreateTripDialogFields): void {

@@ -17,7 +17,9 @@ export class ReviewDetailsModal extends BaseComponent<HTMLDialogElement> {
         if (!this.element) return;
 
         if (this.fields['avatar'] instanceof HTMLImageElement) {
-            this.fields['avatar'].src = data.avatarUrl || '/icons/default-avatar.svg';
+            const hasAvatar = Boolean(data.avatarUrl);
+            this.fields['avatar'].src = hasAvatar ? data.avatarUrl! : '/icons/avatar.svg';
+            this.fields['avatar'].classList.toggle('avatar--default', !hasAvatar);
         }
 
         this.fields['author'].textContent = data.authorName;

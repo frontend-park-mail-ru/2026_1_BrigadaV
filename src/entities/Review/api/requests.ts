@@ -24,10 +24,8 @@ export const createReview = async (data: CreateReviewRequest) => {
     return await request('/reviews', {
         method: 'POST',
         body: JSON.stringify({
+            ...data,
             place_id: data.id,
-            title: data.title,
-            rating: data.rating,
-            content: data.content,
             visit_date: data.createdAt
         }),
     });

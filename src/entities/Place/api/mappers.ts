@@ -6,14 +6,10 @@ const resolveImage = (dto: PlaceBaseDTO): string | undefined => {
 };
 
 export const mapPlaceSummary = (dto: PlaceSummaryDTO): PlaceSummary => ({
-    id: dto.id,
-    name: dto.name,
-    description: dto.description,
+    ...dto,
     image: resolveImage(dto),
-    rating: dto.rating,
     price: dto.price / 100,
     isLiked: dto.is_liked,
-    reviewCount: dto.reviewCount,
 });
 
 export const mapPlace = (dto: PlaceDTO): Place => ({

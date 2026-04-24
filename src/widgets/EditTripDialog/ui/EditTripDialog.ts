@@ -4,7 +4,10 @@ import { Field, Textarea } from '@/shared/ui';
 import { stringToElement } from '@/shared/utils';
 
 import {
-    EditTripDialogFields, EditTripDialogProps, EditTripInitValues, UpdateTripPayload
+    EditTripDialogFields,
+    EditTripDialogProps,
+    EditTripInitValues,
+    UpdateTripPayload
 } from '../model/types';
 import template from './EditTripDialog.hbs?compiled';
 import styles from './style.module.scss';

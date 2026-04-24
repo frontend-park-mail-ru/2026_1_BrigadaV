@@ -29,6 +29,8 @@ export const handleSettingsUpdate = async ({ instance, data, user }: { instance:
     if (avatar?.size) {
         avatarPromise = uploadAvatar(avatar);
     }
+    console.log(user);
+    console.log(data);
 
     if (user.nickname !== nickname) patch.nickname = nickname;
     // if (user.login !== login) patch.login = login;

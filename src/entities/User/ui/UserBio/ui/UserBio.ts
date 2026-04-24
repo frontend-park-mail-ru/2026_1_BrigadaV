@@ -40,13 +40,10 @@ export class UserBio extends BaseComponent {
     }
 
     private update = (data: Partial<UserBioProps['user']>) => {
-        console.log(data);
 
         if (data.nickname) this.fields['nickname'].textContent = data.nickname;
         if (data.city) this.fields['location'].textContent = data.city;
         if (data.about) this.fields['about'].textContent = data.about;
-
-        console.log(this.fields);
 
         if (data.avatar && this.fields['avatar'] instanceof HTMLImageElement) {
             this.fields['avatar'].src = data.avatar;

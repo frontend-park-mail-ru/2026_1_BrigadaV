@@ -6,7 +6,7 @@
     top: 0;
     right: 0;
     display: flex;
-    width: 40vw;
+    width: clamp(300px, 90%, 500px);
     height: 100vh;
     max-height: none;
     margin: 0;

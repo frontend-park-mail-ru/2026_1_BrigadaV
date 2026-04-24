@@ -2,7 +2,7 @@
 @use '@/shared/styles/mixins' as *;
 
 .settings {
-    min-width: 70vw;
+    width: clamp(400px, 90%, 800px);
     padding: 2.25rem 9.75rem 4rem 4rem;
     background-color: $surface-0;
     border: none;
@@ -58,4 +58,3 @@
         @include button-secondary;
     }
 }
-
