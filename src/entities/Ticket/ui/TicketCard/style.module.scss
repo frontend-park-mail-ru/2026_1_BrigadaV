@@ -1,0 +1,50 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.5rem;
+  border: 1px solid $gray-150;
+  border-radius: 8px;
+  background: $white;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+  &:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+
+  &__meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  &__category {
+    @include typo-small;
+    color: $color-text-muted;
+  }
+
+  &__status {
+    @include typo-tiny;
+    padding: 2px 8px;
+    border-radius: 12px;
+    &--открыто { background: #ffeb3b; color: #333; }
+    &--в_работе { background: #64b5f6; color: #fff; }
+    &--закрыто { background: #81c784; color: #fff; }
+  }
+
+  &__title {
+    margin-bottom: 0.5rem;
+  }
+
+  &__body {
+    color: $color-text;
+    margin-bottom: 0.5rem;
+    white-space: pre-wrap;
+  }
+
+  &__date {
+    @include typo-small;
+    color: $color-text-muted;
+    align-self: flex-end;
+  }
+}

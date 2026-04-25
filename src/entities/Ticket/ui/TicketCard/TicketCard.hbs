@@ -1,0 +1,9 @@
+<article class="{{s 'card'}}" data-id="{{ticket.id}}">
+  <div class="{{s 'card__meta'}}">
+    <span class="{{s 'card__category'}}">{{category}}</span>
+    <span class="{{s 'card__status'}} {{s (concat 'card__status--' statusKey)}}">{{status}}</span>
+  </div>
+  <h4 class="{{s 'card__title'}}">{{ticket.title}}</h4>
+  <p class="{{s 'card__body'}}">{{ticket.body}}</p>
+  <time class="{{s 'card__date'}}" datetime="{{isoDate}}">{{date}}</time>
+</article>
