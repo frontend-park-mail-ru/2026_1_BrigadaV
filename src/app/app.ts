@@ -8,6 +8,8 @@ import { registerHandlebarsHelpers } from '@/shared/lib';
 import { navigate } from '@/shared/router';
 
 import { SupportWidget } from '@/widgets/SupportWidget';
+import { Footer } from '@/widgets/Footer';
+
 
 export const App = async () => {
     registerHandlebarsHelpers();
@@ -34,13 +36,14 @@ export const App = async () => {
         }
     });
 
-
-    
-    const supportWidget = new SupportWidget({ supportUrl: '/support' });
-    supportWidget.mountTo(document.body);
+//    const supportWidget = new SupportWidget({ supportUrl: '/support' });
+//    supportWidget.mountTo(document.body);
 
 // Если нужно передать ID пользователя, после авторизации:
 // supportModel.show(userId);
+
+    const footer = new Footer({ supportUrl: '/support' });
+    footer.mountTo(document.body);
 
     navigate(window.location.pathname);
 };
