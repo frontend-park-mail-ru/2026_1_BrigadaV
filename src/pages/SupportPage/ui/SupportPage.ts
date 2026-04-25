@@ -7,6 +7,8 @@ import { Ticket, TicketCategory, TicketStatus } from '../model/types';
 import { Field } from '@/shared/ui/Field';
 import template from './SupportPage.hbs?compiled';
 import styles from './style.module.scss';
+import { AppState } from '@/shared/model';
+
 
 interface State {
   tickets: Ticket[];
@@ -30,14 +32,18 @@ export class SupportPage extends BaseComponent {
   private descriptionField: Field | null = null;
   private categorySelect: HTMLSelectElement | null = null;
 
+  public static async create(appState: AppState): Promise<SupportPage> {
+    const page = new SupportPage(appState);
+    await page.loadTickets();      // грузим обращения до рендера
+    return page;
+  }
+
   constructor() {
     super();
-    this.loadTickets();
   }
 
   private async loadTickets() {
     this.state.isLoading = true;
-    this.rerender();
     try {
       this.state.tickets = await api.fetchTickets();
     } catch {
