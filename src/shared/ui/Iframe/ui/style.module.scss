@@ -18,7 +18,7 @@
     &--loading::before {
       content: '';
       width: 1.5rem; height: 1.5rem;
-      border: 3px solid $border-color;
+      border: 3px solid black;
       border-top-color: $guidely-primary;
       border-radius: 50%;
       animation: spin 1s linear infinite;

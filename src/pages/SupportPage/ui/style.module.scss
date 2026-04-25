@@ -23,14 +23,14 @@
     display: flex; flex-direction: column; gap: 0.5rem;
   }
   &__ticket {
-    border: 1px solid $border-color;
+    border: 1px solid black;
     padding: 0.75rem; border-radius: 4px;
     cursor: pointer;
     transition: background 0.2s;
     display: flex; align-items: center; gap: 0.5rem;
     &:hover { background: $surface-1; }
     &-category { font-weight: bold; white-space: nowrap; }
-    &-status { color: $text-muted; font-size: 0.9em; white-space: nowrap; }
+    &-status { color: $color-text-muted; font-size: 0.9em; white-space: nowrap; }
   }
   &__new-btn {
     margin-top: 1rem;
@@ -38,7 +38,7 @@
   }
   &__form, &__detail {
     margin-top: 1rem;
-    border: 1px solid $border-color;
+    border: 1px solid black;
     padding: 1rem; border-radius: 8px;
     label { display: block; margin-top: 0.75rem; }
     textarea { width: 100%; }
