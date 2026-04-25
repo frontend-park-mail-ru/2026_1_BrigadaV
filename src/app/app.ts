@@ -36,10 +36,8 @@ export const App = async () => {
 
 
     
-    if (appState.currentUser) {
-        const supportWidget = new SupportWidget({ supportUrl: '/support' });
-        supportWidget.mountTo(document.body);
-    }
+    const supportWidget = new SupportWidget({ supportUrl: '/support' });
+    supportWidget.mountTo(document.body);
 
 // Если нужно передать ID пользователя, после авторизации:
 // supportModel.show(userId);
