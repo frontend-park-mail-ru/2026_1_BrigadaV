@@ -9,7 +9,6 @@ import styles from './style.module.scss';
 
 export class ReviewDetailsModal extends BaseComponent<HTMLDialogElement> {
     private reviewId?: number;
-    private fields: Record<string, HTMLElement> = {};
 
     constructor(private props: ReviewDetailsModalProps) { super(); }
 
@@ -39,16 +38,6 @@ export class ReviewDetailsModal extends BaseComponent<HTMLDialogElement> {
         this.element.showModal();
     }
 
-    private initFields(element: HTMLDialogElement): void {
-        const refs = element.querySelectorAll<HTMLElement>('[data-ref]');
-        refs.forEach((item) => {
-            const key = item.getAttribute('data-ref');
-            if (key) {
-                this.fields[key] = item;
-            }
-        });
-    }
-
     protected override initListeners(): void {
         super.initListeners();
         const deleteButton = this.element?.querySelector('[data-ref="delete-button"]');
@@ -74,12 +63,9 @@ export class ReviewDetailsModal extends BaseComponent<HTMLDialogElement> {
     }
 
     protected override _render(): HTMLDialogElement {
-        const element = stringToElement<HTMLDialogElement>(template({
+        return stringToElement<HTMLDialogElement>(template({
             ...this.props,
             styles,
         }));
-
-        this.initFields(element);
-        return element;
     }
 }

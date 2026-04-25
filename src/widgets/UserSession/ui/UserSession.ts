@@ -18,8 +18,6 @@ export class UserSession extends BaseComponent {
         };
     }
 
-    private fields: Record<string, HTMLElement> = {};
-
     constructor(private props: UserSessionProps) {
         super();
 
@@ -32,13 +30,6 @@ export class UserSession extends BaseComponent {
         };
     }
 
-    private initFields(element: HTMLElement) {
-        const refs = element.querySelectorAll<HTMLElement>('[data-ref]');
-        refs.forEach((item) => {
-            const key = item.dataset.ref!;
-            this.fields[key] = item;
-        });
-    }
     private update = (data: Pick<UserSummary, 'nickname' | 'avatar'>) => {
         if (!this.props.user) return;
 
@@ -92,14 +83,10 @@ export class UserSession extends BaseComponent {
     }
 
     protected override _render(): HTMLElement {
-        const element = stringToElement(template({
+        return  stringToElement(template({
             ...this.props,
             styles
         }));
-
-        if (this.props.user) this.initFields(element);
-
-        return element;
     }
 
     public override destroy(): void {

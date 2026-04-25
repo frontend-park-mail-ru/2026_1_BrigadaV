@@ -19,6 +19,7 @@ import { handleReviewDelete } from '../handlers/handleReviewDelete';
 import { AttractionPageParameters } from '../model/types';
 import template from './AttractionPage.hbs?compiled';
 import styles from './style.module.scss';
+import { Review } from '@/entities/Review/model/types';
 
 const WRITE_REVIEW_DIALOG_ID = 'write-review';
 const REVIEW_DETAILS_MODAL_ID = 'review-details';
@@ -41,7 +42,10 @@ export class AttractionPage extends BasePage {
         return {
             'ReviewCard:show-details': this.handleShowDetails,
             'WriteReviewDialog:submit': injectHandlerContext(handleReviewCreate, { reviewList: this.children.reviewList, user: this.appState.currentUser, placeId: this.place.id }),
-            'ReviewDetailsModal:delete': injectHandlerContext(handleReviewDelete, { reviewList: this.children.reviewList }),
+            'ReviewDetailsModal:delete': handleReviewDelete,
+
+            'ReviewCreate:success': this.reviewSubmitUpdate,
+            'ReviewDelete:success': this.reviewSubmitUpdate,
         };
     }
 
@@ -100,7 +104,6 @@ export class AttractionPage extends BasePage {
     }
 
     private handleShowDetails = (data: ReviewCardPayload): void => {
-        const totalReviews = this.place.reviewCount;
         const formattedDate = formatDate(data.createdAt);
         const isOwner = this.appState.currentUser?.id === data.author.id;
 
@@ -115,23 +118,44 @@ export class AttractionPage extends BasePage {
                 rating: data.rating,
                 title: data.title,
                 content: data.content || '',
-                reviewCountText: `${totalReviews} ${pluralize(totalReviews, {
-                    one: 'отзыв',
-                    few: 'отзыва',
-                    many: 'отзывов'
-                })}`,
+                reviewCountText: this.makeReviewCountText(),
                 isOwner: isOwner
             }
         });
     };
 
+    private makeReviewCountText() {
+        return `${this.place.reviewCount} ${pluralize(this.place.reviewCount, { one: 'отзыв', few: 'отзыва', many: 'отзывов' })}`;
+    }
+
     protected override getTemplateData(): Record<string, any> {
         return {
             place: this.place,
-            reviewCount: `(${this.place.reviewCount} ${pluralize(this.place.reviewCount, { one: 'отзыв', few: 'отзыва', many: 'отзывов' })})`,
+            reviewCountText: `(${this.makeReviewCountText()})`,
             writeReviewDialogId: WRITE_REVIEW_DIALOG_ID,
             isAuth: Boolean(this.appState.currentUser),
             styles
         };
+    }
+
+    private reviewSubmitUpdate = async (data: { type: -1 | 1, newReview?: Review, reviewId?: number }) => {
+        this.place.reviewCount += data.type;
+
+        if (data.type === 1 && data.newReview) {
+            this.children.reviewList.addItem(data.newReview, 'afterbegin');
+            this.children.writeReviewDialog.close();
+
+        } else if (data.type === -1 && data.reviewId) {
+            this.children.reviewList.removeItem(data.reviewId);
+            this.children.reviewDetailsModal.close();
+        }
+
+        const place = await fetchPlace(this.place.id);
+        this.place = place;
+
+        this.fields['review-count'].textContent = `(${this.makeReviewCountText()})`;
+
+        this.fields['rating'].textContent = this.place.rating!.toString();
+        this.fields['rating'].style.setProperty('--rating', this.place.rating!.toString());
     }
 }

@@ -14,8 +14,6 @@ export class UserBio extends BaseComponent {
         };
     }
 
-    private fields: Record<string, HTMLElement> = {};
-
     private get user() {
         return this.props.user;
     }
@@ -31,14 +29,6 @@ export class UserBio extends BaseComponent {
         return location.join(', ');
     }
 
-    private initFields(element: HTMLElement) {
-        const refs = element.querySelectorAll<HTMLElement>('[data-ref]');
-        refs.forEach((item) => {
-            const key = item.dataset.ref!;
-            this.fields[key] = item;
-        });
-    }
-
     private update = (data: Partial<UserBioProps['user']>) => {
 
         if (data.nickname) this.fields['nickname'].textContent = data.nickname;
@@ -52,11 +42,9 @@ export class UserBio extends BaseComponent {
     };
 
     protected override _render(): HTMLElement {
-        const element = stringToElement(template({
+        return stringToElement(template({
             ...this.props,
             location: this.makeTemplateLocation(),
         }));
-        this.initFields(element);
-        return element;
     }
 }

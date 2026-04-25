@@ -1,5 +1,7 @@
 import { createReview } from '@/entities/Review/api';
+import { Review } from '@/entities/Review/model/types';
 import { UserAuth } from '@/entities/User';
+import { eventBus } from '@/shared/lib';
 import { Toast } from '@/shared/ui/Toast';
 import { ReviewList } from '@/widgets/ReviewList';
 import { WriteReviewDialog } from '@/widgets/WriteReviewDialog';
@@ -18,7 +20,7 @@ export const handleReviewCreate = async ({ instance, data, reviewList, user, pla
         const success = await createReview(newReviewData);
 
         if (success.message === 'ok') {
-            reviewList.addItem({
+            const newReview: Review = {
                 ...newReviewData,
                 id: success.id,
                 author: {
@@ -26,15 +28,15 @@ export const handleReviewCreate = async ({ instance, data, reviewList, user, pla
                     nickname: user.nickname,
                     avatar: user.avatar,
                 }
-            }, 'afterbegin');
-            instance.close();
+            }
+            eventBus.emit('ReviewCreate:success', { type: 1, newReview })
         }
     } catch (error) {
         let toastMessage = 'Произошла непредвиденная ошибка. Пожалуйста, повторите попытку позже.';
         switch (error.error) {
-        case 'rating must be between 1 and 5':
-            toastMessage = 'Оценка должна быть от 1 до 5';
-            break;
+            case 'rating must be between 1 and 5':
+                toastMessage = 'Оценка должна быть от 1 до 5';
+                break;
         }
 
         Toast({
