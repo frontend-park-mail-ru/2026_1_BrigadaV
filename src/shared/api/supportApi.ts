@@ -1,6 +1,6 @@
 import type { Ticket, TicketCategory, CreateTicketPayload } from '@/pages/SupportPage/model/types';
 
-const BASE = '/api/support/tickets'; // без слеша на конце
+const BASE = 'http://guidely.ru:8080/api/support/tickets'; // без слеша на конце
 
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
   const fullUrl = `${BASE}${url}`;
