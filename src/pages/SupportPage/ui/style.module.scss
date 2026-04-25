@@ -19,7 +19,14 @@
     text-align: center; padding: 2rem; font-style: italic;
   }
   &__error {
-    color: $color-status-error; margin-bottom: 1rem;
+    background: lightcoral;
+    border-radius: 4px;
+    color: darkred;
+  }
+   &__success {
+    background: lightgreen;
+    border-radius: 4px;
+    color: darkgreen;
   }
   &__list {
     display: flex; flex-direction: column; gap: 0.5rem;

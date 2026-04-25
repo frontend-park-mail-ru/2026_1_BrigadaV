@@ -10,7 +10,6 @@ import { AppState } from '@/shared/model';
 
 interface State {
   tickets: Ticket[];
-  successMessage: string | null;
 }
 
 export class SupportPage extends BasePage {
@@ -20,7 +19,6 @@ export class SupportPage extends BasePage {
 
   private state: State = {
     tickets: [],
-    successMessage: null,
   };
 
   private nameField: Field | null = null;
@@ -44,55 +42,97 @@ export class SupportPage extends BasePage {
       // список останется пустым
     }
   }
-private handleSubmit = async (e: Event) => {
-  e.preventDefault();
-  const form = e.target as HTMLFormElement;
-  const formData = new FormData(form);
-  const category = formData.get('category') as TicketCategory;
-  const name = formData.get('name') as string;
-  const email = formData.get('email') as string;
-  const description = formData.get('description') as string;
 
-  if (!category || !description.trim() || !name.trim() || !email.trim()) return;
+  private handleSubmit = async (e: Event) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const category = formData.get('category') as TicketCategory;
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const description = formData.get('description') as string;
 
-  // Формируем тело обращения, включая контактные данные
-  const body = `Имя: ${name}\nEmail: ${email}\n\n${description}`;
+    if (!category || !description.trim() || !name.trim() || !email.trim()) return;
 
-  // Тема – краткое описание категории или что-то общее
-  const subject = `Обращение: ${({ bug: 'Баг', feature: 'Предложение', complaint: 'Жалоба' }[category])}`;
+    const body = `Имя: ${name}\nEmail: ${email}\n\n${description}`;
+    const subject = `Обращение: ${({ bug: 'Баг', feature: 'Предложение', complaint: 'Жалоба' }[category])}`;
 
-  try {
-    const newTicket = await api.createTicket({ category, subject, body });
-    // Обновляем локальный список
-    this.state.tickets.unshift(newTicket);
-    this.state.successMessage = 'Обращение отправлено!';
-    // Очищаем поля
+    try {
+      const newTicket = await api.createTicket({ category, subject, body });
+      this.state.tickets.unshift(newTicket);
+      this.showMessage('Обращение отправлено!', true);
+      this.clearForm();
+      this.updateTicketList();
+    } catch {
+      this.showMessage('Не удалось отправить обращение. Попробуйте позже.', false);
+    }
+  };
+
+  private showMessage(text: string, isSuccess: boolean) {
+    const msgClass = isSuccess ? styles['support-page__success'] : styles['support-page__error'];
+    const existingMsg = this.element?.querySelector(`.${msgClass}`);
+    if (existingMsg) {
+      existingMsg.textContent = text;
+    } else {
+      const msgEl = document.createElement('div');
+      msgEl.className = msgClass;
+      msgEl.textContent = text;
+      const createSection = this.element?.querySelector('[data-ref="create-form"]')?.closest('.support-page__create-section');
+      if (createSection) {
+        createSection.after(msgEl);
+      } else {
+        this.element?.appendChild(msgEl);
+      }
+    }
+  }
+
+  private clearForm() {
     this.nameField?.setValue('');
     this.emailField?.setValue('');
     this.descriptionField?.setValue('');
-  } catch {
-    this.state.successMessage = 'Не удалось отправить обращение. Попробуйте позже.';
   }
-  this.refreshUI();
-};
+
+  private updateTicketList() {
+    if (this.state.tickets.length === 0) return;
+
+    let listContainer = this.element?.querySelector('[data-ref="ticket-list"]');
+    if (!listContainer) {
+      const mySection = document.createElement('div');
+      mySection.className = styles['support-page__my-tickets'];
+      mySection.innerHTML = `<h2>Мои обращения</h2><div class="${styles['support-page__list']}" data-ref="ticket-list"></div>`;
+      const createSection = this.element?.querySelector('[data-ref="create-form"]')?.closest('.support-page__create-section');
+      if (createSection) {
+        createSection.after(mySection);
+      } else {
+        this.element?.appendChild(mySection);
+      }
+      listContainer = mySection.querySelector('[data-ref="ticket-list"]');
+    }
+
+    if (listContainer) {
+      const categoryLabels: Record<TicketCategory, string> = {
+        bug: 'Баг',
+        feature: 'Предложение',
+        complaint: 'Жалоба',
+      };
+      listContainer.innerHTML = this.state.tickets
+        .map(
+          t => `
+          <div class="${styles['support-page__ticket']}">
+            <span class="${styles['support-page__ticket-category']}">[${categoryLabels[t.category] || t.category}]</span>
+            <span class="${styles['support-page__ticket-description']}">${t.body}</span>
+          </div>`
+        )
+        .join('');
+    }
+  }
 
   protected override _render(): HTMLElement {
-    const categoryLabels: Record<TicketCategory, string> = {
-      bug: 'Баг',
-      feature: 'Предложение',
-      complaint: 'Жалоба',
-    };
-
-    const ticketsWithLabels = this.state.tickets.map(t => ({
-      ...t,
-      categoryLabel: categoryLabels[t.category] || t.category,
-    }));
-
     return stringToElement(template({
       styles,
       s: styles,
-      tickets: ticketsWithLabels,
-      successMessage: this.state.successMessage,
+      tickets: [],   // список отрисуем динамически
+      successMessage: null,
     }));
   }
 
@@ -108,11 +148,7 @@ private handleSubmit = async (e: Event) => {
       this.nameField = new Field({
         type: 'text',
         label: 'Ваше имя',
-        attributes: {
-          name: 'name',
-          placeholder: 'Иван Петров',
-          required: 'true',
-        },
+        attributes: { name: 'name', placeholder: 'Иван Петров', required: 'true' },
       });
       nameContainer.appendChild(this.nameField.render());
     }
@@ -123,11 +159,7 @@ private handleSubmit = async (e: Event) => {
       this.emailField = new Field({
         type: 'email',
         label: 'Email для связи',
-        attributes: {
-          name: 'email',
-          placeholder: 'your@email.com',
-          required: 'true',
-        },
+        attributes: { name: 'email', placeholder: 'your@email.com', required: 'true' },
       });
       emailContainer.appendChild(this.emailField.render());
     }
@@ -138,20 +170,12 @@ private handleSubmit = async (e: Event) => {
       this.descriptionField = new Field({
         type: 'text',
         label: 'Описание проблемы',
-        attributes: {
-          name: 'description',
-          placeholder: 'Опишите проблему',
-          required: 'true',
-        },
+        attributes: { name: 'description', placeholder: 'Опишите проблему', required: 'true' },
       });
       descContainer.appendChild(this.descriptionField.render());
     }
-  }
 
-  private refreshUI() {
-  if (!this.element) return;
-  const oldEl = this.element;   // сохраняем текущий элемент
-  const newEl = this.render();  // render() создаёт новый элемент и записывает его в this.element
-  oldEl.replaceWith(newEl);     // заменяем старый элемент новым
-}
+    // Показать уже загруженные тикеты
+    this.updateTicketList();
+  }
 }
