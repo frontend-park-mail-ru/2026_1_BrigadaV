@@ -42,7 +42,7 @@ export class Iframe {
     if (this.isVisible) return;
     this.isVisible = true;
     if (this.currentSrc) this.state = 'loading';
-    this.rerender();
+    this.update();
   }
 
   hide() {
@@ -50,7 +50,7 @@ export class Iframe {
     this.isVisible = false;
     this.state = 'idle';
     this.iframe?.removeAttribute('src');
-    this.rerender();
+    this.update();
   }
 
   toggle() {
@@ -61,17 +61,17 @@ export class Iframe {
     if (url === this.currentSrc) return;
     this.currentSrc = url;
     this.state = url && this.isVisible ? 'loading' : 'idle';
-    if (this.element) this.rerender();
+    if (this.element) this.update();
   }
 
   private handleLoad = () => {
     this.state = 'success';
-    this.rerender();
+    this.update();
   };
 
   private handleError = () => {
     this.state = 'error';
-    this.rerender();
+    this.update();
   };
 
   private _render(): HTMLElement {
@@ -94,13 +94,23 @@ export class Iframe {
     this.iframe?.addEventListener('error', this.handleError);
   }
 
-  private rerender() {
+    private update() {
     if (!this.element) return;
-    const parent = this.element.parentElement;
-    if (!parent) return;
-    const newEl = this.render();
-    parent.replaceChild(newEl, this.element);
-    this.element = newEl;
-    this.attachListeners();
+    const wrapper = this.element;
+
+    const idleEl = wrapper.querySelector<HTMLElement>(`.${styles['state--idle']}`);
+    const loadingEl = wrapper.querySelector<HTMLElement>(`.${styles['state--loading']}`);
+    const errorEl = wrapper.querySelector<HTMLElement>(`.${styles['state--error']}`);
+    const iframeEl = wrapper.querySelector<HTMLIFrameElement>('iframe');
+
+    if (idleEl) idleEl.style.display = this.state === 'idle' ? '' : 'none';
+    if (loadingEl) loadingEl.style.display = this.state === 'loading' ? '' : 'none';
+    if (errorEl) errorEl.style.display = this.state === 'error' ? '' : 'none';
+
+    if (iframeEl) {
+      iframeEl.style.opacity = this.state === 'success' ? '1' : '0';
+    }
+
+    wrapper.style.display = this.isVisible ? '' : 'none';
   }
 }
