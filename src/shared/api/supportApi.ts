@@ -1,9 +1,11 @@
 import type { Ticket, TicketCategory, CreateTicketPayload } from '@/pages/SupportPage/model/types';
 
-const BASE = '/api/support/tickets';
+const BASE = '/api/support/tickets'; // без слеша на конце
 
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
-  const res = await fetch(`${BASE}${url}`, {
+  const fullUrl = `${BASE}${url}`;
+  console.log(`[supportApi] -> ${options?.method || 'GET'} ${fullUrl}`);
+  const res = await fetch(fullUrl, {
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     credentials: 'include',
     ...options,
@@ -16,25 +18,25 @@ async function request<T>(url: string, options?: RequestInit): Promise<T> {
 }
 
 export async function fetchTickets(): Promise<Ticket[]> {
-  const tickets = await request<any[]>('/');
-  // Преобразуем ответ сервера в наш тип (сервер отдаёт title, body, category_id, status_id)
+  const tickets = await request<any[]>('/');   // GET /api/support/tickets/
   return tickets.map(t => ({
     id: t.id,
-    category: mapCategoryId(t.category_id),   // добавим функцию ниже
+    category: mapCategoryId(t.category_id),
     title: t.title,
     body: t.body,
-    status: mapStatusId(t.status_id),         // строковый статус
+    status: mapStatusId(t.status_id),
     createdAt: t.created_at,
     updatedAt: t.updated_at,
   }));
 }
 
 export async function createTicket(payload: CreateTicketPayload): Promise<Ticket> {
-  const res = await request<any>('/', {
+  console.log('[supportApi] createTicket payload:', payload);
+  const res = await request<any>('/', {        // POST /api/support/tickets/
     method: 'POST',
     body: JSON.stringify({
-      category: payload.category,    // отправляем строкой, как ожидает сервер
-      title: payload.subject,        // сервер ждёт title
+      category: payload.category,
+      title: payload.subject,                 // сервер ожидает title
       body: payload.body,
     }),
   });
@@ -65,7 +67,6 @@ export async function updateTicketStatus(id: number, status: string): Promise<Ti
   };
 }
 
-// Вспомогательные функции маппинга ID в строки
 function mapCategoryId(id: number): TicketCategory {
   const map: Record<number, TicketCategory> = { 1: 'bug', 2: 'feature', 3: 'complaint' };
   return map[id] || 'bug';

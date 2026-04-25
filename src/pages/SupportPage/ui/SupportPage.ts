@@ -38,51 +38,57 @@ export class SupportPage extends BasePage {
   private async loadTickets() {
     try {
       this.state.tickets = await api.fetchTickets();
-    } catch {
-      // список останется пустым
+      this.updateTicketList();
+    } catch (err) {
+      console.error('[SupportPage] loadTickets error:', err);
     }
   }
 
-  private handleSubmit = async (e: Event) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
+  private sendForm = async () => {
+    const form = this.element?.querySelector('[data-ref="create-form"]') as HTMLFormElement;
+    if (!form) return;
     const formData = new FormData(form);
     const category = formData.get('category') as TicketCategory;
     const name = formData.get('name') as string;
     const email = formData.get('email') as string;
     const description = formData.get('description') as string;
 
-    if (!category || !description.trim() || !name.trim() || !email.trim()) return;
+    console.log('[SupportPage] sendForm values:', { category, name, email, description });
+
+    if (!category || !description.trim() || !name.trim() || !email.trim()) {
+      this.showMessage('Пожалуйста, заполните все поля', false);
+      return;
+    }
 
     const body = `Имя: ${name}\nEmail: ${email}\n\n${description}`;
     const subject = `Обращение: ${({ bug: 'Баг', feature: 'Предложение', complaint: 'Жалоба' }[category])}`;
 
     try {
+      console.log('[SupportPage] calling api.createTicket');
       const newTicket = await api.createTicket({ category, subject, body });
+      console.log('[SupportPage] ticket created:', newTicket);
       this.state.tickets.unshift(newTicket);
       this.showMessage('Обращение отправлено!', true);
       this.clearForm();
       this.updateTicketList();
-    } catch {
+    } catch (err) {
+      console.error('[SupportPage] createTicket error:', err);
       this.showMessage('Не удалось отправить обращение. Попробуйте позже.', false);
     }
   };
 
   private showMessage(text: string, isSuccess: boolean) {
     const msgClass = isSuccess ? styles['support-page__success'] : styles['support-page__error'];
-    const existingMsg = this.element?.querySelector(`.${msgClass}`);
-    if (existingMsg) {
-      existingMsg.textContent = text;
+    // удалим предыдущее сообщение, если есть
+    this.element?.querySelector(`.${msgClass}`)?.remove();
+    const msgEl = document.createElement('div');
+    msgEl.className = msgClass;
+    msgEl.textContent = text;
+    const createSection = this.element?.querySelector('.support-page__create-section');
+    if (createSection) {
+      createSection.after(msgEl);
     } else {
-      const msgEl = document.createElement('div');
-      msgEl.className = msgClass;
-      msgEl.textContent = text;
-      const createSection = this.element?.querySelector('[data-ref="create-form"]')?.closest('.support-page__create-section');
-      if (createSection) {
-        createSection.after(msgEl);
-      } else {
-        this.element?.appendChild(msgEl);
-      }
+      this.element?.appendChild(msgEl);
     }
   }
 
@@ -100,7 +106,7 @@ export class SupportPage extends BasePage {
       const mySection = document.createElement('div');
       mySection.className = styles['support-page__my-tickets'];
       mySection.innerHTML = `<h2>Мои обращения</h2><div class="${styles['support-page__list']}" data-ref="ticket-list"></div>`;
-      const createSection = this.element?.querySelector('[data-ref="create-form"]')?.closest('.support-page__create-section');
+      const createSection = this.element?.querySelector('.support-page__create-section');
       if (createSection) {
         createSection.after(mySection);
       } else {
@@ -131,7 +137,7 @@ export class SupportPage extends BasePage {
     return stringToElement(template({
       styles,
       s: styles,
-      tickets: [],   // список отрисуем динамически
+      tickets: [],
       successMessage: null,
     }));
   }
@@ -140,42 +146,46 @@ export class SupportPage extends BasePage {
     super.initListeners();
     const root = this.element!;
 
-    root.querySelector('[data-ref="create-form"]')?.addEventListener('submit', this.handleSubmit);
+    const submitBtn = root.querySelector('[data-ref="submit-btn"]');
+    if (submitBtn) {
+      console.log('[SupportPage] binding click on submit button');
+      submitBtn.addEventListener('click', () => this.sendForm());
+    } else {
+      console.error('[SupportPage] submit-btn not found!');
+    }
 
-    // Поле имени
+    // Поля ввода
     const nameContainer = root.querySelector('[data-ref="name-field"]');
     if (nameContainer) {
       this.nameField = new Field({
         type: 'text',
         label: 'Ваше имя',
-        attributes: { name: 'name', placeholder: 'Иван Петров', required: 'true' },
+        attributes: { name: 'name', placeholder: 'Иван Петров' },
       });
       nameContainer.appendChild(this.nameField.render());
     }
 
-    // Поле email
     const emailContainer = root.querySelector('[data-ref="email-field"]');
     if (emailContainer) {
       this.emailField = new Field({
         type: 'email',
         label: 'Email для связи',
-        attributes: { name: 'email', placeholder: 'your@email.com', required: 'true' },
+        attributes: { name: 'email', placeholder: 'your@email.com' },
       });
       emailContainer.appendChild(this.emailField.render());
     }
 
-    // Поле описания
     const descContainer = root.querySelector('[data-ref="description-field"]');
     if (descContainer) {
       this.descriptionField = new Field({
         type: 'text',
         label: 'Описание проблемы',
-        attributes: { name: 'description', placeholder: 'Опишите проблему', required: 'true' },
+        attributes: { name: 'description', placeholder: 'Опишите проблему' },
       });
       descContainer.appendChild(this.descriptionField.render());
     }
 
-    // Показать уже загруженные тикеты
+    // Показываем уже загруженные тикеты (если есть)
     this.updateTicketList();
   }
 }

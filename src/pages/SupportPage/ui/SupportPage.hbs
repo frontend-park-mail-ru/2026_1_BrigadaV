@@ -5,7 +5,7 @@
     <h2 class="{{s 'support-page__title'}}">Новое обращение</h2>
     <form data-ref="create-form">
       <label>Категория:</label>
-      <select data-ref="category-select">
+      <select data-ref="category-select" name="category">
         <option value="bug">Баг</option>
         <option value="feature">Предложение</option>
         <option value="complaint">Жалоба</option>
@@ -15,7 +15,7 @@
       <div data-ref="email-field"></div>
       <div data-ref="description-field"></div>
 
-      <button type="submit">Отправить</button>
+      <button type="button" data-ref="submit-btn">Отправить</button>
     </form>
   </div>
 
