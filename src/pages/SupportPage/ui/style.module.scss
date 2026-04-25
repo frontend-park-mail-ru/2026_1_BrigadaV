@@ -1,0 +1,47 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
+.support-page {
+  padding: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+  color: $text-primary;
+  font-family: inherit;
+
+  &__title { @include typo-h2; }
+  &__filters {
+    display: flex; gap: 1rem; margin-bottom: 1.5rem;
+    select { padding: 0.5rem; border-radius: 4px; }
+  }
+  &__loader {
+    text-align: center; padding: 2rem; font-style: italic;
+  }
+  &__error {
+    color: $color-error; margin-bottom: 1rem;
+  }
+  &__list {
+    display: flex; flex-direction: column; gap: 0.5rem;
+  }
+  &__ticket {
+    border: 1px solid $border-color;
+    padding: 0.75rem; border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex; align-items: center; gap: 0.5rem;
+    &:hover { background: $surface-1; }
+    &-category { font-weight: bold; white-space: nowrap; }
+    &-status { color: $text-muted; font-size: 0.9em; white-space: nowrap; }
+  }
+  &__new-btn {
+    margin-top: 1rem;
+    @include button-primary;
+  }
+  &__form, &__detail {
+    margin-top: 1rem;
+    border: 1px solid $border-color;
+    padding: 1rem; border-radius: 8px;
+    label { display: block; margin-top: 0.75rem; }
+    textarea { width: 100%; }
+    button { margin-top: 1rem; margin-right: 0.5rem; }
+  }
+}

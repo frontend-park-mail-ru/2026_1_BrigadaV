@@ -7,6 +7,8 @@ import { SignupPage } from '@/pages/SignupPage';
 import { TripDetailPage } from '@/pages/TripDetailPage';
 import { TripListPage } from '@/pages/TripListPage';
 
+import { SupportPage } from '@/pages/SupportPage';
+
 import { AppState, IPageConstructor } from '../model';
 
 export type Route = {
@@ -63,7 +65,13 @@ export const config: Record<string, Route> = {
         hrefRegex: /^\/place-select\/(?<tripId>[0-9]+)$/,
         view: PlaceSelectPage,
         authOnly: true,
-    }
+    },
+    support: {
+        href: '/support',
+        hrefRegex: /^\/support$/,
+        view: SupportPage,
+        authOnly: true,
+},
 };
 
 export const appState: AppState = {

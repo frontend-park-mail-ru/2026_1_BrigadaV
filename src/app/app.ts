@@ -7,6 +7,16 @@ import { appState } from '@/shared/config';
 import { registerHandlebarsHelpers } from '@/shared/lib';
 import { navigate } from '@/shared/router';
 
+
+import { SupportWidget } from '@/widgets/SupportWidget/model/SupportWidget';
+// Инициализация виджета при старте
+const supportModel = new SupportWidgetModel();
+new SupportWidgetUI(supportModel);  // сам вставится в body
+
+// Если нужно передать ID пользователя, после авторизации:
+// supportModel.show(userId);
+
+
 export const App = async () => {
     registerHandlebarsHelpers();
 
