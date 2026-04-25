@@ -34,12 +34,11 @@ export const App = async () => {
         }
     });
 
-    const widgetRoot = document.getElementById('support-widget-root') || document.createElement('div');
-    widgetRoot.id = 'support-widget-root';
-    document.body.appendChild(widgetRoot);
-
+    const widgetRoot = document.getElementById('support-widget-root');
+    if (widgetRoot) {
     const supportWidget = new SupportWidget({ supportUrl: '/support' });
     supportWidget.mountTo(widgetRoot);
+}
 // Если нужно передать ID пользователя, после авторизации:
 // supportModel.show(userId);
 
