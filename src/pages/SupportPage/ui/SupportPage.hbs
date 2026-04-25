@@ -62,7 +62,7 @@
       <p><strong>Статус:</strong> {{statusName selectedTicket.status}}</p>
       <p><strong>Описание:</strong> {{selectedTicket.description}}</p>
       <button data-ref="close-detail">Закрыть</button>
-      {{#if (ne selectedTicket.status 'resolved')}}
+      {{#if canResolve}}
         <button data-ref="resolve-btn" data-ticket-id="{{selectedTicket.id}}">Отметить решённым</button>
       {{/if}}
     </div>

@@ -1,0 +1,18 @@
+<div class="{{s 'support-widget'}} {{#if isOpen}}{{s 'support-widget--open'}}{{/if}}">
+  {{#if isOpen}}
+    <div class="{{s 'support-widget__overlay'}}" data-ref="overlay"></div>
+    <div class="{{s 'support-widget__panel'}}">
+      <button class="{{s 'support-widget__close'}}" data-ref="close-btn" aria-label="Закрыть поддержку">
+        ✕
+      </button>
+      <div class="{{s 'support-widget__iframe-wrapper'}}" data-ref="iframe-wrapper">
+        <!-- Iframe будет вставлен сюда динамически -->
+      </div>
+    </div>
+  {{/if}}
+  <button class="{{s 'support-widget__trigger'}}" data-ref="trigger-btn" aria-label="Открыть поддержку">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+    </svg>
+  </button>
+</div>

@@ -7,15 +7,7 @@ import { appState } from '@/shared/config';
 import { registerHandlebarsHelpers } from '@/shared/lib';
 import { navigate } from '@/shared/router';
 
-
-import { SupportWidget } from '@/widgets/SupportWidget/model/SupportWidget';
-// Инициализация виджета при старте
-const supportModel = new SupportWidgetModel();
-new SupportWidgetUI(supportModel);  // сам вставится в body
-
-// Если нужно передать ID пользователя, после авторизации:
-// supportModel.show(userId);
-
+import { SupportWidget } from '@/widgets/SupportWidget';
 
 export const App = async () => {
     registerHandlebarsHelpers();
@@ -41,6 +33,16 @@ export const App = async () => {
             navigate(path);
         }
     });
+
+
+    
+    if (appState.currentUser) {
+        const supportWidget = new SupportWidget({ supportUrl: '/support' });
+        supportWidget.mountTo(document.body);
+    }
+
+// Если нужно передать ID пользователя, после авторизации:
+// supportModel.show(userId);
 
     navigate(window.location.pathname);
 };

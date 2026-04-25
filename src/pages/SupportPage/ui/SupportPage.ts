@@ -2,6 +2,7 @@ import './style.module.scss';
 
 import { BaseComponent } from '@/shared/lib/component/BaseComponent';
 import { stringToElement } from '@/shared/utils';
+import * as api from '@/shared/api/supportApi';
 import { Ticket, TicketCategory, TicketStatus } from '../model/types';
 import template from './SupportPage.hbs?compiled';
 import styles from './style.module.scss';
@@ -36,7 +37,7 @@ export class SupportPage extends BaseComponent {
     this.state.isLoading = true;
     this.rerender();
     try {
-      this.state.tickets = await api.fetchTickets();
+      this.state.tickets = await api.fetchTickets();          // запрос
     } catch {
       this.state.error = 'Не удалось загрузить обращения';
     } finally {
@@ -53,7 +54,6 @@ export class SupportPage extends BaseComponent {
     );
   }
 
-  // Обработчики
   private handleFilterCategory = (e: Event) => {
     this.state.filterCategory = (e.target as HTMLSelectElement).value as TicketCategory | '';
     this.rerender();
@@ -74,7 +74,7 @@ export class SupportPage extends BaseComponent {
     const description = formData.get('description') as string;
     if (!category || !description) return;
     try {
-      const newTicket = await api.createTicket({ category, description });
+      const newTicket = await api.createTicket({ category, description }); // реальный запрос
       this.state.tickets.unshift(newTicket);
       this.state.showCreateForm = false;
       this.rerender();
@@ -86,7 +86,7 @@ export class SupportPage extends BaseComponent {
   };
   private handleResolve = async (id: number) => {
     try {
-      await api.updateTicketStatus(id, 'resolved');
+      await api.updateTicketStatus(id, 'resolved');           // запрос
       const ticket = this.state.tickets.find(t => t.id === id);
       if (ticket) ticket.status = 'resolved';
       this.rerender();
@@ -105,14 +105,32 @@ export class SupportPage extends BaseComponent {
     this.rerender();
   };
 
-  // Рендеринг
   protected override _render(): HTMLElement {
     const filteredTickets = this.filtered();
+    const canResolve = this.state.selectedTicket && this.state.selectedTicket.status !== 'resolved';
+
     return stringToElement(template({
       styles,
       s: styles,
       ...this.state,
       filteredTickets,
+      canResolve,                                           // <-- вместо хелпера ne
+      categoryName: (cat: TicketCategory) => {              // <-- хелпер для названий категорий
+        const map: Record<TicketCategory, string> = {
+          bug: 'Баг',
+          feature: 'Предложение',
+          complaint: 'Жалоба',
+        };
+        return map[cat] || cat;
+      },
+      statusName: (st: TicketStatus) => {                   // <-- хелпер для названий статусов
+        const map: Record<TicketStatus, string> = {
+          new: 'Новое',
+          in_progress: 'В работе',
+          resolved: 'Решено',
+        };
+        return map[st] || st;
+      },
     }));
   }
 
@@ -126,16 +144,13 @@ export class SupportPage extends BaseComponent {
     root.querySelector('[data-ref="create-form"]')?.addEventListener('submit', this.submitCreate);
     root.querySelector('[data-ref="close-detail"]')?.addEventListener('click', this.closeDetail);
 
-    // Делегирование кликов по карточкам и кнопке "Решить"
     root.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
-      // Карточка
       const card = target.closest('[data-id]');
       if (card && !target.closest('button')) {
         const id = Number((card as HTMLElement).dataset.id);
         this.selectTicket(id);
       }
-      // Кнопка "Решить"
       if (target.matches('[data-ref="resolve-btn"]')) {
         const id = Number(target.dataset.ticketId);
         this.handleResolve(id);

@@ -1,6 +1,5 @@
 import './style.module.scss';
 
-import { BaseComponent } from '@/shared/lib/component/BaseComponent';
 import { stringToElement } from '@/shared/utils';
 import { IframeProps } from '../model/types';
 import template from './Iframe.hbs?compiled';
@@ -8,20 +7,31 @@ import styles from './style.module.scss';
 
 type IframeState = 'idle' | 'loading' | 'success' | 'error';
 
-export class Iframe extends BaseComponent {
+export class Iframe {
+  element: HTMLElement | null = null;
   private iframe: HTMLIFrameElement | null = null;
   private currentSrc: string;
   private isVisible: boolean;
   private state: IframeState = 'idle';
 
   constructor(private props: IframeProps) {
-    super();
     this.currentSrc = props.src || '';
     this.isVisible = props.visible ?? false;
     if (this.currentSrc && this.isVisible) this.state = 'loading';
+    this.element = this.render();
   }
 
-  // Управление видимостью
+  mountTo(container: HTMLElement) {
+    container.appendChild(this.element!);
+    this.attachListeners();
+  }
+
+  destroy() {
+    this.element?.remove();
+    this.element = null;
+    this.iframe = null;
+  }
+
   show() {
     if (this.isVisible) return;
     this.isVisible = true;
@@ -48,17 +58,17 @@ export class Iframe extends BaseComponent {
     if (this.element) this.rerender();
   }
 
-  // События iframe
   private handleLoad = () => {
     this.state = 'success';
     this.rerender();
   };
+
   private handleError = () => {
     this.state = 'error';
     this.rerender();
   };
 
-  protected override _render(): HTMLElement {
+  private render(): HTMLElement {
     return stringToElement(template({
       styles,
       s: styles,
@@ -72,8 +82,7 @@ export class Iframe extends BaseComponent {
     }));
   }
 
-  protected override initListeners() {
-    super.initListeners();
+  private attachListeners() {
     this.iframe = this.element?.querySelector('iframe') ?? null;
     this.iframe?.addEventListener('load', this.handleLoad);
     this.iframe?.addEventListener('error', this.handleError);
@@ -83,12 +92,9 @@ export class Iframe extends BaseComponent {
     if (!this.element) return;
     const parent = this.element.parentElement;
     if (!parent) return;
-    const newEl = this._render();
+    const newEl = this.render();
     parent.replaceChild(newEl, this.element);
     this.element = newEl;
-    // Перевесить обработчики
-    this.iframe = this.element?.querySelector('iframe') ?? null;
-    this.iframe?.addEventListener('load', this.handleLoad);
-    this.iframe?.addEventListener('error', this.handleError);
+    this.attachListeners();
   }
 }
