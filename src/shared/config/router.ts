@@ -70,7 +70,7 @@ export const config: Record<string, Route> = {
         href: '/support',
         hrefRegex: /^\/support$/,
         view: SupportPage,
-        authOnly: true,
+        authOnly: false,
 },
 };
 

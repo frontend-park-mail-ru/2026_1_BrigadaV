@@ -1,61 +1,39 @@
 <div class="{{s 'support-page'}}">
-  <h1 class="{{s 'support-page__title'}}">Техподдержка</h1>
-
-  <div class="{{s 'support-page__filters'}}">
-    <select data-ref="filter-category">
-      <option value="">Все категории</option>
-      <option value="bug">Баг</option>
-      <option value="feature">Предложение</option>
-      <option value="complaint">Жалоба</option>
-    </select>
-    <select data-ref="filter-status">
-      <option value="">Все статусы</option>
-      <option value="new">Новое</option>
-      <option value="in_progress">В работе</option>
-      <option value="resolved">Решено</option>
-    </select>
-  </div>
-
-  {{#if isLoading}}
-    <div class="{{s 'support-page__loader'}}">Загрузка...</div>
-  {{else}}
-    {{#if error}}
-      <div class="{{s 'support-page__error'}}">{{error}}</div>
-    {{/if}}
-
-    <div class="{{s 'support-page__list'}}" data-ref="ticket-list">
-      {{#each filteredTickets}}
-        <div class="{{s 'support-page__ticket'}}" data-id="{{id}}">
-          <span class="{{s 'support-page__ticket-category'}}">[{{categoryName category}}]</span>
-          <span>{{description}}</span>
-          <span class="{{s 'support-page__ticket-status'}}"> — {{statusName status}}</span>
-        </div>
-      {{/each}}
-    </div>
-  {{/if}}
+  <h1 class="{{s 'support-page__title'}}">Поддержка</h1>
 
   <div class="{{s 'support-page__create-section'}}">
-    <h2>Новое обращение</h2>
+    <h2 class="{{s 'support-page__title'}}">Новое обращение</h2>
     <form data-ref="create-form">
       <label>Категория:</label>
-      <select data-ref="category-select"></select>
+      <select data-ref="category-select">
+        <option value="bug">Баг</option>
+        <option value="feature">Предложение</option>
+        <option value="complaint">Жалоба</option>
+      </select>
 
+      <div data-ref="name-field"></div>
+      <div data-ref="email-field"></div>
       <div data-ref="description-field"></div>
 
       <button type="submit">Отправить</button>
     </form>
   </div>
 
-  {{#if selectedTicket}}
-    <div class="{{s 'support-page__detail'}}">
-      <h2>Обращение #{{selectedTicket.id}}</h2>
-      <p><strong>Категория:</strong> {{categoryName selectedTicket.category}}</p>
-      <p><strong>Статус:</strong> {{statusName selectedTicket.status}}</p>
-      <p><strong>Описание:</strong> {{selectedTicket.description}}</p>
-      <button data-ref="close-detail">Закрыть</button>
-      {{#if canResolve}}
-        <button data-ref="resolve-btn" data-ticket-id="{{selectedTicket.id}}">Отметить решённым</button>
-      {{/if}}
+  {{#if successMessage}}
+    <div class="{{s 'support-page__success'}}">{{successMessage}}</div>
+  {{/if}}
+
+  {{#if tickets.length}}
+    <div class="{{s 'support-page__my-tickets'}}">
+      <h2>Мои обращения</h2>
+      <div class="{{s 'support-page__list'}}">
+        {{#each tickets}}
+          <div class="{{s 'support-page__ticket'}}">
+            <span class="{{s 'support-page__ticket-category'}}">[{{categoryLabel}}]</span>
+            <span class="{{s 'support-page__ticket-description'}}">{{description}}</span>
+          </div>
+        {{/each}}
+      </div>
     </div>
   {{/if}}
 </div>

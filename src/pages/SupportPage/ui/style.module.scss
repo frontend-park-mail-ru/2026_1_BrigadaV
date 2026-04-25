@@ -3,12 +3,14 @@
 
 .support-page {
   padding: 1.5rem;
+  padding-top: 5rem;
+  padding-left: 3rem;
   max-width: 800px;
   margin: 0 auto;
   color: $guidely-primary;
   font-family: inherit;
 
-  &__title { @include typo-h2; }
+  &__title { @include typo-h3; }
   &__filters {
     display: flex; gap: 1rem; margin-bottom: 1.5rem;
     select { padding: 0.5rem; border-radius: 4px; }
@@ -34,7 +36,7 @@
   }
   &__new-btn {
     margin-top: 1rem;
-    @include button-primary;
+    @include button-oauth;
   }
   &__form, &__detail {
     margin-top: 1rem;
