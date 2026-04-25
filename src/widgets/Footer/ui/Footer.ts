@@ -11,6 +11,13 @@ export class Footer extends BaseComponent {
 
   constructor(private props: { supportUrl?: string } = {}) {
     super();
+    this.element = this._render();
+  }
+
+  // 👇 Добавлен mountTo для вставки в DOM
+  mountTo(container: HTMLElement) {
+    container.appendChild(this.element!);
+    this.initListeners();
   }
 
   protected override _render(): HTMLElement {
