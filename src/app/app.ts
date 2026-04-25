@@ -34,15 +34,12 @@ export const App = async () => {
         }
     });
 
-    if (!document.getElementById('support-widget-root')) {
-        const supportWidget = new SupportWidget({ supportUrl: '/support' });
-        // Временный контейнер для вставки
-        const container = document.createElement('div');
-        container.id = 'support-widget-root';
-        document.body.appendChild(container);
-        supportWidget.mountTo(container);
-    }
+    const widgetRoot = document.getElementById('support-widget-root') || document.createElement('div');
+    widgetRoot.id = 'support-widget-root';
+    document.body.appendChild(widgetRoot);
 
+    const supportWidget = new SupportWidget({ supportUrl: '/support' });
+    supportWidget.mountTo(widgetRoot);
 // Если нужно передать ID пользователя, после авторизации:
 // supportModel.show(userId);
 
