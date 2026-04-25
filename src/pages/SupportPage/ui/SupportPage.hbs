@@ -22,6 +22,7 @@
     {{#if error}}
       <div class="{{s 'support-page__error'}}">{{error}}</div>
     {{/if}}
+
     <div class="{{s 'support-page__list'}}" data-ref="ticket-list">
       {{#each filteredTickets}}
         <div class="{{s 'support-page__ticket'}}" data-id="{{id}}">
@@ -33,27 +34,17 @@
     </div>
   {{/if}}
 
-  <button class="{{s 'support-page__new-btn'}}" data-ref="new-ticket-btn">+ Новое обращение</button>
+  <div class="{{s 'support-page__create-section'}}">
+    <h2>Новое обращение</h2>
+    <form data-ref="create-form">
+      <label>Категория:</label>
+      <select data-ref="category-select"></select>
 
-  {{#if showCreateForm}}
-    <div class="{{s 'support-page__form'}}">
-      <h2>Создать обращение</h2>
-      <form data-ref="create-form">
-        <label>Категория:
-          <select name="category">
-            <option value="bug">Баг</option>
-            <option value="feature">Предложение</option>
-            <option value="complaint">Жалоба</option>
-          </select>
-        </label>
-        <label>Описание:
-          <textarea name="description" rows="4" required></textarea>
-        </label>
-        <button type="submit">Отправить</button>
-        <button type="button" data-ref="cancel-form">Отмена</button>
-      </form>
-    </div>
-  {{/if}}
+      <div data-ref="description-field"></div>
+
+      <button type="submit">Отправить</button>
+    </form>
+  </div>
 
   {{#if selectedTicket}}
     <div class="{{s 'support-page__detail'}}">
