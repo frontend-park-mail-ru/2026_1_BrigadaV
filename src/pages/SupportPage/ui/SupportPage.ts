@@ -44,32 +44,37 @@ export class SupportPage extends BasePage {
       // список останется пустым
     }
   }
+private handleSubmit = async (e: Event) => {
+  e.preventDefault();
+  const form = e.target as HTMLFormElement;
+  const formData = new FormData(form);
+  const category = formData.get('category') as TicketCategory;
+  const name = formData.get('name') as string;
+  const email = formData.get('email') as string;
+  const description = formData.get('description') as string;
 
-  private handleSubmit = async (e: Event) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const category = formData.get('category') as TicketCategory;
-    const name = formData.get('name') as string;
-    const email = formData.get('email') as string;
-    const description = formData.get('description') as string;
+  if (!category || !description.trim() || !name.trim() || !email.trim()) return;
 
-    if (!category || !description.trim() || !name.trim() || !email.trim()) return;
+  // Формируем тело обращения, включая контактные данные
+  const body = `Имя: ${name}\nEmail: ${email}\n\n${description}`;
 
-    try {
-      // Отправляем обращение (email и имя пока не используются в API, но добавим потом)
-      await api.createTicket({ category, description });
-      this.state.successMessage = 'Обращение отправлено!';
-      // Очищаем поля
-      this.nameField?.setValue('');
-      this.emailField?.setValue('');
-      this.descriptionField?.setValue('');
-      this.refreshUI();
-    } catch {
-      this.state.successMessage = 'Не удалось отправить обращение. Попробуйте позже.';
-      this.refreshUI();
-    }
-  };
+  // Тема – краткое описание категории или что-то общее
+  const subject = `Обращение: ${({ bug: 'Баг', feature: 'Предложение', complaint: 'Жалоба' }[category])}`;
+
+  try {
+    const newTicket = await api.createTicket({ category, subject, body });
+    // Обновляем локальный список
+    this.state.tickets.unshift(newTicket);
+    this.state.successMessage = 'Обращение отправлено!';
+    // Очищаем поля
+    this.nameField?.setValue('');
+    this.emailField?.setValue('');
+    this.descriptionField?.setValue('');
+  } catch {
+    this.state.successMessage = 'Не удалось отправить обращение. Попробуйте позже.';
+  }
+  this.refreshUI();
+};
 
   protected override _render(): HTMLElement {
     const categoryLabels: Record<TicketCategory, string> = {
@@ -144,11 +149,9 @@ export class SupportPage extends BasePage {
   }
 
   private refreshUI() {
-    if (!this.element) return;
-    const newEl = this.render();   // render() из BaseComponent
-    this.element.replaceWith(newEl);
-    // После replaceWith this.element указывает на старый удалённый элемент, но render() обновляет this.element
-    // Вручную обновим ссылку
-    this.element = newEl;
-  }
+  if (!this.element) return;
+  const oldEl = this.element;   // сохраняем текущий элемент
+  const newEl = this.render();  // render() создаёт новый элемент и записывает его в this.element
+  oldEl.replaceWith(newEl);     // заменяем старый элемент новым
+}
 }

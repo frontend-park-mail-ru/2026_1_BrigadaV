@@ -1,16 +1,17 @@
 export type TicketCategory = 'bug' | 'feature' | 'complaint';
-export type TicketStatus = 'new' | 'in_progress' | 'resolved';
 
 export interface Ticket {
   id: number;
-  category: TicketCategory;
-  description: string;
-  status: TicketStatus;
+  category: TicketCategory;   // строка (bug, feature, complaint)
+  title: string;               // тема
+  body: string;                // описание
+  status: 'new' | 'in_progress' | 'resolved';  // строковый статус
   createdAt: string;
   updatedAt: string;
 }
 
 export type CreateTicketPayload = {
   category: TicketCategory;
-  description: string;
+  subject: string;             // тема обращения
+  body: string;                // текст обращения
 };
