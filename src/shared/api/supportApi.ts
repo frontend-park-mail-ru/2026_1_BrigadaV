@@ -1,24 +1,16 @@
+import { API_URL, request as apiRequest } from '@/shared/api';
 import type { Ticket, TicketCategory, CreateTicketPayload } from '@/pages/SupportPage/model/types';
 
-const BASE = 'http://guidely.ru:8080/api/support/tickets'; // без слеша на конце
+const SUPPORT_PATH = '/support/tickets';
 
+// Обёртка над общей функцией request, добавляющая путь /support/tickets
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
-  const fullUrl = `${BASE}${url}`;
-  console.log(`[supportApi] -> ${options?.method || 'GET'} ${fullUrl}`);
-  const res = await fetch(fullUrl, {
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    credentials: 'include',
-    ...options,
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({ message: res.statusText }));
-    throw new Error(err.message || 'Request failed');
-  }
-  return res.json();
+  return apiRequest<T>(`${SUPPORT_PATH}${url}`, options);
 }
 
 export async function fetchTickets(): Promise<Ticket[]> {
-  const tickets = await request<any[]>('/');   // GET /api/support/tickets/
+  const tickets = await request<any[]>('/');
+  if (!tickets) return [];                               // защита от null
   return tickets.map(t => ({
     id: t.id,
     category: mapCategoryId(t.category_id),
@@ -32,14 +24,15 @@ export async function fetchTickets(): Promise<Ticket[]> {
 
 export async function createTicket(payload: CreateTicketPayload): Promise<Ticket> {
   console.log('[supportApi] createTicket payload:', payload);
-  const res = await request<any>('/', {        // POST /api/support/tickets/
+  const res = await request<any>('/', {
     method: 'POST',
     body: JSON.stringify({
       category: payload.category,
-      title: payload.subject,                 // сервер ожидает title
+      subject: payload.subject,   // ✅ теперь сервер получит "subject"
       body: payload.body,
     }),
   });
+
   return {
     id: res.id,
     category: mapCategoryId(res.category_id),
@@ -56,6 +49,7 @@ export async function updateTicketStatus(id: number, status: string): Promise<Ti
     method: 'PATCH',
     body: JSON.stringify({ status }),
   });
+
   return {
     id: res.id,
     category: mapCategoryId(res.category_id),
