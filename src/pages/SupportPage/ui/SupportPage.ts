@@ -1,6 +1,5 @@
 import './style.module.scss';
-
-import { BaseComponent } from '@/shared/lib/component/BaseComponent';
+import { BasePage } from '@/shared/lib/page/BasePage';
 import { stringToElement } from '@/shared/utils';
 import * as api from '@/shared/api/supportApi';
 import { Ticket, TicketCategory, TicketStatus } from '../model/types';
@@ -8,7 +7,6 @@ import { Field } from '@/shared/ui/Field';
 import template from './SupportPage.hbs?compiled';
 import styles from './style.module.scss';
 import { AppState } from '@/shared/model';
-
 
 interface State {
   tickets: Ticket[];
@@ -19,7 +17,11 @@ interface State {
   selectedTicket: Ticket | null;
 }
 
-export class SupportPage extends BaseComponent {
+export class SupportPage extends BasePage {
+  protected override template = template;
+  protected override styles = styles;
+  protected override pageClassName = 'support-page';
+
   private state: State = {
     tickets: [],
     filterCategory: '',
@@ -34,12 +36,12 @@ export class SupportPage extends BaseComponent {
 
   public static async create(appState: AppState): Promise<SupportPage> {
     const page = new SupportPage(appState);
-    await page.loadTickets();      // грузим обращения до рендера
+    await page.loadTickets();
     return page;
   }
 
-  constructor() {
-    super();
+  private constructor(appState: AppState) {
+    super(appState);
   }
 
   private async loadTickets() {
@@ -50,7 +52,6 @@ export class SupportPage extends BaseComponent {
       this.state.error = 'Не удалось загрузить обращения';
     } finally {
       this.state.isLoading = false;
-      this.rerender();
     }
   }
 
@@ -62,6 +63,7 @@ export class SupportPage extends BaseComponent {
     );
   }
 
+  // Обработчики
   private handleFilterCategory = (e: Event) => {
     this.state.filterCategory = (e.target as HTMLSelectElement).value as TicketCategory | '';
     this.rerender();
@@ -77,9 +79,7 @@ export class SupportPage extends BaseComponent {
     const formData = new FormData(form);
     const category = formData.get('category') as TicketCategory;
     const description = formData.get('description') as string;
-
     if (!category || !description.trim()) return;
-
     try {
       const newTicket = await api.createTicket({ category, description });
       this.state.tickets.unshift(newTicket);
@@ -151,14 +151,14 @@ export class SupportPage extends BaseComponent {
       }
     });
 
-    // Создаём Field с name='description' для FormData
+    // Поле описания (Field)
     const fieldContainer = root.querySelector('[data-ref="description-field"]');
     if (fieldContainer) {
       this.descriptionField = new Field({
         type: 'text',
         label: 'Описание',
         attributes: {
-          name: 'description',          // <-- теперь значение попадёт в FormData
+          name: 'description',
           placeholder: 'Опишите проблему',
           required: 'true',
         },
@@ -166,10 +166,10 @@ export class SupportPage extends BaseComponent {
       fieldContainer.appendChild(this.descriptionField.render());
     }
 
-    // Заполняем селект категорий, добавляем name='category'
+    // Селект категории
     this.categorySelect = root.querySelector('[data-ref="category-select"]');
     if (this.categorySelect) {
-      this.categorySelect.name = 'category';   // важно для FormData
+      this.categorySelect.name = 'category';
       this.categorySelect.innerHTML = '';
       const categories: Record<string, string> = {
         bug: 'Баг',
@@ -189,7 +189,7 @@ export class SupportPage extends BaseComponent {
     if (!this.element) return;
     const parent = this.element.parentElement;
     if (!parent) return;
-    const newEl = this.render();
+    const newEl = this.render();   // render() из BaseComponent
     parent.replaceChild(newEl, this.element);
   }
 }

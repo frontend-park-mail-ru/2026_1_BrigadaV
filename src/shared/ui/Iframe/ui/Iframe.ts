@@ -21,6 +21,12 @@ export class Iframe {
     this.element = this.render();
   }
 
+  render(): HTMLElement {
+    this.element = this._render();
+    this.attachListeners();
+    return this.element;
+  }
+
   mountTo(container: HTMLElement) {
     container.appendChild(this.element!);
     this.attachListeners();
@@ -68,7 +74,7 @@ export class Iframe {
     this.rerender();
   };
 
-  private render(): HTMLElement {
+  private _render(): HTMLElement {
     return stringToElement(template({
       styles,
       s: styles,

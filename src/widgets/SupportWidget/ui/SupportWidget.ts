@@ -1,5 +1,4 @@
 import './style.module.scss';
-
 import { stringToElement } from '@/shared/utils';
 import { Iframe } from '@/shared/ui/Iframe';
 import type { SupportWidgetProps } from '../model/types';
@@ -17,13 +16,11 @@ export class SupportWidget {
     this.element = this.render();
   }
 
-  /** Вставка в DOM (аналог mountTo) */
   mountTo(container: HTMLElement) {
     container.appendChild(this.element!);
     this.attachListeners();
   }
 
-  /** Удаление виджета */
   destroy() {
     this.element?.remove();
     this.element = null;
@@ -39,23 +36,31 @@ export class SupportWidget {
     root.querySelector('[data-ref="trigger-btn"]')?.addEventListener('click', this.toggle);
     root.querySelector('[data-ref="close-btn"]')?.addEventListener('click', this.close);
     root.querySelector('[data-ref="overlay"]')?.addEventListener('click', this.close);
-    this.createIframe();
+    this.showIframeIfNeeded();
   }
 
-  private createIframe() {
+  private showIframeIfNeeded() {
     if (!this.isOpen) return;
     const wrapper = this.element?.querySelector('[data-ref="iframe-wrapper"]');
     if (!wrapper) return;
-    this.iframe = new Iframe({
-      src: this.supportUrl,
-      title: 'Техническая поддержка',
-      width: '100%',
-      height: '100%',
-      sandbox: 'allow-scripts allow-same-origin allow-forms allow-popups',
-      allow: 'camera; microphone',
-      visible: true,
-    });
-    this.iframe.mountTo(wrapper as HTMLElement);
+
+    if (!this.iframe) {
+      this.iframe = new Iframe({
+        src: this.supportUrl,
+        title: 'Техническая поддержка',
+        width: '100%',
+        height: '100%',
+        sandbox: 'allow-scripts allow-same-origin allow-forms allow-popups',
+        allow: 'camera; microphone',
+        visible: true,
+      });
+    }
+
+    // Вставляем, если контейнер пуст или изменился (например, после перерендера)
+    if (!wrapper.contains(this.iframe.element)) {
+      wrapper.innerHTML = '';
+      wrapper.appendChild(this.iframe.render());
+    }
   }
 
   private destroyIframe() {
@@ -63,9 +68,7 @@ export class SupportWidget {
     this.iframe = null;
   }
 
-  private toggle = () => {
-    this.isOpen ? this.close() : this.open();
-  };
+  private toggle = () => (this.isOpen ? this.close() : this.open());
 
   private open() {
     if (this.isOpen) return;
@@ -76,11 +79,10 @@ export class SupportWidget {
   private close = () => {
     if (!this.isOpen) return;
     this.isOpen = false;
-    this.destroyIframe();
+    this.destroyIframe();   // уничтожаем iframe при закрытии
     this.rerender();
   };
 
-  /** Перерисовка с сохранением родителя */
   private rerender() {
     if (!this.element) return;
     const parent = this.element.parentElement;
