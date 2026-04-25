@@ -6,11 +6,15 @@
     display: flex;
     max-height: 250px;
     gap: 1.25rem;
-    // TODO figure out color naming
     border: 1px solid $color-border-button;
+    cursor: pointer;
 
     &__preview {
         object-fit: cover;
+    }
+
+    &__link {
+        position: absolute;
     }
 
     &__content {
@@ -19,10 +23,6 @@
         flex-direction: column;
         align-items: start;
         gap: 0.25rem;
-    }
-
-    &__title {
-        @include typo-h3;
     }
 
     &__meta {

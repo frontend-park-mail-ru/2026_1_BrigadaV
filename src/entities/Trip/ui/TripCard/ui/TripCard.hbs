@@ -1,10 +1,9 @@
 <article class="{{s 'card'}}" data-id="{{trip.id}}">
-  <a href="{{url '/trip' trip.id}}" data-link>
-    <img src="{{trip.preview}}" class="{{s 'card__preview'}}">
-  </a>
+  <a href="{{url '/trip' trip.id}}" class="{{s 'card__link'}}" data-link data-ref="link"></a>
 
+  <img src="{{trip.preview}}" class="{{s 'card__preview'}}">
   <div class="{{s 'card__content'}}">
-    <a href="{{url '/trip' trip.id}}" class="{{s 'card__title'}}" data-link>{{trip.title}}</a>
+    <h3 class="{{s 'card__title'}}">{{trip.title}}</h3>
 
     <div class="{{s 'card__meta'}}">
       {{#if hasDates}}

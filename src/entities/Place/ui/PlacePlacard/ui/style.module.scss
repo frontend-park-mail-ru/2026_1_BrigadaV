@@ -8,20 +8,17 @@
     max-height: 250px;
     gap: 1.25rem;
     border: 1px solid $color-border-button;
-
-    &__preview {
-        display: block;
-        height: 100%;
-        flex: 0 0 300px;
-    }
+    cursor: pointer;
 
     &__image {
         width: 100%;
         height: 100%;
+        flex: 0 0 300px;
         object-fit: cover;
     }
 
     &__content {
+        z-index: 10;
         display: flex;
         padding-block: 1.5rem;
         flex-grow: 1;
@@ -30,8 +27,8 @@
         gap: 0.25rem;
     }
 
-    &__title {
-        @include typo-h3;
+    &__link {
+        position: absolute;
     }
 
     &__meta {

@@ -7,6 +7,8 @@ const resolveImage = (dto: PlaceBaseDTO): string | undefined => {
 
 export const mapPlaceSummary = (dto: PlaceSummaryDTO): PlaceSummary => ({
     ...dto,
+    reviewCount: dto.reviewCount || 0,
+    rating: Number(dto.rating?.toFixed(2)),
     image: resolveImage(dto),
     price: dto.price / 100,
     isLiked: dto.is_liked,

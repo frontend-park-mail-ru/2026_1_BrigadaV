@@ -26,9 +26,7 @@ export const App = async () => {
 
         if (link) {
             event.preventDefault();
-
-            const path = new URL(link.href).pathname;
-            navigate(path);
+            navigate(link.href);
         }
     });
 

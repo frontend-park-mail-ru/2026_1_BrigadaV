@@ -68,6 +68,18 @@ export const router = async (path = '/') => {
 };
 
 export const navigate = async (path: string) => {
+    if (path.startsWith('http')) {
+        const url = new URL(path)
+
+        if (url.origin !== window.location.origin) {
+            window.location.href = path;
+            return;
+
+        } else {
+            path = url.pathname + url.search + url.hash;
+        }
+    }
+
     appState.currentPath = path;
     window.history.pushState(appState, '', path);
 
