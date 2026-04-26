@@ -5,25 +5,22 @@ import { BaseComponent } from '@/shared/lib/component/BaseComponent';
 import { stringToElement } from '@/shared/utils';
 
 import template from './Hero.hbs?compiled';
+import { HeroProps } from '../model/types';
 
 export class Hero extends BaseComponent {
     declare protected children: {
         searchBar: SearchBar;
     };
 
-    constructor() {
+    constructor(private props: HeroProps) {
         super();
 
         this.children = {
-            searchBar: new SearchBar({
-                className: 'hero__search',
-                withButton: true,
-                placeholder: 'Куда бы вы хотели отправиться?',
-            })
+            searchBar: this.props.searchSlot
         };
     }
 
     protected override _render(): HTMLElement {
-        return stringToElement((template()));
+        return stringToElement(template());
     }
 }

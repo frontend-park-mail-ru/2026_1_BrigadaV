@@ -11,4 +11,8 @@ export type FieldProps = {
     attributes: Record<string, string | number>;
     onLeftIconClick?: (instance: Field) => void;
     onRightIconClick?: (instance: Field) => void;
+
+    onFocus?: (inputValue: string, event?: Event) => void;
+    onBlur?: (inputValue: string, event?: Event) => void;
+    onInput?: (inputValue: string, event?: InputEvent) => void;
 }
