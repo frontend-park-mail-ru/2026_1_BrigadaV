@@ -83,14 +83,13 @@ export class UserSession extends BaseComponent {
     }
 
     protected override _render(): HTMLElement {
-        return  stringToElement(template({
+        return stringToElement(template({
             ...this.props,
             styles
         }));
     }
 
-    public override destroy(): void {
-        super.destroy();
+    protected override _destroy(): void {
         document.removeEventListener('click', this.handleGlobalClick);
     }
 }

@@ -6,22 +6,24 @@ import './style.scss';
 import template from './PlaceDropDownList.hbs?compiled';
 import { Place } from "@/entities/Place/model/types";
 import { PlaceSearchItem } from "@/entities/Place/ui/PlaceSearchItem";
+import { PlaceSearchItemProps } from "@/entities/Place/ui/PlaceSearchItem/model/types";
+import { SearchResult } from "../model/types";
 
 export class PlaceDropDownList extends BaseComponent {
     constructor(private props: PlaceDropDownListProps) { super() }
 
-    public setItems(places: Pick<Place, 'id' | 'name' | 'country' | 'image'>[]): void {
+    public setItems(results: SearchResult[]): void {
         this.fields['item-list'].innerHTML = '';
 
-        places.forEach(place => {
-            const searchItemCard = new PlaceSearchItem({ place });
+        results.forEach(result => {
+            const searchItemCard = new PlaceSearchItem(result);
 
             const li = document.createElement('li');
             li.appendChild(searchItemCard.render());
             li.classList.add('drop-down__item');
 
             this.fields['item-list'].appendChild(li);
-        })
+        });
     }
 
     public setState(state: 'hidden' | 'empty' | 'prompt'): void {

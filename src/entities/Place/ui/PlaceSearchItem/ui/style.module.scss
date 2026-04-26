@@ -8,6 +8,14 @@
     max-height: var(--image-size);
     gap: 2.25rem;
 
+    cursor: pointer;
+
+    & mark {
+        color: $guidely-secondary;
+        font-size: 1.05em;
+        background-color: transparent;
+    }
+
     &__image-wrapper {
         flex: 0 0 var(--image-size);
         overflow: hidden;

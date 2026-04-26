@@ -3,4 +3,5 @@ import { IComponent } from '@/shared/model';
 
 export type PlaceSearchItemProps = {
     place: Pick<Place, 'id' | 'name' | 'country' | 'image'>;
+    positions?: Set<number>;
 };

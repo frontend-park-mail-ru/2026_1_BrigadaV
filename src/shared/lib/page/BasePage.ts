@@ -22,8 +22,4 @@ export abstract class BasePage extends BaseComponent implements IPage {
 
         return this.element;
     }
-
-    public override destroy(): void {
-        super.destroy();
-    }
 }

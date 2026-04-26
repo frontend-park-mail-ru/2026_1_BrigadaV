@@ -7,3 +7,8 @@ export type SearchBarProps = {
     placeholder: string;
     places: PlaceSearchItemProps['place'][],
 }
+
+export type SearchResult = {
+    place: PlaceSearchItemProps['place'];
+    positions?: Set<number>;
+}
