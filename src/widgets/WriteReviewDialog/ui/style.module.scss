@@ -2,7 +2,7 @@
 @use '@/shared/styles/mixins' as *;
 
 .write-review {
-    width: 50vw;
+    width: clamp(300px, 90%, 600px);
     padding: 3.25rem 5rem 3.75rem;
     border: none;
     border-radius: 8px;
@@ -20,6 +20,7 @@
     }
 
     & [name="rating"] {
+
         &::-webkit-outer-spin-button,
         &::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -37,6 +38,7 @@
 
     &__actions {
         display: flex;
+        gap: 1rem;
     }
 
     &__cancel {

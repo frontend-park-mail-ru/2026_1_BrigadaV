@@ -1,34 +1,33 @@
 import './style.scss';
 
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
 import { Field } from '@/shared/ui';
 import { stringToElement } from '@/shared/utils';
 
 import { SearchBarProps } from './model/types';
 import template from './SearchBar.hbs?compiled';
 
-export class SearchBar {
-    private element?: HTMLElement;
-    private searchField?: Field;
+export class SearchBar extends BaseComponent {
+    declare protected children: {
+        searchField: Field;
+    };
 
     constructor(private props: SearchBarProps) {
-        this.searchField = new Field({
-            type: 'text',
-            className: 'search__field',
-            rightIcon: '/icons/search.svg',
-            attributes: {
-                placeholder: props.placeholder,
-            }
-        });
+        super();
+        this.children = {
+            searchField: new Field({
+                type: 'text',
+                className: 'search__field',
+                rightIcon: '/icons/search.svg',
+                attributes: {
+                    placeholder: props.placeholder,
+                    disabled: '',
+                }
+            }),
+        };
     }
 
-    public render(): HTMLElement {
-        this.element = stringToElement(template(this.props));
-
-        if (this.searchField) {
-            this.element.querySelector('[data-slot="search-field"]')
-                ?.replaceWith(this.searchField.render());
-        }
-
-        return this.element;
+    protected override _render(): HTMLElement {
+        return stringToElement(template(this.props));
     }
 }

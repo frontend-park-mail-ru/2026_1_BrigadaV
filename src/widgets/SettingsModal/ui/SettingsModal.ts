@@ -1,97 +1,123 @@
 import './style.scss';
 
-import { togglePasswordVisibility } from '@/shared/lib';
-import { Field } from '@/shared/ui';
-import { Textarea } from '@/shared/ui';
-import { injectComponents, stringToElement } from '@/shared/utils';
+import { eventBus } from '@/shared/lib';
+import { BaseForm } from '@/shared/lib/component/BaseForm';
+import { Field, Textarea } from '@/shared/ui';
+import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
+import { ImageInput } from '@/shared/ui/ImageInput';
+import { Toast } from '@/shared/ui/Toast';
+import { stringToElement } from '@/shared/utils';
 
-import { SettingsModalProps } from '../model/types';
+import { SettingsFields, SettingsModalProps } from '../model/types';
 import template from './SettingsModal.hbs?compiled';
 
-export class SettingsModal {
-    private element?: HTMLElement;
-    private fields: Record<string, Field | Textarea> = {};
+export class SettingsModal extends BaseForm<SettingsFields, HTMLDialogElement> {
+    private avatarPreviewUrl?: string;
+
+    private get user() {
+        return this.props.user;
+    }
 
     constructor(private props: SettingsModalProps) {
-        this.fields['nickname'] = new Field({
-            id: 'nickname-input',
-            label: 'Никнейм',
-            type: 'text',
-            attributes: {
-                name: 'nickname',
-                value: props.user.nickname,
-                maxlength: 20,
-                placeholder: 'Никнейм',
-            }
-        });
+        super();
+        this.children = {
+            avatar: new ImageInput({
+                id: 'avatar-upload',
+                name: 'avatar',
+                src: this.props.user.avatar,
+                maxSizeMb: 10,
+                className: 'settings__avatar'
+            }),
 
-        this.fields['email'] = new Field({
-            id: 'email-input',
-            label: 'Почта',
-            type: 'text',
-            attributes: {
-                name: 'email',
-                value: props.user.login,
-                maxlength: 50,
-                placeholder: 'Почта',
-            }
-        });
+            nickname: new Field({
+                id: 'nickname-input',
+                label: 'Никнейм',
+                type: 'text',
+                attributes: {
+                    name: 'nickname',
+                    value: this.user.nickname,
+                    maxlength: 50,
+                    minlength: 3,
+                    placeholder: 'Никнейм',
+                }
+            }),
 
-        this.fields['password'] = new Field({
-            id: 'password-input',
-            label: 'Новый пароль',
-            type: 'password',
-            attributes: {
-                name: 'password',
-                maxlength: 50,
-                placeholder: '*'.repeat(10),
-            },
-            rightIcon: '/icons/eye.svg',
-            onRightIconClick: togglePasswordVisibility,
-        });
+            login: new Field({
+                id: 'login-input',
+                label: 'Почта',
+                type: 'email',
+                note: 'В данный момент изменить почту невозможно',
+                attributes: {
+                    name: 'login',
+                    value: this.user.login || '',
+                    maxlength: 50,
+                    placeholder: 'Почта',
+                    readonly: '',
+                }
+            }),
 
-        this.fields['password-repeat'] = new Field({
-            id: 'password-repeat-input',
-            label: 'Повторите новый пароль',
-            type: 'password',
-            attributes: {
-                name: 'password-repeat',
-                maxlength: 50,
-                placeholder: '*'.repeat(10),
-            },
-            rightIcon: '/icons/eye.svg',
-            onRightIconClick: togglePasswordVisibility,
-        });
+            // password: new Field({
+            //     id: 'password-input',
+            //     label: 'Новый пароль',
+            //     type: 'password',
+            //     note: 'В данный момент изменить пароль невозможно',
+            //     attributes: {
+            //         name: 'password',
+            //         maxlength: 50,
+            //         placeholder: '*'.repeat(10),
+            //         readonly: '',
+            //     },
+            //     rightIcon: '/icons/eye.svg',
+            //     onRightIconClick: togglePasswordVisibility,
+            // }),
 
-        this.fields['city'] = new Field({
-            id: 'city-input',
-            label: 'Город',
-            type: 'text',
-            attributes: {
-                name: 'city',
-                autocomplete: 'address-level2',
-                maxlength: 150,
-                placeholder: 'Поиск',
-            },
-            leftIcon: '/icons/search.svg',
-        });
+            // 'password-repeat': new Field({
+            //     id: 'password-repeat-input',
+            //     label: 'Повторите новый пароль',
+            //     type: 'password',
+            //     attributes: {
+            //         name: 'password-repeat',
+            //         maxlength: 50,
+            //         placeholder: '*'.repeat(10),
+            //         readonly: '',
+            //     },
+            //     rightIcon: '/icons/eye.svg',
+            //     onRightIconClick: togglePasswordVisibility,
+            // }),
 
-        this.fields['about'] = new Textarea({
-            id: 'about-textarea',
-            label: 'О себе',
-            attributes: {
-                name: 'about',
-                maxlength: 1000,
-                placeholder: 'Напишите подробнее о себе',
-            },
-        });
+            city: new Field({
+                id: 'city-input',
+                label: 'Город',
+                type: 'text',
+                attributes: {
+                    name: 'city',
+                    maxlength: 150,
+                    placeholder: 'Поиск',
+                    value: this.user.city || '',
+                },
+                leftIcon: '/icons/search.svg',
+            }),
+
+            about: new Textarea({
+                id: 'about-textarea',
+                value: this.user.about,
+                label: 'О себе',
+                attributes: {
+                    name: 'about',
+                    maxlength: 1000,
+                    placeholder: 'Напишите подробнее о себе',
+                },
+            }),
+        };
+
     }
 
-    private initListeners(): void {
+    protected override initListeners(): void {
+        super.initListeners();
         this.element?.addEventListener('command', this.handleOpen);
+        this.element?.addEventListener('change', this.handleAvatarChange);
     }
 
-    // TODO add confirmation on form submit
     private handleOpen = (ev: Event) => {
         const event = ev as CommandEvent;
         const source = event.source;
@@ -104,15 +130,64 @@ export class SettingsModal {
         }
     };
 
-    public render(): HTMLElement {
-        this.element = stringToElement(template({
+    protected override handleSubmit = async (data: SettingsFields): Promise<void> => {
+        const confirmed = await ConfirmPopup({
+            prompt: 'Вы уверены, что хотите сохранить изменения?',
+            cancelText: 'Нет',
+            confirmText: 'Да, сохранить'
+        });
+
+        if (confirmed) {
+            eventBus.emit('SettingsModal:submit', { instance: this, data });
+        }
+    };
+
+    private handleAvatarChange = (event: Event): void => {
+        const target = event.target;
+        if (!(target instanceof HTMLInputElement)) return;
+
+        if (target.name !== 'avatar' || !target.files?.[0]) return;
+
+        const file = target.files[0];
+
+        if (file.size > 10 * 1024 * 1024) {
+            Toast({ message: 'Файл слишком большой! Лимит 10 Мб.', type: 'error' });
+            target.value = '';
+            return;
+        }
+
+        if (!file.type.startsWith('image/')) {
+            Toast({ message: 'Известный формат изображения', type: 'error' });
+            target.value = '';
+            return;
+        }
+
+        if (this.avatarPreviewUrl) {
+            URL.revokeObjectURL(this.avatarPreviewUrl);
+        }
+
+        this.avatarPreviewUrl = URL.createObjectURL(file);
+
+        const previewImage = this.element?.querySelector('[data-ref="avatar"]') as HTMLImageElement;
+
+        if (previewImage) {
+            previewImage.src = this.avatarPreviewUrl;
+            previewImage.classList.remove('avatar--default');
+        }
+    };
+
+    public close() {
+        this.element?.close();
+    }
+
+    protected override _render(): HTMLDialogElement {
+        return stringToElement<HTMLDialogElement>(template({
             ...this.props,
-            fields: Object.keys(this.fields),
+            fields: Object.keys(this.children),
         }));
+    }
 
-        injectComponents(this.element, this.fields);
-
-        this.initListeners();
-        return this.element;
+    protected override _destroy(): void {
+        if (this.avatarPreviewUrl) URL.revokeObjectURL(this.avatarPreviewUrl);
     }
 }

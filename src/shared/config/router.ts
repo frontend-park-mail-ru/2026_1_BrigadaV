@@ -1,18 +1,18 @@
+import { AttractionPage } from '@/pages/AttractionPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { LoginPage } from '@/pages/LoginPage';
+import { PlaceSelectPage } from '@/pages/PlaceSelectPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { SignupPage } from '@/pages/SignupPage';
-
-import { AppState, PageConstructor } from '../model';
-import { TripListPage } from '@/pages/TripListPage';
 import { TripDetailPage } from '@/pages/TripDetailPage';
+import { TripListPage } from '@/pages/TripListPage';
 
-import { AttractionPage } from '@/pages/AttractionPage';
+import { AppState, IPageConstructor } from '../model';
 
 export type Route = {
     href: string;
     hrefRegex: RegExp,
-    view: PageConstructor;
+    view: IPageConstructor;
     authOnly?: boolean;
     guestOnly?: boolean;
 }
@@ -49,14 +49,20 @@ export const config: Record<string, Route> = {
     },
     tripDetail: {
         href: '/trip/:int',
-        hrefRegex: /^\/trip\/[0-9]+$/,
+        hrefRegex: /^\/trip\/(?<tripId>[0-9]+)$/,
         view: TripDetailPage,
         authOnly: true,
     },
     attraction: {
         href: '/attraction/:int',
-        hrefRegex: /^\/attraction\/[0-9]+$/,
+        hrefRegex: /^\/attraction\/(?<placeId>[0-9]+)$/,
         view: AttractionPage,
+    },
+    placeSelect: {
+        href: '/place-select/:int',
+        hrefRegex: /^\/place-select\/(?<tripId>[0-9]+)$/,
+        view: PlaceSelectPage,
+        authOnly: true,
     }
 };
 

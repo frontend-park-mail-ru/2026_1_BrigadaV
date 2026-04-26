@@ -16,3 +16,13 @@
         min-height: calc(100vh - 5rem - 2rem); // <available space> - <header>, and make little gap
     }
 }
+
+.recommended {
+    display: flex;
+    flex-direction: column;
+    gap: 4.5rem;
+
+    &__title {
+        text-align: center;
+    }
+}

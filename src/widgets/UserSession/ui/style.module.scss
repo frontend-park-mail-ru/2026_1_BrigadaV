@@ -4,6 +4,7 @@
 .user-profile {
     @include typo-p;
     position: relative;
+
     display: flex;
 
     padding: 0;
@@ -11,8 +12,6 @@
     gap: 0.5rem;
     background-color: transparent;
     border: none;
-
-    anchor-name: --user-button;
 
     &__nickname {
         color: $guidely-primary;
@@ -28,6 +27,13 @@
         &--default {
             opacity: 50%;
         }
+    }
+
+    &__menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        z-index: 50;
     }
 }
 

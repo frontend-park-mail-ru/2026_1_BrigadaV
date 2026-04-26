@@ -1,16 +1,16 @@
 import './style.scss';
 
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
 import { stringToElement } from '@/shared/utils';
 
 import { LikeButtonProps } from '../model/types';
 import template from './LikeButton.hbs?compiled';
 
-export class LikeButton {
-    private element?: HTMLElement;
+export class LikeButton extends BaseComponent {
+    constructor(private props: LikeButtonProps) { super(); }
 
-    constructor(private props: LikeButtonProps) {}
-
-    private initListeners(): void {
+    protected override initListeners() {
+        super.initListeners();
         this.element?.addEventListener('click', this.handleClick);
     }
 
@@ -18,9 +18,7 @@ export class LikeButton {
         this.element?.classList.toggle('like--active');
     };
 
-    public render(): HTMLElement {
-        this.element = stringToElement(template(this.props));
-        this.initListeners();
-        return this.element;
+    protected override _render(): HTMLElement {
+        return stringToElement(template(this.props));
     }
 }

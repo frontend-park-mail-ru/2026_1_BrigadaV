@@ -1,77 +1,124 @@
-import styles from './style.module.scss';
-
-import { UserBio } from '@/entities/User';
+import { fetchMe, UserBio } from '@/entities/User';
+import { User } from '@/entities/User/model/types';
 import { ProfileNavigation } from '@/features/ProfileNavigation';
-import { AppState, IPage } from '@/shared/model';
-import { injectComponents } from '@/shared/utils';
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
+import { Callback } from '@/shared/lib/eventBus/eventBus';
+import { BasePage } from '@/shared/lib/page/BasePage';
+import { AppState } from '@/shared/model';
+import { injectHandlerContext } from '@/shared/utils/lib/injectHandlerContext';
 import { AboutMe } from '@/widgets/AboutMe';
+import { DummyProfileSection } from '@/widgets/DummyProfileSection';
 import { Header } from '@/widgets/Header';
 import { SettingsModal } from '@/widgets/SettingsModal';
 
-import { handleTabChange } from '../handlers/handleTabChange';
+import { handleSettingsUpdate } from '../handlers/handleSettingsUpdate';
 import template from './ProfilePage.hbs?compiled';
+import styles from './style.module.scss';
 
 const SETTINGS_MODAL_ID = 'settings';
 
-export class ProfilePage implements IPage {
-    private element?: HTMLElement;
-    private header?: Header;
-    private userBio?: UserBio;
-    private navigation?: ProfileNavigation;
-    private activeSection?: AboutMe;
-    private settingsModal?: SettingsModal;
+export class ProfilePage extends BasePage {
+    protected override template = template;
+    protected override styles = styles;
+    protected override pageClassName = 'profile-page';
 
-    constructor(private appState: AppState) {
-        this.header = new Header({
-            userSessionProps: {
-                user: appState.currentUser,
-            },
-            withSearch: true,
-        });
+    declare children: {
+        header: Header;
+        userBio: UserBio;
+        navigation: ProfileNavigation;
+        settingsModal: SettingsModal;
+        activeSection: BaseComponent;
+    };
 
-        this.userBio = new UserBio({
-            user: this.user,
-        });
-
-        this.navigation = new ProfileNavigation({
-            onTabChange: handleTabChange,
-        });
-
-        this.activeSection = new AboutMe({
-            user: this.user,
-            modalId: SETTINGS_MODAL_ID,
-        });
-
-        this.settingsModal = new SettingsModal({
-            user: this.user,
-            id: SETTINGS_MODAL_ID,
-        });
+    protected override get eventHandlers(): Record<string, Callback> {
+        return {
+            'Tabs:change': this.handleTabChange,
+            'SettingsModal:submit': injectHandlerContext(handleSettingsUpdate, { user: this.user }),
+        };
     }
 
-    private get user() {
-        return this.appState.currentUser!;
+    private user!: User;
+
+    public static async create(appState: AppState): Promise<ProfilePage> {
+        const page = new ProfilePage(appState);
+
+        const user = await fetchMe();
+        page.user = user;
+
+        page.setupComponents();
+
+        return page;
     }
 
-    public render(): HTMLElement {
-        this.element = document.createElement('div');
-        const html = template({
+    private setupComponents() {
+        this.children = {
+            header: new Header({
+                user: this.user,
+                withSearch: true,
+            }),
+
+            userBio: new UserBio({
+                user: this.user,
+            }),
+
+            navigation: new ProfileNavigation({
+                className: styles['user-profile__navigation'],
+            }),
+
+            settingsModal: new SettingsModal({
+                user: this.user,
+                id: SETTINGS_MODAL_ID,
+            }),
+
+            activeSection: new AboutMe({
+                id: SETTINGS_MODAL_ID,
+                hasAbout: Boolean(this.user.about),
+                hasReviews: Boolean(this.user.hasReviews),
+                joinDate: this.user.createdAt,
+            }),
+        };
+
+    }
+
+    private handleTabChange = (tabId: string) => {
+        const container = this.element?.querySelector('.js-active-section');
+        if (!container) return;
+
+        const { activeSection: oldSection } = this.children;
+
+        switch (tabId) {
+        case 'about':
+            this.children.activeSection = new AboutMe({
+                id: SETTINGS_MODAL_ID,
+                hasAbout: Boolean(this.user.about),
+                hasReviews: Boolean(this.user.hasReviews),
+                joinDate: this.user.createdAt,
+            });
+            break;
+        case 'trips':
+        case 'comments':
+            this.children.activeSection = new DummyProfileSection();
+            break;
+        default:
+            this.children.activeSection = new AboutMe({
+                id: SETTINGS_MODAL_ID,
+                hasAbout: Boolean(this.user.about),
+                hasReviews: Boolean(this.user.hasReviews),
+                joinDate: this.user.createdAt,
+            });
+        }
+
+        const renderedSection = this.children.activeSection.render();
+        renderedSection.classList.add('js-active-section');
+
+        container.replaceWith(renderedSection);
+        oldSection.destroy();
+    };
+
+    protected override getTemplateData(): Record<string, any> {
+        return {
             settingsModalId: SETTINGS_MODAL_ID,
-            styles,
-        });
-
-        this.element.classList.add(styles['profile-page']);
-        this.element.innerHTML = html;
-
-        injectComponents(this.element, {
-            'header': this.header,
-            'bio': this.userBio,
-            'navigation': this.navigation,
-            'active-section': this.activeSection,
-            'settings-modal': this.settingsModal,
-        });
-
-        return this.element;
+            styles
+        };
     }
-
-    public destroy(): void { }
 }

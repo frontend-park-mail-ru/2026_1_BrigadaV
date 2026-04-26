@@ -1,20 +1,18 @@
 @use '@/shared/styles/variables' as *;
 @use '@/shared/styles/mixins' as *;
 
-
 .user-menu {
-    // TODO fix menu not moving with the scroll
-    position: absolute;
-    position-anchor: --user-button;
-    position-area: bottom center;
-    z-index: 50;
-    min-width: 160px;
-    margin: 12px 0 0 0;
+    display: none;
+    min-width: 150px;
     padding: 0.5rem;
     background-color: $surface-0;
-    border: none;
     border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    cursor: default;
+
+    &--active {
+        display: block;
+    }
 
     &__link {
         @include typo-p;
@@ -28,16 +26,22 @@
 
         transition: background-color $timing-animation-medium;
 
-        &:hover {
-            background-color: $surface-1;
+        &:not(&--disabled) {
+
+            &:hover,
+            &:focus-visible {
+                background-color: $surface-1;
+            }
         }
 
         &--logout {
             color: $guidely-secondary;
         }
-    }
 
-    &::backdrop {
-        display: none;
+        &--disabled {
+            opacity: 50%;
+            cursor: default;
+            pointer-events: none;
+        }
     }
 }

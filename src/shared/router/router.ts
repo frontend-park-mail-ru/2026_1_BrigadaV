@@ -1,11 +1,19 @@
-import { appState } from '../config';
-import { IPage } from '../model';
-
-import { findMatch } from './findMatch';
-import { Route } from '../config/router';
 import { LandingPage } from '@/pages/LandingPage';
 
+import { appState } from '../config';
+import { Route } from '../config/router';
+import { IPage } from '../model';
+import { findMatch } from './findMatch';
+import { UserAuth } from '@/entities/User';
+
+export type Match = {
+    page: Route;
+    parameters: Record<string, string | number>;
+}
+
 let pageInstance: IPage | null = null;
+let currentMatch: Match | null = null;
+let currentUser: UserAuth | null = null;
 
 export const router = async (path = '/') => {
     const root = document.getElementById('root');
@@ -13,28 +21,38 @@ export const router = async (path = '/') => {
         return;
     }
 
+    const match: Match | null = findMatch(path);
+
+    const isSamePage = currentMatch && match &&
+        currentMatch.page === match.page &&
+        JSON.stringify(currentMatch.parameters) === JSON.stringify(match.parameters) &&
+        currentUser === appState.currentUser;
+
+    if (isSamePage) return;
+
     if (pageInstance) {
         pageInstance.destroy();
     }
 
-    const route: Route | null = findMatch(path);
+    currentMatch = match;
+    currentUser = appState.currentUser;
 
     let redirectPath: string | null = null;
 
-    if (!route) {
+    if (!match) {
         // TODO add 404 page
-        pageInstance = new LandingPage(appState);
+        pageInstance = await LandingPage.create(appState);
         redirectPath = '/';
 
     } else {
-        const isAuthRequired = route.authOnly && !appState.currentUser;
-        const isGuestOnly = route.guestOnly && appState.currentUser;
+        const isAuthRequired = match.page.authOnly && !appState.currentUser;
+        const isGuestOnly = match.page.guestOnly && appState.currentUser;
 
         if (isAuthRequired || isGuestOnly) {
-            pageInstance = new LandingPage(appState);
+            pageInstance = await LandingPage.create(appState);
             redirectPath = '/';
         } else {
-            pageInstance = new route.view(appState);
+            pageInstance = await match.page.view.create(appState, match.parameters);
         }
     }
 
@@ -50,6 +68,18 @@ export const router = async (path = '/') => {
 };
 
 export const navigate = async (path: string) => {
+    if (path.startsWith('http')) {
+        const url = new URL(path)
+
+        if (url.origin !== window.location.origin) {
+            window.location.href = path;
+            return;
+
+        } else {
+            path = url.pathname + url.search + url.hash;
+        }
+    }
+
     appState.currentPath = path;
     window.history.pushState(appState, '', path);
 

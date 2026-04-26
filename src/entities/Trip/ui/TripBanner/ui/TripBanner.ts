@@ -1,27 +1,27 @@
-import { Trip } from '@/entities/Trip/model/types';
+import { eventBus } from '@/shared/lib';
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
+import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 import { formatDateRange, stringToElement } from '@/shared/utils';
 
 import { TripBannerProps } from '../model/types';
 import styles from './style.module.scss';
 import template from './TripBanner.hbs?compiled';
-import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 
-export class TripBanner {
-    element?: HTMLElement;
+export class TripBanner extends BaseComponent {
+    constructor(private props: TripBannerProps) { super(); }
 
-    constructor(private props: TripBannerProps) { }
-
-    private get trip(): Trip {
+    private get trip() {
         return this.props.trip;
     }
 
-    private initListeners(): void {
-        if (!this.element) return;
+    protected override initListeners(): void {
+        super.initListeners();
 
-        this.element.querySelector<HTMLButtonElement>('[data-delete-button]')?.addEventListener('click', this.handleDeleteButtonClick);
+        const deleteButton = this.element?.querySelector('[data-delete-button]');
+        deleteButton?.addEventListener('click', this.handleDeleteButtonClick);
     }
 
-    private async handleDeleteButtonClick(): Promise<void> {
+    private handleDeleteButtonClick = async (): Promise<void> => {
         const confirmed = await ConfirmPopup({
             className: styles['banner__delete-confirm'],
             prompt: 'Вы действительно хотите удалить поездку?',
@@ -31,20 +31,32 @@ export class TripBanner {
         });
 
         if (confirmed) {
-            // TODO add API call to remove trip
+            eventBus.emit('TripBanner:delete', { id: this.trip.id });
         }
+    };
+
+    private makeTemplateDates(): Record<string, string | boolean> {
+        const { startDate, endDate } = this.trip;
+
+        let dateRange = {};
+
+        if (startDate && endDate) {
+            dateRange = formatDateRange(startDate, endDate);
+        }
+
+        return {
+            ...dateRange,
+            isoStart: startDate?.toISOString() ?? '',
+            isoEnd: endDate?.toISOString() ?? '',
+            hasDates: !!(startDate && endDate),
+        };
     }
 
-    public render(): HTMLElement {
-        this.element = stringToElement(template({
+    protected override _render(): HTMLElement {
+        return stringToElement(template({
             ...this.props,
-            ...formatDateRange(this.trip.startDate, this.trip.endDate),
-            isoStart: this.trip.startDate.toISOString(),
-            isoEnd: this.trip.endDate.toISOString(),
+            ...this.makeTemplateDates(),
             styles,
         }));
-
-        this.initListeners();
-        return this.element;
     }
 }

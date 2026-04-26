@@ -1,14 +1,23 @@
-import { User } from '@/entities/User';
+
 
 export type EditTripDialogProps = {
-    id: string;
-    user: User;
+    modalId: string;
 }
 
-export type EditTripInitValues = {
-    title: string;
-    location: string;
-    startDate: Date;
-    endDate: Date;
-    description?: string;
-}
+type TripEditableKeys = 'title' | 'location' | 'description' | 'startDate' | 'endDate';
+
+type KebabCase<S extends string> = S extends `${infer T}${infer U}`
+    ? U extends Uncapitalize<U>
+        ? `${Uncapitalize<T>}${KebabCase<U>}`
+        : `${Uncapitalize<T>}-${KebabCase<Uncapitalize<U>>}`
+    : S;
+
+export type EditTripDialogFields = {
+    [K in TripEditableKeys as KebabCase<K>]: string;
+};
+
+export type EditTripInitValues = Pick<Trip, 'id' | TripEditableKeys>;
+
+export type DeleteTripPayload = Pick<Trip, 'id'>;
+
+export type UpdateTripPayload = Pick<Trip, TripEditableKeys> & Pick<Trip, 'id'>;

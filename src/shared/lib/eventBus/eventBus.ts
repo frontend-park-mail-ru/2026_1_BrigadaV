@@ -1,11 +1,11 @@
-type Callback = (data?: unknown) => void;
+export type Callback<T = any> = (data: T) => void;
 
 class EventBus {
-    events: Record<string, Callback[]> = {};
+    events: Record<string, Callback<any>[]> = {};
 
     constructor() { }
 
-    public on(eventName: string, callback: Callback): void {
+    public on<T>(eventName: string, callback: Callback<T>): void {
         if (!this.events[eventName]) {
             this.events[eventName] = [];
         }
@@ -13,13 +13,13 @@ class EventBus {
         this.events[eventName].push(callback);
     }
 
-    public off(eventName: string, callback: Callback): void {
+    public off<T>(eventName: string, callback: Callback<T>): void {
         if (!this.events[eventName]) return;
 
         this.events[eventName] = this.events[eventName].filter(item => item !== callback);
     }
 
-    public emit(eventName: string, data?: unknown): void {
+    public emit<T>(eventName: string, data?: T): void {
         this.events[eventName]?.forEach(callback => callback(data));
     }
 }

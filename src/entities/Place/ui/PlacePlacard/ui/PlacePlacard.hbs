@@ -1,15 +1,15 @@
 <article class="{{s 'placard'}}" data-id="{{trip.id}}">
-  <a href="{{url '/attraction' place.id}}" data-link>
-    <img src="{{place.image}}" class="{{s 'placard__image'}}">
-  </a>
+  <a href="{{url '/attraction' place.id}}" class="{{s 'placard__link'}}" data-link data-ref="link"></a>
+
+  <img src="{{place.image}}" class="{{s 'placard__image'}}">
 
   <div class="{{s 'placard__content'}}">
-    <a href="{{url '/attraction' place.id}}" class="{{s 'placard__title'}}" data-link>{{place.name}}</a>
+    <h3 class="{{s 'placard__title'}}">{{place.name}}</h3>
 
     <div class="{{s 'placard__meta'}}">
       <span class="{{s 'placard__description'}}">{{place.description}}</span>
     </div>
   </div>
 
-<h4 class="{{s 'placard__rating'}}">{{place.rating}}</h4>
+  <h4 class="{{s 'placard__rating'}}">{{place.rating}}</h4>
 </article>

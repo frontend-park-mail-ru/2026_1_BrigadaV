@@ -1,50 +1,25 @@
-export type CategoryDTO = {
-    id: number;
-    name: string;
-    description: string;
+export type ApiSuccess<T> = {
+    ok: true;
+    data: T;
+    status: number;
 };
 
-export type LocalityDTO = {
-    id: number;
-    name: string;
-    country: string;
-    latitude: number;
-    longitude: number;
+export type ApiError = {
+    ok: false;
+    error: string;
+    status: number;
 };
 
-export type PlacePhotoDTO = {
-    id: number;
-    place_id: number;
-    file_path: string;
-    is_main: boolean;
-};
+export type ApiResponse<T = void> = ApiSuccess<T> | ApiError;
 
-export type PlaceDTO = {
-    id: number;
-    name: string;
-    description: string;
-    price: number;
-    is_liked: boolean;
-    locality: LocalityDTO;
-    category?: CategoryDTO;
-    photos?: PlacePhotoDTO[];
-    created_at: string;
-};
 
-export type LoginDTO = {
-    user_id: number;
-    login: string;
-    nickname: string;
-    avatar_url: string;
-};
-
-export type RegisterDTO = {
+export type TripSummaryDTO = {
     id: number;
-    login: string;
-    nickname: string;
-    avatar_url: string;
-    created_at: string;
-    message?: string;
+    title: string;
+    location: string;
+    start_date?: Date;
+    end_date?: Date;
+    preview: string;
 };
 
 export type ErrorDTO = {

@@ -1,82 +1,77 @@
-import styles from './style.module.scss';
-
 import { togglePasswordVisibility } from '@/shared/lib';
-import { AppState, IPage } from '@/shared/model';
+import { BasePage } from '@/shared/lib/page/BasePage';
+import { AppState } from '@/shared/model';
 import { AuthForm } from '@/widgets/AuthForm';
 import { Header } from '@/widgets/Header';
 
-import { handleSubmit } from '../handlers/handleLogin';
+import { handleLogin } from '../handlers/handleLogin';
 import template from './LoginPage.hbs?compiled';
+import styles from './style.module.scss';
 
-export class LoginPage implements IPage {
-    private element?: HTMLElement;
-    private header?: Header;
-    private loginForm?: AuthForm;
+export class LoginPage extends BasePage {
+    protected template = template;
+    protected styles = styles;
+    protected pageClassName = 'login-page';
 
-    constructor(appState: AppState) {
-        this.header = new Header({
-            userSessionProps: {
-                user: appState.currentUser,
+    declare children: {
+        header: Header;
+        loginForm: AuthForm;
+    };
+
+    protected override get eventHandlers() {
+        return {
+            'auth:login': handleLogin,
+        };
+    }
+
+    public static async create(appState: AppState): Promise<LoginPage> {
+        const page = new LoginPage(appState);
+        page.setupComponents();
+        return page;
+    }
+
+    private setupComponents() {
+        this.children = {
+            header: new Header({
+                user: this.appState.currentUser,
                 authPrompt: {
                     prompt: 'Ещё нет аккаунта?',
                     href: '/sign-up',
                     buttonText: 'Регистрация'
                 }
-            }
-        });
+            }),
 
-        this.loginForm = new AuthForm({
-            className: styles['main__form'],
-            title: 'Вход в аккаунт',
-            submitText: 'Войти',
-            redirectText: 'Создать аккаунт',
-            redirectHref: '/sign-up',
-            fields: [{
-                id: 'login-input',
-                label: 'Введите почту',
-                type: 'text',
-                attributes: {
-                    name: 'login',
-                    placeholder: 'myemail@gmail.com',
-                    autocomplete: 'email',
-                    maxlength: 50,
-                },
-            }, {
-                id: 'password-input',
-                label: 'Введите пароль',
-                type: 'password',
-                attributes: {
-                    name: 'password',
-                    placeholder: '********',
-                    autocomplete: 'current-password',
-                    maxlength: 50,
-                },
-                rightIcon: '/icons/eye.svg',
-                onRightIconClick: togglePasswordVisibility,
-            }],
-            onSubmit: handleSubmit
-        });
+            loginForm: new AuthForm({
+                className: styles['main__form'],
+                submitEventName: 'auth:login',
+                title: 'Вход в аккаунт',
+                submitText: 'Войти',
+                redirectText: 'Создать аккаунт',
+                redirectHref: '/sign-up',
+                fields: [{
+                    id: 'login-input',
+                    label: 'Введите почту',
+                    type: 'email',
+                    attributes: {
+                        name: 'login',
+                        placeholder: 'myemail@gmail.com',
+                        autocomplete: 'email',
+                        maxlength: 50,
+                    },
+                }, {
+                    id: 'password-input',
+                    label: 'Введите пароль',
+                    type: 'password',
+                    attributes: {
+                        name: 'password',
+                        placeholder: '********',
+                        autocomplete: 'current-password',
+                        maxlength: 50,
+                    },
+                    rightIcon: '/icons/eye.svg',
+                    onRightIconClick: togglePasswordVisibility,
+                }],
+            }),
+        };
     }
-
-    public render(): HTMLElement {
-        this.element = document.createElement('div');
-        const html = template({ styles });
-
-        this.element.classList.add(styles['login-page']);
-        this.element.innerHTML = html;
-
-        if (this.header) {
-            this.element.querySelector('[data-slot="header"]')
-                ?.replaceWith(this.header.render());
-        }
-
-        if (this.loginForm) {
-            this.element.querySelector('[data-slot="auth-form"]')
-                ?.replaceWith(this.loginForm.render());
-        }
-
-        return this.element;
-    }
-
-    public destroy(): void { }
 }

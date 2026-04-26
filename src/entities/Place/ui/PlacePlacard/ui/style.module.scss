@@ -7,23 +7,28 @@
     display: flex;
     max-height: 250px;
     gap: 1.25rem;
-    // TODO figure out color naming
     border: 1px solid $color-border-button;
+    cursor: pointer;
 
     &__image {
+        width: 100%;
+        height: 100%;
+        flex: 0 0 300px;
         object-fit: cover;
     }
 
     &__content {
+        z-index: 10;
         display: flex;
         padding-block: 1.5rem;
+        flex-grow: 1;
         flex-direction: column;
         align-items: start;
         gap: 0.25rem;
     }
 
-    &__title {
-        @include typo-h3;
+    &__link {
+        position: absolute;
     }
 
     &__meta {
@@ -33,7 +38,7 @@
     }
 
     &__rating {
-        --hue: calc(var(--rating) / 5 * 120);
+        --hue: calc((var(--rating) - 1) / 4 * 120);
 
         position: absolute;
         top: 1rem;

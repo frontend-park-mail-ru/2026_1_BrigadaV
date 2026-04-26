@@ -1,13 +1,13 @@
-import { User } from '@/entities/User';
+import { UserAuth } from '@/entities/User';
 
 export type AppState = {
     currentPath: string;
-    currentUser: User | null;
+    currentUser: UserAuth | null;
 }
 
 export interface IComponent {
     render(): HTMLElement;
-    destroy?(): void;
+    destroy(): void;
 }
 
 export interface IPage {
@@ -15,4 +15,11 @@ export interface IPage {
     destroy(): void;
 }
 
-export type PageConstructor = new (appState: AppState) => IPage;
+export interface IPageConstructor {
+    create(appState: AppState, parameters?: Record<string, string | number>): Promise<IPage>;
+}
+
+export type FormSubmitPayload<TInstance, TData> = {
+    instance: TInstance;
+    data: TData;
+};

@@ -1,24 +1,17 @@
 <dialog id="{{ id }}" class="settings" closedby="any">
-  <form class="settings__form">
-    <label for="avatar-input" class="settings__avatar-label avatar-upload">
-      <img src="{{user.avatar}}" class="avatar-upload__image">
-      <div class="avatar-upload__overlay">
-        <img src="/icons/plus.svg" class="avatar-upload__icon">
-        <h6 class="avatar-upload__text">Фото профиля (до 10 Мб)</h6>
-      </div>
-    </label>
+  <form class="settings__form" enctype="multipart/form-data">
+    <div data-slot="avatar"></div>
 
     <div class="settings__fields">
-      {{#each fields}}
-      <div data-slot="{{this}}"></div>
-      {{/each}}
+      <div data-slot="nickname"></div>
+      <div data-slot="login"></div>
+      <div data-slot="city"></div>
+      <div data-slot="about"></div>
     </div>
 
     <div class="settings__actions">
       <button class="settings__close" type="button" commandfor="{{ id }}" command="close">Отменить</button>
-      <button class="settings__submit">Сохранить</button>
+      <button class="settings__submit" type="submit">Сохранить</button>
     </div>
   </form>
-
-  <input type="file" id="avatar-input" accept="image/*" hidden>
 </dialog>

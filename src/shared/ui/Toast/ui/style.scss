@@ -1,0 +1,46 @@
+@use '@/shared/styles/variables' as *;
+
+.toast {
+    --border-color: #{$color-text-main};
+
+    position: fixed;
+    inset: auto 20px 60px auto;
+    z-index: 999;
+    margin: 0;
+    padding: 1rem;
+
+    background-color: $surface-0;
+
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    transition: opacity $timing-animation-medium;
+    animation: jumpIn $timing-animation-medium;
+
+    @keyframes jumpIn {
+        from {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0%);
+        }
+    }
+
+    &__message {
+        max-width: 20vw;
+        text-wrap: balance;
+    }
+
+    &--success {
+        --border-color: #{$color-status-success};
+    }
+
+    &--error {
+        --border-color: #{$color-status-error};
+    }
+}

@@ -76,9 +76,13 @@
         cursor: default;
     }
 
-    &:not([disabled]):hover {
-        background-color: $color-interactable-active;
-        scale: 1.05;
+    &:not([disabled]) {
+
+        &:hover,
+        &:focus-visible {
+            background-color: $color-interactable-active;
+            scale: 1.05;
+        }
     }
 }
 
@@ -101,9 +105,13 @@
         cursor: default;
     }
 
-    &:not([disabled]):hover {
-        color: var(--color-active);
-        scale: 1.05;
+    &:not([disabled]) {
+
+        &:hover,
+        &:focus-visible {
+            color: var(--color-active);
+            scale: 1.05;
+        }
     }
 }
 

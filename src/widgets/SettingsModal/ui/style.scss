@@ -2,7 +2,7 @@
 @use '@/shared/styles/mixins' as *;
 
 .settings {
-    min-width: 70vw;
+    width: clamp(400px, 90%, 800px);
     padding: 2.25rem 9.75rem 4rem 4rem;
     background-color: $surface-0;
     border: none;
@@ -57,31 +57,4 @@
     &__close {
         @include button-secondary;
     }
-}
-
-.avatar-upload {
-    position: relative;
-    width: 128px;
-    height: 128px;
-    border-radius: 8px;
-    overflow: hidden;
-
-    &__overlay {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        padding: 1rem;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        background-color: hsl(0 0% 0% / 0.2);
-        opacity: 0;
-        transition: opacity $timing-animation-short;
-
-    }
-
-    &:hover &__overlay {
-        opacity: 1;
-    }
-
 }

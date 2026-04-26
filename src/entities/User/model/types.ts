@@ -1,6 +1,17 @@
-export type User = {
+export type UserSummary = {
     id: number;
-    login: string;
     nickname: string;
-    avatar: string;
-}
+    avatar?: string;
+};
+
+export type User = UserSummary & {
+    country?: string;
+    city?: string;
+    about?: string;
+    hasReviews: boolean;
+    createdAt: Date;
+};
+
+export type UserAuth = UserSummary & {
+    login?: string;
+};

@@ -1,62 +1,68 @@
-import styles from './style.module.scss';
-
-import template from './TripDetailPage.hbs?compiled';
-import { AppState, IPage } from '@/shared/model';
-import { Header } from '@/widgets/Header';
-import { injectComponents } from '@/shared/utils';
 import { TripBanner } from '@/entities/Trip';
-import { PlaceList } from '@/widgets/PlaceList';
+import { fetchTrip } from '@/entities/Trip/api';
+import { Trip } from '@/entities/Trip/model/types';
+import { Callback } from '@/shared/lib/eventBus/eventBus';
+import { BasePage } from '@/shared/lib/page/BasePage';
+import { AppState } from '@/shared/model';
+import { Header } from '@/widgets/Header';
+import { TripPlaceList } from '@/widgets/TripPlaceList/ui/TripPlaceList';
 
-export class TripDetailPage implements IPage {
-    private element?: HTMLElement;
-    private header?: Header;
-    private tripBanner?: TripBanner;
-    private placeList?: PlaceList;
+import { handleTripDelete } from '../handler/handleTripDelete';
+import { TripDetailPageParams } from '../model/types';
+import styles from './style.module.scss';
+import template from './TripDetailPage.hbs?compiled';
 
-    constructor(private appState: AppState) {
-        this.header = new Header({
-            userSessionProps: {
-                user: appState.currentUser,
-            },
-        });
+export class TripDetailPage extends BasePage {
+    protected override template = template;
+    protected override styles = styles;
+    protected override pageClassName = 'trip-list-page';
 
-        this.tripBanner = new TripBanner({
-            className: styles['trip-banner'],
-            trip: {
-                id: 1,
-                title: 'Поиск лепреконов',
-                startDate: new Date(2026, 2, 5),
-                endDate: new Date(2026, 2, 17),
-                location: 'Англия',
-                preview: '/mock/place/tripbig.png',
-            }
-        });
+    declare children: {
+        header: Header,
+        tripBanner: TripBanner,
+        placeList: TripPlaceList,
+    };
 
-        this.placeList = new PlaceList({
-            className: styles['place-list'],
-            tripId: 1,
-        });
+    protected override get eventHandlers(): Record<string, Callback> {
+        return {
+            'TripBanner:delete': handleTripDelete,
+        };
     }
 
-    private get user() {
-        return this.appState.currentUser!;
+    protected override getTemplateData(): Record<string, any> {
+        return {
+            styles,
+            tripId: this.trip.id,
+        };
     }
 
-    public render(): HTMLElement {
-        this.element = document.createElement('div');
-        const html = template({ styles });
+    private trip!: Trip;
 
-        this.element.classList.add(styles['trip-detail-page']);
-        this.element.innerHTML = html;
+    public static async create(appState: AppState, parameters: TripDetailPageParams): Promise<TripDetailPage> {
+        const page = new TripDetailPage(appState);
 
-        injectComponents(this.element, {
-            'header': this.header,
-            'trip-banner': this.tripBanner,
-            'place-list': this.placeList,
-        });
+        const trip = await fetchTrip(parameters.tripId);
+        page.trip = trip;
 
-        return this.element;
+        page.setupComponents();
+        return page;
     }
 
-    public destroy(): void { }
+    private setupComponents() {
+        this.children = {
+            header: new Header({
+                user: this.appState.currentUser,
+            }),
+
+            tripBanner: new TripBanner({
+                className: styles['trip-banner'],
+                trip: this.trip,
+            }),
+
+            placeList: new TripPlaceList({
+                className: styles['place-list'],
+                places: this.trip.places,
+            })
+        };
+    }
 }

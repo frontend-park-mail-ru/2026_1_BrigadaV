@@ -1,0 +1,55 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
+.image-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    @media (max-height: 768px) {
+        gap: 0.25rem;
+    }
+
+    &__label {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    &__label:hover &__overlay {
+        opacity: 1;
+    }
+
+    &__overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        padding: 1rem;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background-color: hsl(0 0% 0% / 0.2);
+        opacity: 0;
+        transition: opacity $timing-animation-short;
+    }
+
+    &__preview--default {
+        opacity: 50%;
+    }
+
+    &--error &__error-wrapper {
+        display: flex;
+    }
+
+    &__error-wrapper {
+        display: none;
+        align-items: center;
+        gap: 0.25rem;
+        color: $color-status-error;
+    }
+
+    &__message {
+        @include typo-small;
+        color: inherit;
+    }
+}

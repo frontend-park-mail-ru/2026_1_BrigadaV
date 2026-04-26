@@ -13,4 +13,4 @@ export const formatHours = (hours: WorkingHour[]): Record<string, string>[] => {
         start: item.start,
         end: item.end,
     }));
-}
+};

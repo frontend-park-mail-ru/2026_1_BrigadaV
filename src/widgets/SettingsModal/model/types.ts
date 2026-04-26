@@ -1,6 +1,14 @@
-import { User } from '@/entities/User';
+import { UserAuth } from '@/entities/User';
+import { User } from '@/entities/User/model/types';
 
-export type SettingsModalProps = {
+type BaseSettings = {
+    user: Pick<User & UserAuth, 'login' | 'nickname' | 'about' | 'city' | 'avatar'>;
+};
+
+export type SettingsFields = BaseSettings['user'];
+
+export type SettingsModalProps = BaseSettings & {
     id: string;
-    user: User;
 }
+
+export type SettingsModalPayload = SettingsFields;

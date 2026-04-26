@@ -1,14 +1,21 @@
 <section class="about-me">
-  <span class="about-me__join-date">В сообществе с {{!-- TODO show user join date --}}</span>
-  {{!-- TODO add conditional logic to display suggested actions --}}
+  {{!-- TODO fix month cases --}}
+  <span class="about-me__join-date">В сообществе с <time datetime="{{isoDate}}">{{date}}</time></span>
+  {{#unless noSuggested}}
   <div class="about-me__suggested">
+    {{!-- {{#unless user.commentCount}}
     <button class="about-me__button">
       <img src="/icons/plus.svg">
       Добавьте первый отзыв
     </button>
-    <button class="about-me__button" command="show-modal" commandfor="{{modalId}}" data-focus-field="about">
+    {{/unless}} --}}
+
+    {{#unless hasAbout}}
+    <button class="about-me__button" command="show-modal" commandfor="{{id}}" data-focus-field="about">
       <img src="/icons/plus.svg">
       Напишите подробнее о себе
     </button>
+    {{/unless}}
   </div>
+  {{/unless}}
 </section>

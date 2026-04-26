@@ -1,1 +1,1 @@
-export { WriteReviewDialog} from './ui/WriteReviewDialog';
+export { WriteReviewDialog } from './ui/WriteReviewDialog';

@@ -1,36 +1,39 @@
 import './style.scss';
 
-import { GalleryProps } from '../model/types';
-import { AbstractList } from '@/shared/ui/AbstractList';
+import { BaseList } from '@/shared/lib/component/BaseList';
+import { IComponent } from '@/shared/model';
 
-export class Gallery extends AbstractList<HTMLImageElement, GalleryProps> {
+import { GalleryProps } from '../model/types';
+import { GalleryImage } from './GalleryImage';
+
+type PhotoEntity = { url: string; id: number };
+
+export class Gallery extends BaseList<PhotoEntity, GalleryProps> {
+    protected listClassName = 'gallery';
+    protected itemClassName = 'gallery__item';
+
     constructor(props: GalleryProps) {
         super(props);
-        this.element.classList.add('gallery');
     }
 
-    protected async loadData(): Promise<HTMLImageElement[]> {
-        const img1 = new Image();
-        img1.src = '/mock/attraction/british1.jpg';
-
-        const img2 = new Image();
-        img2.src = '/mock/attraction/british2.jpg';
-
-        const img3 = new Image();
-        img3.src = '/mock/attraction/british3.jpg';
-
-        return [img1, img2, img3];
+    protected async loadData(): Promise<PhotoEntity[]> {
+        return this.props.photos.map((url, index) => ({
+            url,
+            id: index
+        }));
     }
 
-    protected renderItem(item: HTMLImageElement): HTMLElement {
-        const li = document.createElement('li');
-        li.classList.add('gallery__item');
-        li.appendChild(item);
-
-        return li;
+    protected getItemId(item: PhotoEntity): number {
+        return item.id;
     }
 
-    public addAttribute(name: string, value: string): void {
-        this.element.setAttribute(name, value);
+    protected createItemComponent(item: PhotoEntity): IComponent {
+        return new GalleryImage(item.url);
+    }
+
+    protected override _render(): HTMLUListElement | HTMLOListElement {
+        const element = super._render();
+        element.setAttribute('data-count', this.props.photos.length.toString());
+        return element;
     }
 }

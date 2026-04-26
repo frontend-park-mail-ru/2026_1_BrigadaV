@@ -42,7 +42,7 @@
     }
 
     &__rating-value {
-        --hue: calc(var(--rating) / 5 * 120);
+        --hue: calc((var(--rating) - 1) / 4 * 120);
         color: hsl(var(--hue), 100%, 34%);
 
         font-weight: bold;
@@ -63,15 +63,15 @@
 }
 
 .reviews {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     grid-area: reviews;
-    grid-template-areas:
-        "header write-review"
-        "review-list review-list";
-    row-gap: 2.5rem;
+    gap: 2.5rem;
 
     &__header {
-        grid-area: header;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 
     &__write-review {
@@ -79,10 +79,8 @@
         display: flex;
         width: 170px;
         height: 40px;
-        grid-area: write-review;
         align-items: center;
         justify-content: center;
-        place-self: center end;
         gap: 0.5rem;
         background-color: transparent;
         border: 1px solid $guidely-primary;
@@ -104,18 +102,15 @@
             content: "";
         }
 
-        &:hover {
+        &:hover,
+        &:focus-visible {
             color: $color-text-contrast;
             background-color: $guidely-primary;
-        }
 
-        &:hover::before {
-            background-color: $color-text-contrast;
+            &::before {
+                background-color: $color-text-contrast;
+            }
         }
-    }
-
-    &__list {
-        grid-area: review-list;
     }
 }
 

@@ -1,11 +1,10 @@
 @use '@/shared/styles/mixins' as *;
 
-// TODO preserve scroll when opening a modal
 .review-details {
     position: fixed;
-    width: 45vw;
+    width: clamp(300px, 90%, 600px);
     margin-block: none;
-    padding: 1rem;
+    padding: 1rem 2.5rem 1rem 1rem;
     grid-template-columns: max-content 1fr;
     column-gap: 5.5rem;
     border: 0;
@@ -45,7 +44,7 @@
     }
 
     &__rating-value {
-        --hue: calc(var(--rating) / 5 * 120);
+        --hue: calc((var(--rating) - 1) / 4 * 120);
         color: hsl(var(--hue), 100%, 34%)
     }
 

@@ -1,65 +1,71 @@
+import { eventBus } from '@/shared/lib';
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
+import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
+import { stringToElement } from '@/shared/utils';
+
+import { ReviewDetailsModalInitValues, ReviewDetailsModalProps } from '../model/types';
+import template from './ReviewDetailsModal.hbs?compiled';
 import styles from './style.module.scss';
 
-import template from './ReviewDetailsModal.hbs?compiled';
-import { ReviewDetailsModalProps, ReviewDetailsModalInitValues } from '../model/types';
-import { formatDate, stringToElement } from '@/shared/utils';
+export class ReviewDetailsModal extends BaseComponent<HTMLDialogElement> {
+    private reviewId?: number;
 
-export class ReviewDetailsModal {
-    private element?: HTMLDialogElement;
-    private fields: Record<string, HTMLElement> = {};
+    constructor(private props: ReviewDetailsModalProps) { super(); }
 
-    constructor(private props: ReviewDetailsModalProps) { }
-
-    // TODO add confirmation on form submit
-    public show(reviewInfo: ReviewDetailsModalInitValues): void {
+    public show({ data }: ReviewDetailsModalInitValues): void {
         if (!this.element) return;
 
         if (this.fields['avatar'] instanceof HTMLImageElement) {
-            // TODO get author avatar somehow
-            // this.fields['avatar'].src =
+            const hasAvatar = Boolean(data.avatarUrl);
+            this.fields['avatar'].src = hasAvatar ? data.avatarUrl! : '/icons/avatar.svg';
+            this.fields['avatar'].classList.toggle('avatar--default', !hasAvatar);
         }
 
-        const formattedDate = formatDate(reviewInfo.review.createdAt);
+        this.fields['author'].textContent = data.authorName;
+        this.fields['place-name'].textContent = data.placeName;
+        this.fields['date'].textContent = data.dateText;
+        this.fields['date'].setAttribute('datetime', data.dateIso);
+        this.fields['rating'].textContent = data.rating.toString();
+        this.fields['title'].textContent = data.title;
+        this.fields['content'].textContent = data.content;
+        this.fields['review-count'].textContent = data.reviewCountText;
 
-        this.fields['author'].textContent = reviewInfo.review.author;
-        this.fields['place-name'].textContent = reviewInfo.placeName;
-        this.fields['date'].textContent = formattedDate.date;
-        this.fields['date'].setAttribute('datetime', formattedDate.isoDate);
-        this.fields['rating'].textContent = reviewInfo.review.rating.toString();
-        this.fields['title'].textContent = reviewInfo.review.title;
-        this.fields['content'].textContent = reviewInfo.review.content;
-        this.fields['review-count'].textContent = reviewInfo.reviewCount.toString();
+        this.reviewId = data.id;
 
-        this.element.style.setProperty('--rating', reviewInfo.review.rating.toString());
-
-        // TODO check user id instead of names
-        const isOwner = this.props.user?.nickname === reviewInfo.review.author;
-        this.element.classList.toggle(styles['review-details--own'], isOwner);
+        this.element.style.setProperty('--rating', data.rating.toString());
+        this.element.classList.toggle(styles['review-details--own'], data.isOwner);
 
         this.element.showModal();
     }
 
-    private initFields(): void {
-        if (!this.element) return;
-
-        const refs = this.element.querySelectorAll<HTMLElement>('[data-ref]');
-        refs.forEach((item) => {
-            const key = item.getAttribute('data-ref');
-            if (key) {
-                this.fields[key] = item;
-            }
-        });
+    protected override initListeners(): void {
+        super.initListeners();
+        const deleteButton = this.element?.querySelector('[data-ref="delete-button"]');
+        deleteButton?.addEventListener('click', this.handleDelete);
     }
 
-    public render(): HTMLElement {
-        this.element = stringToElement<HTMLDialogElement>(template({
+    private handleDelete = async (event: Event): Promise<void> => {
+        event.preventDefault();
+        const confirmed = await ConfirmPopup({
+            prompt: 'Вы действительно хотите удалить отзыв?',
+            note: 'При удалении отзыва будут удалены все сохраненные в нем элементы и примечания. Удаленный отзыв нельзя восстановить.',
+            cancelText: 'Отменить',
+            confirmText: 'Удалить',
+        });
+
+        if (confirmed) {
+            eventBus.emit('ReviewDetailsModal:delete', { instance: this, data: { id: this.reviewId } });
+        }
+    };
+
+    public close(): void {
+        this.element?.close();
+    }
+
+    protected override _render(): HTMLDialogElement {
+        return stringToElement<HTMLDialogElement>(template({
             ...this.props,
             styles,
         }));
-
-        this.initFields();
-
-        return this.element;
     }
-
 }

@@ -5,10 +5,12 @@
     <h2 class="{{s 'banner__title'}}">{{trip.title}}</h2>
 
     <div class="{{s 'banner__meta'}}">
+      {{#if hasDates}}
       <div class="{{s 'banner__date-wrapper'}}">
         <time class="{{s 'banner__date-start'}}" datetime="{{isoStart}}">{{start}}</time> &ndash;
         <time class="{{s 'banner__date-end'}}" datetime="{{isoEnd}}">{{end}}</time>
       </div>
+      {{/if}}
       <span class="{{s 'banner__location'}}">{{trip.location}}</span>
     </div>
 

@@ -1,8 +1,8 @@
-import { ConfirmPopupProps } from '../model/types';
 import './style.scss';
 
 import { stringToElement } from '@/shared/utils';
 
+import { ConfirmPopupProps } from '../model/types';
 import template from './ConfirmPopup.hbs?compiled';
 
 export const ConfirmPopup = (props: ConfirmPopupProps): Promise<boolean> => {

@@ -1,17 +1,21 @@
+import { eventBus } from '@/shared/lib';
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
 import { stringToElement } from '@/shared/utils';
 
 import { TabsProps } from '../model/types';
 import template from './Tabs.hbs?compiled';
 
-export class Tabs {
-    element?: HTMLElement;
-    activeTabId: string;
+export class Tabs extends BaseComponent {
+    private activeTabId: string;
+    private tabItems: Record<string, HTMLLIElement> = {};
 
     constructor(private props: TabsProps) {
-        this.activeTabId = this.props.activeId;
+        super();
+        this.activeTabId = props.activeId;
     }
 
-    private initListeners(): void {
+    protected override initListeners(): void {
+        super.initListeners();
         this.element?.addEventListener('click', this.handleTabClick);
     }
 
@@ -25,24 +29,30 @@ export class Tabs {
         const nextId = button.dataset.tabId!;
         if (nextId === this.activeTabId) return;
 
-        this.updateActiveTab(nextId);
+        this.updateActiveTab(this.activeTabId, nextId);
 
         this.activeTabId = nextId;
-        this.props.onTabChange(nextId);
+        eventBus.emit('Tabs:change', nextId);
     };
 
-    private updateActiveTab(newId: string): void {
+    private updateActiveTab(oldId: string, newId: string): void {
         const activeClass = `${this.props.className}__item--active`;
 
-        this.element?.querySelector(`.${activeClass}`)?.classList.remove(activeClass);
-        this.element?.querySelector(`[data-tab-id="${newId}"]`)
-            ?.closest('li')
-            ?.classList.add(activeClass);
+        this.tabItems[oldId].classList.remove(activeClass);
+        this.tabItems[newId].classList.add(activeClass);
     }
 
-    public render(): HTMLElement {
-        this.element = stringToElement(template(this.props));
-        this.initListeners();
-        return this.element;
+    protected override _render(): HTMLElement {
+        const element = stringToElement(template(this.props));
+
+        element.querySelectorAll<HTMLButtonElement>('[data-tab-id]').forEach(button => {
+            const id = button.dataset.tabId;
+            const container = button.closest('li');
+            if (id && container) {
+                this.tabItems[id] = container;
+            }
+        });
+
+        return element;
     }
 }

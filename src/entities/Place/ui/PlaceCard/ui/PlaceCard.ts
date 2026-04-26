@@ -1,30 +1,36 @@
 import './style.scss';
 
-import { LikeButton } from '@/shared/ui';
-import { stringToElement } from '@/shared/utils';
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
+import { IComponent } from '@/shared/model';
+import { formatNumber, stringToElement } from '@/shared/utils';
 
 import { PlaceCardProps } from '../model/types';
 import template from './PlaceCard.hbs?compiled';
 
-export class PlaceCard {
-    private element?: HTMLElement;
-    private likeButton?: LikeButton;
+export class PlaceCard extends BaseComponent {
+    declare children: {
+        action?: IComponent;
+    };
 
-    constructor(private props: PlaceCardProps) {
-        this.likeButton = new LikeButton({
-            className: 'card__like',
-            isLiked: props.place.isLiked,
-        });
+    private get place() {
+        return this.props.place;
     }
 
-    public render(): HTMLElement {
-        this.element = stringToElement(template(this.props));
+    constructor(private props: PlaceCardProps) {
+        super();
+        this.children = {
+            ...(props.action && { action: props.action }),
+        };
+    }
 
-        if (this.props.authorized && this.likeButton) {
-            this.element.querySelector('[data-slot="like-button"]')
-                ?.replaceWith(this.likeButton.render());
-        }
+    private formatPrice() {
+        return this.place.price === 0 ? 'Бесплатно' : `от ${formatNumber(this.place.price)} ₽`;
+    }
 
-        return this.element;
+    protected override _render(): HTMLElement {
+        return stringToElement(template({
+            ...this.props,
+            formattedPrice: this.formatPrice(),
+        }));
     }
 }

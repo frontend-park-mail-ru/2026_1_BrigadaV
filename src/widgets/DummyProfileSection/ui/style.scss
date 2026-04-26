@@ -1,0 +1,11 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
+.dummy {
+    display: flex;
+    width: max-content;
+    min-height: 100px;
+    padding: 1rem 2.25rem;
+    background-color: $white;
+    border-radius: 8px;
+}

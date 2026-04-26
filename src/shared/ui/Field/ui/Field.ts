@@ -1,24 +1,23 @@
 import './style.scss';
 
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
 import { stringToElement } from '@/shared/utils';
 
 import { FieldProps } from '../model/types';
 import template from './Field.hbs?compiled';
 
-export class Field {
-    private element?: HTMLElement;
+export class Field extends BaseComponent {
+    constructor(private props: FieldProps) { super(); }
 
-    constructor(private props: FieldProps) { }
+    protected override initListeners(): void {
+        super.initListeners();
 
-    private initListeners(): void {
         const leftButton = this.element?.querySelector('button[data-position="left"]');
-
         if (leftButton && this.props.leftIcon && this.props.onLeftIconClick) {
             leftButton.addEventListener('click', this.handleIconClick);
         }
 
         const rightButton = this.element?.querySelector('button[data-position="right"]');
-
         if (rightButton && this.props.rightIcon && this.props.onRightIconClick) {
             rightButton.addEventListener('click', this.handleIconClick);
         }
@@ -94,12 +93,12 @@ export class Field {
         }
     }
 
-    public setValue(value?: string): void {
+    public setValue(value?: string | number): void {
         if (!this.element || !value) return;
 
         const input = this.element.querySelector<HTMLInputElement>('.field__input');
         if (input) {
-            input.value = value;
+            input.value = value.toString();
         }
     }
 
@@ -109,9 +108,7 @@ export class Field {
         this.element.querySelector<HTMLInputElement>('.field__input')?.focus();
     }
 
-    public render(): HTMLElement {
-        this.element = stringToElement(template(this.props));
-        this.initListeners();
-        return this.element;
+    protected override _render(): HTMLElement {
+        return stringToElement(template(this.props));
     }
 }

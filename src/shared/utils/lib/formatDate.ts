@@ -6,7 +6,7 @@ const DAY_MONTH = new Intl.DateTimeFormat('ru-RU', {
 const MONTH_YEAR = new Intl.DateTimeFormat('ru-RU', {
     month: 'long',
     year: 'numeric',
-})
+});
 
 const FULL_DATE = new Intl.DateTimeFormat('ru-RU', {
     day: 'numeric',

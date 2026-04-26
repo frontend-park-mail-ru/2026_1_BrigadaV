@@ -1,4 +1,4 @@
-<dialog class="{{s 'edit-trip'}}" id="{{id}}" closedby="any">
+<dialog class="{{s 'edit-trip'}}" id="{{modalId}}" closedby="any">
   <form class="{{s 'edit-trip__form'}}">
 
     <div class="{{s 'edit-trip__fields'}}">
@@ -12,8 +12,8 @@
     </div>
 
     <div class="{{s 'edit-trip__actions'}}">
-      <button type="button" class="{{s 'edit-trip__delete'}}">Удалить поездку</button>
-      <button type="button" command="close" commandfor="{{id}}" class="{{s 'edit-trip__cancel'}}">Отменить</button>
+      <button type="button" class="{{s 'edit-trip__delete'}}" data-ref="delete">Удалить поездку</button>
+      <button type="button" command="close" commandfor="{{modalId}}" class="{{s 'edit-trip__cancel'}}">Отменить</button>
       <button type="submit" class="{{s 'edit-trip__submit'}}">Сохранить</button>
     </div>
   </form>

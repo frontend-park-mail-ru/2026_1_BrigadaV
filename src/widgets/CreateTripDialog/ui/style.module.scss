@@ -1,22 +1,37 @@
 @use '@/shared/styles/mixins' as *;
+@use '@/shared/styles/variables' as *;
 
 .create-trip {
     position: fixed;
     top: 0;
     right: 0;
-    width: 40vw;
+    display: flex;
+    width: clamp(300px, 90%, 500px);
     height: 100vh;
     max-height: none;
     margin: 0;
     margin-left: auto;
     padding-block: 4.5rem 0;
     padding-inline: 3rem;
+    flex-direction: column;
     border: none;
     border-radius: 8px 0 0 8px;
 
-    &:open {
-        display: grid;
-        grid-template-rows: max-content 1fr;
+    translate: 100%;
+    transition:
+        translate $timing-animation-medium;
+
+    &.is-visible {
+        translate: 0;
+    }
+
+    &::backdrop {
+        background-color: hsl(0 0% 0% / 0);
+        transition: background-color $timing-animation-medium;
+    }
+
+    &.is-visible::backdrop {
+        background-color: hsl(0 0% 0% / 0.4);
     }
 
     &__close {
@@ -35,6 +50,7 @@
 
     &__form {
         display: flex;
+        flex-grow: 1;
         flex-direction: column;
     }
 

@@ -1,16 +1,51 @@
 import { ApiError } from './lib/ApiError';
-import { LoginDTO, PlaceDTO, RegisterDTO } from './types';
 
-const API_URL = import.meta.env.DEV ? 'http://localhost:8080/api' : 'http://212.233.96.48:8080/api';
+export const BACKEND_ORIGIN = import.meta.env.DEV
+    ? 'http://localhost:8080'
+    : 'http://guidely.ru:8080';
 
-const request = async (path: string, options: RequestInit) => {
+export const API_URL = `${BACKEND_ORIGIN}/api`;
+
+let cachedCSRFToken: string | null = null;
+
+const getCSRFToken = async (): Promise<string> => {
+    if (cachedCSRFToken) return cachedCSRFToken;
+
+    try {
+        let response = await fetch(`${API_URL}/csrf-token`, { credentials: 'include' });
+        if (!response.ok && cachedCSRFToken) {
+            cachedCSRFToken = null;
+            response = await fetch(`${API_URL}/csrf-token`, { credentials: 'include' });
+        }
+
+        const data = await response.json();
+        cachedCSRFToken = data.csrf_token;
+        return cachedCSRFToken || '';
+    } catch (error) {
+        console.error(error);
+    }
+    return '';
+};
+
+export const request = async <T = unknown>(path: string, options: RequestInit) => {
     const url = `${API_URL}${path}`;
+
+    const method = options.method?.toUpperCase() ?? 'GET';
+    const needCSRF = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method);
+
+    const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+        ...(needCSRF ? { 'X-CSRF-Token': await getCSRFToken() } : {}),
+    };
+
+
+    if (options.body instanceof FormData) {
+        delete headers['Content-Type'];
+    }
 
     const defaultOptions: RequestInit = {
         credentials: 'include',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers,
         ...options,
     };
 
@@ -29,47 +64,9 @@ const request = async (path: string, options: RequestInit) => {
             throw error;
         }
 
-        return data;
+        return data as T;
     } catch (error) {
         // TODO Сделать вывод ошибок тост сообщением
         throw error;
-    }
-};
-
-export const API = {
-    register: async (name: string, login: string, password: string): Promise<RegisterDTO> => {
-        return request('/register', {
-            method: 'POST',
-            body: JSON.stringify({
-                login,
-                password,
-                nickname: name
-            })
-        });
-    },
-
-    login: async (login: string, password: string): Promise<LoginDTO> => {
-        return request('/login', {
-            method: 'POST',
-            body: JSON.stringify({ login, password }),
-        });
-    },
-
-    me: async (): Promise<LoginDTO> => {
-        return request('/user/me', {
-            method: 'GET'
-        });
-    },
-
-    logout: async (): Promise<void> => {
-        return request('/logout', {
-            method: 'POST',
-        });
-    },
-
-    getPlaces: async (): Promise<PlaceDTO[]> => {
-        return request('/', {
-            method: 'GET',
-        });
     }
 };

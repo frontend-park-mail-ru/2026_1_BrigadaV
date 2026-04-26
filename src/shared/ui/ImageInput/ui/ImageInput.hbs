@@ -1,0 +1,24 @@
+<div class="image-input {{className}}">
+  <label class="image-input__label">
+    <div class="image-input__preview-wrapper">
+      {{#if src}}
+      <img src="{{src}}" class="image-input__preview" data-ref="preview">
+      {{else}}
+      <img src="/icons/avatar.svg" class="image-input__preview image-input__preview--default"
+        data-ref="preview">
+      {{/if}}
+
+      <div class="image-input__overlay">
+        <img src="/icons/plus.svg" class="image-input__icon">
+        <h6 class="image-input__text">Фото профиля (до {{maxSizeMb}} Мб)</h6>
+      </div>
+    </div>
+
+    <input type="file" name="{{name}}" accept="{{accept}}" data-ref="input" hidden>
+  </label>
+
+  <div class="image-input__error-wrapper">
+    <span class="image-input__message-icon-box"><img src="/icons/alert-error.svg"></span>
+    <span class="image-input__message"></span>
+  </div>
+</div>
