@@ -21,6 +21,8 @@ import template from './AttractionPage.hbs?compiled';
 import styles from './style.module.scss';
 import { Review } from '@/entities/Review/model/types';
 
+import { MapIframe } from '@/widgets/MapIframe';
+
 const WRITE_REVIEW_DIALOG_ID = 'write-review';
 const REVIEW_DETAILS_MODAL_ID = 'review-details';
 
@@ -37,6 +39,8 @@ export class AttractionPage extends BasePage {
         workingHours: WorkingHours;
         writeReviewDialog: WriteReviewDialog;
         reviewDetailsModal: ReviewDetailsModal;
+
+        mapWidget?: MapIframe;
     };
     protected override get eventHandlers(): Record<string, Callback> {
         return {
@@ -56,6 +60,11 @@ export class AttractionPage extends BasePage {
 
         const place = await fetchPlace(parameters.placeId);
         page.place = place;
+
+        if (page.place.lat == null || page.place.lon == null) {
+            page.place.lat = 55.751244;
+            page.place.lon = 37.618423;
+        }
 
         page.setupComponents();
         return page;
@@ -99,7 +108,14 @@ export class AttractionPage extends BasePage {
 
             reviewDetailsModal: new ReviewDetailsModal({
                 modalId: REVIEW_DETAILS_MODAL_ID,
-            })
+            }),
+
+
+            mapWidget: new MapIframe({
+            lat: this.place.lat!,
+            lon: this.place.lon!,
+        }),
+            
         };
     }
 
