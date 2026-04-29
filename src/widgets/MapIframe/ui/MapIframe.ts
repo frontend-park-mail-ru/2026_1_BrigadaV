@@ -13,7 +13,7 @@ export class MapIframe extends BaseComponent<HTMLDivElement> {
 
     const iframe = document.createElement('iframe');
     iframe.className = 'map-iframe__frame';
-    iframe.src = `/map.html?lat=${this.props.lat}&lon=${this.props.lon}&zoom=${this.props.zoom ?? 15}`;
+    iframe.src = `/map?lat=${this.props.lat}&lon=${this.props.lon}&zoom=${this.props.zoom ?? 15}`;
     iframe.width = '100%';
     iframe.height = '100%';
     iframe.style.border = 'none';
