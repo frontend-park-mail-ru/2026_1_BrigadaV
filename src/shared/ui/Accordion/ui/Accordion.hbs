@@ -1,0 +1,16 @@
+<div class="accordion {{className}} {{#if isOpen}}accordion--open{{/if}}">
+  <div class="accordion__summary" data-ref="toggle">
+    <div class="accordion__header">
+      <span class="accordion__title">{{title}}</span>
+      <img src="/icons/arrow-down.svg" class="accordion__marker">
+    </div>
+
+    <div data-slot="base" class="accordion__base"></div>
+  </div>
+
+  <div class="accordion__content-wrapper">
+    <div class="accordion__content">
+      <div data-slot="extended" class="accordion__extended"></div>
+    </div>
+  </div>
+</div>

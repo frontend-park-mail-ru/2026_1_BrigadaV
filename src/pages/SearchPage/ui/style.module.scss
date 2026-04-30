@@ -1,0 +1,115 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+@use '@/shared/styles/layout' as *;
+
+.search-page {
+    @include default-page-layout;
+    gap: 1rem;
+    background-color: $surface-0;
+}
+
+.main {
+    display: grid;
+    padding-inline: 2.5rem 4.75rem;
+    grid-template-areas:
+        "query query"
+        "filters filters"
+        "aside main";
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: max-content max-content 1fr;
+}
+
+.query {
+    display: flex;
+    height: 40px;
+    margin-bottom: 1.5rem;
+    grid-area: query;
+    justify-content: center;
+    gap: 0.5rem;
+
+    &__button {
+        @include button-tertiary;
+    }
+
+    &__field {
+        width: 40vw;
+    }
+}
+
+.filters {
+    display: flex;
+    margin-bottom: 2.5rem;
+    grid-area: filters;
+    gap: 2rem;
+
+    &__button {
+        @include button-tertiary;
+
+    }
+}
+
+.main {
+    grid-area: main;
+    background-color: $surface-0;
+}
+
+.aside {
+    grid-area: aside;
+}
+
+.categories {
+    --inline-spacing: 1rem;
+
+    display: grid;
+    grid-template-rows: max-content 0fr;
+    align-self: start;
+    background-color: $white;
+
+    transition: grid-template-rows $timing-animation-medium;
+
+    &[open] {
+        grid-template-rows: max-content 1fr;
+    }
+
+    &::details-content {
+        overflow: hidden;
+        content-visibility: visible;
+    }
+
+    &__header {
+        @include typo-h3;
+        display: flex;
+        padding: 1rem var(--inline-spacing);
+        align-self: center;
+        justify-content: space-between;
+        gap: 2rem;
+        cursor: pointer;
+    }
+
+    &__marker {
+        width: 24px;
+    }
+
+    &__summary::marker {
+        content: "";
+    }
+
+    &__marker {
+        transition: rotate $timing-animation-medium;
+    }
+
+    &[open] &__marker {
+        rotate: 180deg;
+    }
+
+    &__list {
+        display: flex;
+        padding: 0 var(--inline-spacing) 0.5rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    &__item {
+        @include typo-p;
+    }
+}
