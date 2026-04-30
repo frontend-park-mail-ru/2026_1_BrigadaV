@@ -28,7 +28,6 @@
         "vite-plugin-image-optimizer": "^2.0.3"
     },
     "dependencies": {
-        "express": "^5.2.1",
-        "fzf": "^0.5.2"
+        "express": "^5.2.1"
     }
 }
