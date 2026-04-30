@@ -47,3 +47,30 @@
         height: var(--size);
     }
 }
+
+
+.album-trigger {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 3.5rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: $surface-0;
+    border: 1px solid $color-border-button;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+
+    img {
+        width: 24px;
+        height: 24px;
+    }
+
+    &:hover {
+        background: $gray-100;
+    }
+}

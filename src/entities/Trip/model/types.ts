@@ -10,3 +10,19 @@ export type Trip = {
     preview?: string;
     places: PlaceSummary[];
 }
+
+export type Album = {
+    ID: number;
+    TripID: number;
+    Name: string;
+    Description: string;
+    CoverPhotoID?: number;
+    MaxPhotos: number;
+    CreatedAt: string;
+    UpdatedAt: string;
+}
+
+export type AlbumPhoto = {
+    id: number;
+    url: string;
+}

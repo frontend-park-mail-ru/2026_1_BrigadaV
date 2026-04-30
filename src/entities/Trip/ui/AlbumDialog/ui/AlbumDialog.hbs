@@ -1,0 +1,26 @@
+<dialog class="{{s 'album-dialog'}}" id="{{modalId}}" closedby="any">
+  <form class="{{s 'album-dialog__form'}}">
+    <h2 class="{{s 'album-dialog__title'}}">Альбом путешествия</h2>
+
+    <label class="{{s 'album-dialog__upload'}}">
+      <img src="/icons/plus.svg" class="{{s 'album-dialog__upload-icon'}}" alt="Загрузить">
+      <span>Загрузить изображение</span>
+      <input type="file" name="photo" accept="image/*" data-ref="file-input" hidden multiple>
+    </label>
+
+    <div class="{{s 'album-dialog__photos'}}" data-ref="photos-container">
+    </div>
+
+    <div class="{{s 'album-dialog__actions'}}">
+      <button type="button" class="{{s 'album-dialog__delete'}}" data-ref="delete-all">
+        Удалить все фото
+      </button>
+      <button type="button" command="close" commandfor="{{modalId}}" class="{{s 'album-dialog__cancel'}}">
+        Отменить
+      </button>
+      <button type="submit" class="{{s 'album-dialog__submit'}}">
+        Сохранить
+      </button>
+    </div>
+  </form>
+</dialog>
