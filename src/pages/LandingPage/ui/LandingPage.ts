@@ -20,13 +20,8 @@ export class LandingPage extends BasePage {
         recommendedList: RecommendedList;
     };
 
-    private placeList!: Place[];
-
     public static async create(appState: AppState): Promise<LandingPage> {
         const page = new LandingPage(appState);
-
-        const places = await getPlaces();
-        page.placeList = places;
 
         page.setupComponents();
         return page;
@@ -36,7 +31,6 @@ export class LandingPage extends BasePage {
         const searchBar = new SearchBar({
             withButton: true,
             placeholder: 'Куда бы вы хотели отправиться?',
-            places: this.placeList,
         });
 
         this.children = {
@@ -50,7 +44,6 @@ export class LandingPage extends BasePage {
 
             recommendedList: new RecommendedList({
                 authorized: Boolean(this.appState.currentUser),
-                places: this.placeList,
             }),
         };
     }

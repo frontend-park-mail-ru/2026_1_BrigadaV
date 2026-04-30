@@ -5,7 +5,6 @@ export type SearchBarProps = {
     className?: string;
     withButton?: boolean;
     placeholder: string;
-    places: PlaceSearchItemProps['place'][],
 }
 
 export type SearchResult = {

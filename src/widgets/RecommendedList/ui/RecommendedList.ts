@@ -16,7 +16,8 @@ export class RecommendedList extends BaseList<Place, RecommendedListProps> {
 
     protected async loadData() {
         try {
-            return getRandomElements(this.props.places, 8);
+            const places = await getPlaces();
+            return getRandomElements(places, 8);
 
         } catch { }
 

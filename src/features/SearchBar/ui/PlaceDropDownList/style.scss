@@ -8,6 +8,8 @@
     background-color: $white;
     border-radius: 8px;
 
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
     &__header {
         display: none;
         font-size: 14px;
@@ -15,8 +17,10 @@
 
     &__list {
         display: flex;
+        max-height: 400px;
         flex-direction: column;
         gap: 1.75rem;
+        overflow-y: auto;
     }
 
     &--hidden {

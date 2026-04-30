@@ -11,14 +11,13 @@ import { focusField } from '@/shared/lib';
 import { debounce } from '@/shared/utils/lib/debounce';
 import { PlaceSearchItemProps } from '@/entities/Place/ui/PlaceSearchItem/model/types';
 import { Fzf } from 'fzf';
+import { searchPlace } from '@/entities/Place';
 
 export class SearchBar extends BaseComponent {
     declare protected children: {
         searchField: Field;
         dropDownList: PlaceDropDownList;
     };
-
-    private fzf: Fzf<PlaceSearchItemProps['place'][]>;
 
     constructor(private props: SearchBarProps) {
         super();
@@ -41,12 +40,6 @@ export class SearchBar extends BaseComponent {
                 emptyPromptHeader: 'Может заинтересовать',
             }),
         };
-
-        this.fzf = new Fzf(props.places || [], {
-            selector: (item) => item.name,
-            normalize: true,
-            limit: 4,
-        });
     }
 
     protected override initListeners(): void {
@@ -63,32 +56,32 @@ export class SearchBar extends BaseComponent {
         }
     }
 
-    private handleFocus = (inputValue: string) => {
+    private handleFocus = async (inputValue: string) => {
         if (inputValue !== '') {
             this.children.dropDownList.setState('prompt');
             return;
         }
 
         this.children.dropDownList.setState('empty');
-        const randomPlaces = getRandomElements(this.props.places, 2).map(place => ({ place }));
-        this.children.dropDownList.setItems(randomPlaces);
+        // todo get random places
+        // const randomPlaces = getRandomElements(this.props.places, 2).map(place => ({ place }));
+        // this.children.dropDownList.setItems(randomPlaces);
     }
 
-    private handleInput = (inputValue: string) => {
+    private handleInput = async (inputValue: string) => {
         if (inputValue === '') {
             this.children.dropDownList.setState('empty');
-            const randomPlaces = getRandomElements(this.props.places, 2).map(place => ({ place }));
-            this.children.dropDownList.setItems(randomPlaces);
+            // todo get random places
+            // const randomPlaces = getRandomElements(this.props.places, 2).map(place => ({ place }));
+            // this.children.dropDownList.setItems(randomPlaces);
             return;
         }
 
         this.children.dropDownList.setState('prompt');
 
-        const searchResults = this.fzf.find(inputValue);
-        this.children.dropDownList.setItems(searchResults.map((entry) => ({
-            place: entry.item,
-            positions: entry.positions,
-        })));
+        const searchResults = await searchPlace(inputValue);
+        const topResult = searchResults.slice(0, 7);
+        this.children.dropDownList.setItems(topResult.map(item => ({ place: item })));
     }
 
     protected override _render(): HTMLElement {
