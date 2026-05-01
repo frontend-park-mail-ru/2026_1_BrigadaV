@@ -128,7 +128,7 @@ export class AttractionPage extends BasePage {
         return `${this.place.reviewCount} ${pluralize(this.place.reviewCount, { one: 'отзыв', few: 'отзыва', many: 'отзывов' })}`;
     }
 
-    protected override getTemplateData(): Record<string, any> {
+    protected override getTemplateData(): Record<string, unknown> {
         return {
             place: this.place,
             reviewCountText: `(${this.makeReviewCountText()})`,

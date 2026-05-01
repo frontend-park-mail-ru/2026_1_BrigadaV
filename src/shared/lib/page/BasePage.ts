@@ -3,13 +3,13 @@ import { AppState, IPage } from '@/shared/model';
 import { BaseComponent } from '../component/BaseComponent';
 
 export abstract class BasePage extends BaseComponent implements IPage {
-    protected abstract template: (data: any) => string;
+    protected abstract template: (data: Record<string, unknown>) => string;
     protected abstract styles: Record<string, string>;
     protected abstract pageClassName: string;
 
     protected constructor(protected appState: AppState) { super(); }
 
-    protected getTemplateData(): Record<string, any> {
+    protected getTemplateData(): Record<string, unknown> {
         return { styles: this.styles };
     }
 

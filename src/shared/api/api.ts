@@ -21,9 +21,8 @@ const getCSRFToken = async (): Promise<string> => {
         const data = await response.json();
         cachedCSRFToken = data.csrf_token;
         return cachedCSRFToken || '';
-    } catch (error) {
-        console.error(error);
-    }
+    } catch { }
+
     return '';
 };
 

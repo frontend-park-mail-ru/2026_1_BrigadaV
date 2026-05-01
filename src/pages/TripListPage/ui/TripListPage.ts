@@ -37,7 +37,7 @@ export class TripListPage extends BasePage {
         };
     }
 
-    protected override getTemplateData(): Record<string, any> {
+    protected override getTemplateData(): Record<string, unknown> {
         return {
             createTripDialogId: CREATE_TRIP_DIALOG_ID,
             styles,

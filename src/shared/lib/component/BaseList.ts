@@ -71,7 +71,7 @@ export abstract class BaseList<TEntity, TProps extends { className?: string; tag
                 const element = this.processItem(item);
                 this.element?.appendChild(element);
             });
-        } catch (error) {
+        } catch {
             // TODO add error state
         }
     }

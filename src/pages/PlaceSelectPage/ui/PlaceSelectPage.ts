@@ -68,7 +68,7 @@ export class PlaceSelectPage extends BasePage {
         };
     }
 
-    protected override getTemplateData(): Record<string, any> {
+    protected override getTemplateData(): Record<string, unknown> {
         return {
             styles,
             tripId: this.tripId
