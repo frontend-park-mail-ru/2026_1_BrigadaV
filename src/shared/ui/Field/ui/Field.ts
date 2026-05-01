@@ -51,6 +51,13 @@ export class Field extends BaseComponent {
 
     };
 
+    public getValue(): string {
+        const input = this.element?.querySelector<HTMLInputElement>('.field__input');
+        if (input) return input.value;
+
+        return '';
+    }
+
     public getType(): string | null {
         const input = this.element?.querySelector<HTMLInputElement>('.field__input');
         if (input) {

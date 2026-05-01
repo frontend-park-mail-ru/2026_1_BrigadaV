@@ -1,11 +1,11 @@
-<form class="search {{className}}">
+<form class="search {{className}}" action="{{url '/search'}}">
   <div class="search__field-wrapper">
     <div data-slot="search-field"></div>
     <div data-slot="drop-down-list" class="search__drop-down"></div>
   </div>
 
   {{#if withButton}}
-  <a href="{{url '/search'}}" class="search__button" type="button" data-link>Поехали!</a>
+  <button class="search__button" type="submit">Поехали!</button>
   {{/if}}
 
 </form>

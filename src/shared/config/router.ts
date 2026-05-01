@@ -66,8 +66,8 @@ export const config: Record<string, Route> = {
         authOnly: true,
     },
     search: {
-        href: '/search',
-        hrefRegex: /^\/search$/,
+        href: '/search?q=:string',
+        hrefRegex: /^\/search(?:\?q=(?<query>[^&]*))?$/,
         view: SearchPage,
     }
 };

@@ -8,6 +8,8 @@ import { Field } from '@/shared/ui';
 import { focusField } from '@/shared/lib';
 import { getPlaces, Place, searchPlace } from '@/entities/Place';
 import { getRandomElements } from '@/shared/utils';
+import { debounce } from '@/shared/utils/lib/debounce';
+import { SearchPageParameters } from '../model/types';
 
 export class SearchPage extends BasePage {
     protected template = template;
@@ -21,12 +23,17 @@ export class SearchPage extends BasePage {
     };
 
     private randomPlaces!: Place[];
+    private query = '';
 
-    public static async create(appState: AppState): Promise<SearchPage> {
+    public static async create(appState: AppState, parameters: SearchPageParameters): Promise<SearchPage> {
         const page = new SearchPage(appState);
 
         const places = await getPlaces();
         page.randomPlaces = getRandomElements(places, 7);
+
+        if (parameters.query) {
+            page.query = parameters.query;
+        }
 
         page.setupComponents();
         return page;
@@ -44,12 +51,15 @@ export class SearchPage extends BasePage {
                 type: 'text',
                 rightIcon: '/icons/search.svg',
                 onRightIconClick: focusField,
-                onInput: this.handleInput,
+                onInput: debounce(this.handleInput),
+                attributes: {
+                    value: this.query,
+                }
             }),
 
             placeList: new PlaceList({
-                defaultPlaces: this.randomPlaces,
                 authorized,
+                ...(!this.query && { defaultPlaces: this.randomPlaces })
             }),
         };
     }
@@ -104,5 +114,30 @@ export class SearchPage extends BasePage {
                 accordion.addEventListener('transitionend', handleContentEnd);
             }
         });
+    }
+
+    protected override _render(): HTMLElement {
+        super._render();
+        if (this.query) {
+            this.handleInput(this.query);
+        }
+        return this.element!;
+    }
+
+    protected override _finalize(): void {
+        super._finalize();
+
+        const currentQuery = this.children.query.getValue();
+
+        if (currentQuery === this.query) return;
+
+        const url = new URL(window.location.href);
+        if (currentQuery) {
+            url.searchParams.set('q', currentQuery);
+        } else {
+            url.searchParams.delete('q');
+        }
+
+        window.history.replaceState(this.appState, '', url.pathname + url.search);
     }
 }
