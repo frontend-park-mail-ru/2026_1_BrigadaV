@@ -10,8 +10,7 @@ import { PlaceDropDownList } from './PlaceDropDownList/PlaceDropDownList';
 import { focusField } from '@/shared/lib';
 import { debounce } from '@/shared/utils/lib/debounce';
 import { PlaceSearchItemProps } from '@/entities/Place/ui/PlaceSearchItem/model/types';
-import { Fzf } from 'fzf';
-import { searchPlace } from '@/entities/Place';
+import { fetchPlace, getPlaces, searchPlace } from '@/entities/Place';
 
 export class SearchBar extends BaseComponent {
     declare protected children: {
@@ -63,17 +62,19 @@ export class SearchBar extends BaseComponent {
         }
 
         this.children.dropDownList.setState('empty');
-        // todo get random places
-        // const randomPlaces = getRandomElements(this.props.places, 2).map(place => ({ place }));
-        // this.children.dropDownList.setItems(randomPlaces);
+        // todo add popular places handle
+        const places = await getPlaces();
+        const randomPlaces = getRandomElements(places, 7).map(place => ({ place }));
+        this.children.dropDownList.setItems(randomPlaces);
     }
 
     private handleInput = async (inputValue: string) => {
         if (inputValue === '') {
             this.children.dropDownList.setState('empty');
-            // todo get random places
-            // const randomPlaces = getRandomElements(this.props.places, 2).map(place => ({ place }));
-            // this.children.dropDownList.setItems(randomPlaces);
+            // todo add popular places handle
+            const places = await getPlaces();
+            const randomPlaces = getRandomElements(places, 7).map(place => ({ place }));
+            this.children.dropDownList.setItems(randomPlaces);
             return;
         }
 
