@@ -61,7 +61,7 @@ export class AttractionPage extends BasePage {
         const place = await fetchPlace(parameters.placeId);
         page.place = place;
 
-        if (page.place.lat == null || page.place.lon == null) {
+        if (page.place.lat === null || page.place.lon === null) {
             page.place.lat = 55.751244;
             page.place.lon = 37.618423;
         }
@@ -115,7 +115,7 @@ export class AttractionPage extends BasePage {
                 lat: this.place.lat!,
                 lon: this.place.lon!,
             }),
-            
+
         };
     }
 
