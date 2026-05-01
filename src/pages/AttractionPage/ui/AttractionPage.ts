@@ -157,5 +157,5 @@ export class AttractionPage extends BasePage {
 
         this.fields['rating'].textContent = this.place.rating!.toString();
         this.fields['rating'].style.setProperty('--rating', this.place.rating!.toString());
-    }
+    };
 }

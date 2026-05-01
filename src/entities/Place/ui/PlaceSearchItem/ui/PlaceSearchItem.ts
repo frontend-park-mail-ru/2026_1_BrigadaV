@@ -20,7 +20,7 @@ export class PlaceSearchItem extends BaseComponent {
 
         const link = this.element?.dataset.href;
         if (link) navigate(link);
-    }
+    };
 
     private applyHighlight(name: string, positions: Set<number>): string {
         let result = '';
@@ -32,13 +32,12 @@ export class PlaceSearchItem extends BaseComponent {
                 isInsideHighlight = true;
 
             } else if (isInsideHighlight && !positions.has(i)) {
-                result += '</mark>'
+                result += '</mark>';
                 isInsideHighlight = false;
             }
 
             result += name[i];
         }
-        console.log(result);
 
         return result;
     }

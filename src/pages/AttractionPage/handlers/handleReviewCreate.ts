@@ -28,15 +28,15 @@ export const handleReviewCreate = async ({ instance, data, reviewList, user, pla
                     nickname: user.nickname,
                     avatar: user.avatar,
                 }
-            }
-            eventBus.emit('ReviewCreate:success', { type: 1, newReview })
+            };
+            eventBus.emit('ReviewCreate:success', { type: 1, newReview });
         }
     } catch (error) {
         let toastMessage = 'Произошла непредвиденная ошибка. Пожалуйста, повторите попытку позже.';
         switch (error.error) {
-            case 'rating must be between 1 and 5':
-                toastMessage = 'Оценка должна быть от 1 до 5';
-                break;
+        case 'rating must be between 1 and 5':
+            toastMessage = 'Оценка должна быть от 1 до 5';
+            break;
         }
 
         Toast({

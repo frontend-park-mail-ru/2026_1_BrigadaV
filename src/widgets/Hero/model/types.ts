@@ -1,4 +1,4 @@
-import { SearchBar } from "@/features/SearchBar"
+import { SearchBar } from '@/features/SearchBar';
 
 export type HeroProps = {
     searchSlot: SearchBar;

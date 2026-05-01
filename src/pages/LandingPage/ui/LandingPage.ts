@@ -6,7 +6,6 @@ import { RecommendedList } from '@/widgets/RecommendedList';
 
 import template from './LandingPage.hbs?compiled';
 import styles from './style.module.scss';
-import { getPlaces, Place } from '@/entities/Place';
 import { SearchBar } from '@/features/SearchBar';
 
 export class LandingPage extends BasePage {

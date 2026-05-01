@@ -18,5 +18,5 @@ export const debounce = <TParams extends unknown[], TReturn>(
 
         outerArgs = args;
         id = setTimeout(execute, delay);
-    }
-}
+    };
+};
