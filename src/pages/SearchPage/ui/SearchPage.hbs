@@ -12,22 +12,26 @@
   </ul>
 
   <aside class="{{s 'aside'}}">
-    <div class="{{s 'categories'}}">
+    <div class="{{s 'categories'}}" data-ref="category-accordion">
       <div class="{{s 'categories__summary'}}">
-        <div class="{{s 'categories__header'}}">
-          Категории
+        <div class="{{s 'categories__header'}}" data-ref="category-toggle">
+          <h3 class="{{s 'categories__title'}}">Категории</h3>
           <img src="/icons/arrow-down.svg" class="{{s 'categories__marker'}}">
         </div>
+
         <ul class="{{s 'categories__base'}}">
-          <li class="{{s 'categories__item'}}"><input type="checkbox">Музеи</li>
-          <li class="{{s 'categories__item'}}"><input type="checkbox">Галереи</li>
-          <li class="{{s 'categories__item'}}"><input type="checkbox">Парки</li>
+          <li class="{{s 'categories__item'}}"><input type="checkbox" class="{{s 'categories__input'}}">Музеи</li>
+          <li class="{{s 'categories__item'}}"><input type="checkbox" class="{{s 'categories__input'}}">Галереи</li>
+          <li class="{{s 'categories__item'}}"><input type="checkbox" class="{{s 'categories__input'}}">Парки</li>
         </ul>
       </div>
-      <ul class="{{s 'categories__extended'}}">
-        <li class="{{s 'categories__item'}}"><input type="checkbox">Площади</li>
-        <li class="{{s 'categories__item'}}"><input type="checkbox">Зоопарки</li>
-      </ul>
+
+      <div class="{{s 'categories__extended-wrapper'}}" data-ref="extended-wrapper">
+        <ul class="{{s 'categories__extended'}}">
+          <li class="{{s 'categories__item'}}"><input type="checkbox" class="{{s 'categories__input'}}">Площади</li>
+          <li class="{{s 'categories__item'}}"><input type="checkbox" class="{{s 'categories__input'}}">Зоопарки</li>
+        </ul>
+      </div>
     </div>
   </aside>
 
