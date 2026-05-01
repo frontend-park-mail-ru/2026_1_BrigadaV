@@ -18,10 +18,7 @@ export class PlaceSearchItem extends BaseComponent {
         const selection = window.getSelection()?.toString();
         if (selection) return;
 
-
-
         const link = this.element?.dataset.href;
-        console.log(link);
         if (link) navigate(link);
     }
 
