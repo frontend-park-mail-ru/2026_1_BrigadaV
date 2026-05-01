@@ -57,7 +57,7 @@ export class SearchBar extends BaseComponent {
         const url = new URL('/search', window.location.origin);
         url.searchParams.set('q', query);
         navigate(url.pathname + url.search);
-    }
+    };
 
     private handleGlobalClick = (event: Event) => {
         const target = event.target;

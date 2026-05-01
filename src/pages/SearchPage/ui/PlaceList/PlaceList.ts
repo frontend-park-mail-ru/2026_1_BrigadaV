@@ -1,11 +1,10 @@
-import { Place, PlaceCard } from "@/entities/Place";
-import { stringToElement } from "@/shared/utils";
-import { BaseComponent } from "@/shared/lib/component/BaseComponent";
-import { PlaceListProps } from "./types";
-import { LikeButton } from "@/shared/ui";
+import { Place, PlaceCard } from '@/entities/Place';
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
+import { PlaceListProps } from './types';
+import { LikeButton } from '@/shared/ui';
 
 export class PlaceList extends BaseComponent {
-    constructor(private props: PlaceListProps) { super() }
+    constructor(private props: PlaceListProps) { super(); }
 
     public setItems(places: Place[]): void {
         if (!this.element) return;

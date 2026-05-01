@@ -72,7 +72,7 @@ export class SearchPage extends BasePage {
 
         const searchResults = await searchPlace(inputValue);
         this.children.placeList.setItems(searchResults);
-    }
+    };
 
     protected override initListeners(): void {
         super.initListeners();
