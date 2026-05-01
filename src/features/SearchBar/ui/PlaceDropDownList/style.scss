@@ -11,7 +11,6 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
     &__header {
-        display: none;
         font-size: 14px;
     }
 
@@ -25,11 +24,6 @@
 
     &[data-state="hidden"] {
         display: none;
-    }
-
-    &[data-state="empty"] &__header,
-    &[data-state="no-results"] &__header {
-        display: block;
     }
 
     &[data-state="empty"] &__list,

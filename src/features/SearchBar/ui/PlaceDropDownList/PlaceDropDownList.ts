@@ -8,6 +8,12 @@ import { PlaceSearchItem } from '@/entities/Place/ui/PlaceSearchItem';
 import { SearchResult } from '../model/types';
 
 export class PlaceDropDownList extends BaseComponent {
+    private static readonly STATE_HEADERS: Record<string, (props: PlaceDropDownListProps) => string> = {
+        'prompt': () => 'Вот что удалось найти',
+        'empty': (props) => props.emptyPromptHeader || '',
+        'no-results': () => 'По вашему запросу ничего не найдено',
+    };
+
     private lastState: PlaceDropDownStates = 'hidden';
 
     constructor(private props: PlaceDropDownListProps) { super(); }
@@ -43,10 +49,10 @@ export class PlaceDropDownList extends BaseComponent {
 
         this.element.setAttribute('data-state', state);
 
-        if (state === 'no-results') {
-            this.fields['header'].textContent = 'По вашему запросу ничего не найдено';
-        } else if (state === 'empty') {
-            this.fields['header'].textContent = this.props.emptyPromptHeader || '';
+        const getHeader = PlaceDropDownList.STATE_HEADERS[state];
+
+        if (getHeader) {
+            this.fields['header'].textContent = getHeader(this.props);
         }
     }
 
