@@ -10,6 +10,7 @@ import { PlaceDropDownList } from './PlaceDropDownList/PlaceDropDownList';
 import { focusField } from '@/shared/lib';
 import { debounce } from '@/shared/utils/lib/debounce';
 import { getPlaces, searchPlace } from '@/entities/Place';
+import { navigate } from '@/shared/router';
 
 export class SearchBar extends BaseComponent {
     declare protected children: {
@@ -45,7 +46,18 @@ export class SearchBar extends BaseComponent {
     protected override initListeners(): void {
         super.initListeners();
         document.addEventListener('click', this.handleGlobalClick);
+        this.element?.addEventListener('submit', this.handleSearchRedirect);
     }
+
+    private handleSearchRedirect = (event: Event) => {
+        event.preventDefault();
+
+        const query = this.children.searchField.getValue();
+
+        const url = new URL('/search', window.location.origin);
+        url.searchParams.set('q', query);
+        navigate(url.pathname + url.search);
+    };
 
     private handleGlobalClick = (event: Event) => {
         const target = event.target;

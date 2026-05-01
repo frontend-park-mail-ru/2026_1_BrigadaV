@@ -7,13 +7,12 @@ export type AppState = {
 
 export interface IComponent {
     render(): HTMLElement;
+    finalize(): void;
     destroy(): void;
 }
 
-export interface IPage {
-    render(): HTMLElement;
-    destroy(): void;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface IPage extends IComponent {}
 
 export interface IPageConstructor {
     create(appState: AppState, parameters?: Record<string, string | number>): Promise<IPage>;

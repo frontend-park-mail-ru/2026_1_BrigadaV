@@ -80,6 +80,10 @@ export const navigate = async (path: string) => {
         }
     }
 
+    if (pageInstance) {
+        pageInstance.finalize();
+    }
+
     appState.currentPath = path;
     window.history.pushState(appState, '', path);
 
