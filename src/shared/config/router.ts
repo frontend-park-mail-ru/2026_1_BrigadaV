@@ -67,17 +67,16 @@ export const config: Record<string, Route> = {
         view: PlaceSelectPage,
         authOnly: true,
     },
-    map: {
-        href: '/map',
-        hrefRegex: /^\/map$/,
-        view: MapPage,
-},
-    },
     search: {
         href: '/search?q=:string',
         hrefRegex: /^\/search(?:\?q=(?<query>[^&]*))?$/,
         view: SearchPage,
-    }
+    },
+    map: {
+        href: '/map',
+        hrefRegex: /^\/map$/,
+        view: MapPage,
+    },
 };
 
 export const appState: AppState = {
