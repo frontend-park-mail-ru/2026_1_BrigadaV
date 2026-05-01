@@ -70,7 +70,7 @@ export const config: Record<string, Route> = {
         href: '/map',
         hrefRegex: /^\/map$/,
         view: MapPage,
-},
+    },
 };
 
 export const appState: AppState = {
