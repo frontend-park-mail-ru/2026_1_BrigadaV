@@ -1,5 +1,5 @@
 import { BaseComponent } from '@/shared/lib/component/BaseComponent';
-import { PlaceDropDownListProps } from './model/types';
+import { PlaceDropDownListProps, PlaceDropDownStates } from './model/types';
 import { stringToElement } from '@/shared/utils';
 import './style.scss';
 
@@ -8,6 +8,8 @@ import { PlaceSearchItem } from '@/entities/Place/ui/PlaceSearchItem';
 import { SearchResult } from '../model/types';
 
 export class PlaceDropDownList extends BaseComponent {
+    private lastState: PlaceDropDownStates = 'hidden';
+
     constructor(private props: PlaceDropDownListProps) { super(); }
 
     public setItems(results: SearchResult[]): void {
@@ -24,6 +26,10 @@ export class PlaceDropDownList extends BaseComponent {
         });
     }
 
+    public resume(): void {
+        this.setState(this.lastState);
+    }
+
     public clear(): void {
         this.fields['item-list'].innerHTML = '';
     }
@@ -31,11 +37,14 @@ export class PlaceDropDownList extends BaseComponent {
     public setState(state: 'hidden' | 'empty' | 'prompt' | 'no-results'): void {
         if (!this.element) return;
 
+        if (state !== 'hidden') {
+            this.lastState = state;
+        }
+
         this.element.setAttribute('data-state', state);
 
         if (state === 'no-results') {
             this.fields['header'].textContent = 'По вашему запросу ничего не найдено';
-            this.clear();
         } else if (state === 'empty') {
             this.fields['header'].textContent = this.props.emptyPromptHeader || '';
         }

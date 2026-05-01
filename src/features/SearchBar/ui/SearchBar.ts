@@ -58,7 +58,7 @@ export class SearchBar extends BaseComponent {
 
     private handleFocus = async (inputValue: string) => {
         if (inputValue !== '') {
-            this.children.dropDownList.setState('prompt');
+            this.children.dropDownList.resume();
             return;
         }
 
@@ -87,6 +87,7 @@ export class SearchBar extends BaseComponent {
         const topResults = searchResults.slice(0, 7);
         if (topResults.length === 0) {
             dropDownList.setState('no-results');
+            dropDownList.clear();
             return;
         }
 
