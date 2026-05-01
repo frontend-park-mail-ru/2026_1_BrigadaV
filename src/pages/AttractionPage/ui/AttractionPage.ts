@@ -114,7 +114,7 @@ export class AttractionPage extends BasePage {
             mapWidget: new MapIframe({
                 lat: this.place.lat!,
                 lon: this.place.lon!,
-        }),
+            }),
             
         };
     }
