@@ -1,5 +1,4 @@
-import { Place } from "@/entities/Place";
-import { PlaceSearchItemProps } from "@/entities/Place/ui/PlaceSearchItem/model/types";
+import { PlaceSearchItemProps } from '@/entities/Place/ui/PlaceSearchItem/model/types';
 
 export type SearchBarProps = {
     className?: string;

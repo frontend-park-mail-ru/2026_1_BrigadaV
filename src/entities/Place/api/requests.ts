@@ -46,11 +46,14 @@ export const deleteTripPlace = async (tripId: number, placeId: number) => {
 };
 
 export const searchPlace = async (query: string): Promise<Place[]> => {
-    const dto = await request<PlaceDTO[]>(`/places/search?q=${query}`, {
+    const url = new URL('/places/search', window.location.origin);
+    url.searchParams.set('q', query);
+
+    const dto = await request<PlaceDTO[]>(url.pathname + url.search, {
         method: 'GET',
     });
 
     if (!dto) return [];
 
     return dto.map(mapPlace);
-}
+};
