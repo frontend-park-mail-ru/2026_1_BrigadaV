@@ -1,0 +1,12 @@
+.map-iframe {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+
+  &__frame {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+}
