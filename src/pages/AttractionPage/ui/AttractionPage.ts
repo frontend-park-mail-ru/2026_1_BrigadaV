@@ -114,7 +114,7 @@ export class AttractionPage extends BasePage {
             mapWidget: new MapIframe({
                 lat: this.place.lat!,
                 lon: this.place.lon!,
-        }),
+            }),
             
         };
     }
@@ -144,7 +144,7 @@ export class AttractionPage extends BasePage {
         return `${this.place.reviewCount} ${pluralize(this.place.reviewCount, { one: 'отзыв', few: 'отзыва', many: 'отзывов' })}`;
     }
 
-    protected override getTemplateData(): Record<string, any> {
+    protected override getTemplateData(): Record<string, unknown> {
         return {
             place: this.place,
             reviewCountText: `(${this.makeReviewCountText()})`,
@@ -173,5 +173,5 @@ export class AttractionPage extends BasePage {
 
         this.fields['rating'].textContent = this.place.rating!.toString();
         this.fields['rating'].style.setProperty('--rating', this.place.rating!.toString());
-    }
+    };
 }

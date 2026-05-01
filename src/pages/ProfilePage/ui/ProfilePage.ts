@@ -115,7 +115,7 @@ export class ProfilePage extends BasePage {
         oldSection.destroy();
     };
 
-    protected override getTemplateData(): Record<string, any> {
+    protected override getTemplateData(): Record<string, unknown> {
         return {
             settingsModalId: SETTINGS_MODAL_ID,
             styles

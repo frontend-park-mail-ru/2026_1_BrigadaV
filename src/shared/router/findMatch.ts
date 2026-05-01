@@ -8,7 +8,8 @@ export const findMatch = (path: string): Match | null => {
             return {
                 page,
                 parameters: Object.entries(match.groups || {}).reduce((acc, [param, value]) => {
-                    acc[param] = /^[0-9]+$/.test(value) ? +value : value;
+                    const decodedValue = decodeURIComponent(value);
+                    acc[param] = /^[0-9]+$/.test(decodedValue) ? +decodedValue : decodedValue;
                     return acc;
                 }, {} as Record<string, string | number>),
             };

@@ -25,7 +25,7 @@ export class PlacePlacard extends BaseComponent {
 
         const link = this.fields.link;
         if (link instanceof HTMLAnchorElement) navigate(link.href);
-    }
+    };
 
     protected override _render(): HTMLElement {
         const element = stringToElement(template({

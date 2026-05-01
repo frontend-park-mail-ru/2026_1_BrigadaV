@@ -69,7 +69,7 @@ export const router = async (path = '/') => {
 
 export const navigate = async (path: string) => {
     if (path.startsWith('http')) {
-        const url = new URL(path)
+        const url = new URL(path);
 
         if (url.origin !== window.location.origin) {
             window.location.href = path;
@@ -78,6 +78,10 @@ export const navigate = async (path: string) => {
         } else {
             path = url.pathname + url.search + url.hash;
         }
+    }
+
+    if (pageInstance) {
+        pageInstance.finalize();
     }
 
     appState.currentPath = path;

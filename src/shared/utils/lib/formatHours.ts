@@ -4,12 +4,11 @@ export type WorkingHour = {
     end: string;
 }
 
-const DAY_MAP = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
-const DAY_MAP1 = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+const DAY_MAP = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
 
 export const formatHours = (hours: WorkingHour[]): Record<string, string>[] => {
     return hours.map((item) => ({
-        dayLabel: DAY_MAP1[item.day],
+        dayLabel: DAY_MAP[item.day],
         start: item.start,
         end: item.end,
     }));

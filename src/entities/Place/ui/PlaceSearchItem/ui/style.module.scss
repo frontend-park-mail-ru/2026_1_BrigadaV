@@ -1,0 +1,42 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
+.card {
+    --image-size: 70px;
+
+    display: flex;
+    max-height: var(--image-size);
+    gap: 2.25rem;
+
+    cursor: pointer;
+
+    & mark {
+        color: $guidely-secondary;
+        font-size: 1.05em;
+        background-color: transparent;
+    }
+
+    &__image-wrapper {
+        flex: 0 0 var(--image-size);
+        overflow: hidden;
+    }
+
+    &__image {
+        aspect-ratio: 1 / 1;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        scale: 1.2;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    &__country {
+        @include typo-small;
+    }
+}

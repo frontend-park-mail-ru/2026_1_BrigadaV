@@ -38,7 +38,7 @@ export class TripCard extends BaseComponent {
 
         const link = this.fields.link;
         if (link instanceof HTMLAnchorElement) navigate(link.href);
-    }
+    };
 
     private makeTemplateDates() {
         const { startDate, endDate } = this.trip;

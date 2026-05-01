@@ -21,6 +21,14 @@ export class Field extends BaseComponent {
         if (rightButton && this.props.rightIcon && this.props.onRightIconClick) {
             rightButton.addEventListener('click', this.handleIconClick);
         }
+
+        const input = this.element?.querySelector<HTMLInputElement>('.field__input');
+
+        if (input) {
+            input.addEventListener('focus', (event) => this.props.onFocus?.(input.value, event));
+            input.addEventListener('blur', (event) => this.props.onBlur?.(input.value, event));
+            input.addEventListener('input', (event) => this.props.onInput?.(input.value, event));
+        }
     }
 
     private handleIconClick = (event: Event): void => {
@@ -42,6 +50,13 @@ export class Field extends BaseComponent {
         }
 
     };
+
+    public getValue(): string {
+        const input = this.element?.querySelector<HTMLInputElement>('.field__input');
+        if (input) return input.value;
+
+        return '';
+    }
 
     public getType(): string | null {
         const input = this.element?.querySelector<HTMLInputElement>('.field__input');

@@ -9,6 +9,7 @@ export abstract class BaseComponent<TElement extends HTMLElement = HTMLElement> 
     protected fields: Record<string, HTMLElement> = {};
 
     protected abstract _render(): TElement;
+    protected _finalize(): void { };
     protected _destroy(): void { };
 
     protected get eventHandlers(): Record<string, Callback> {
@@ -36,6 +37,12 @@ export abstract class BaseComponent<TElement extends HTMLElement = HTMLElement> 
         this.initListeners();
 
         return this.element;
+    }
+
+
+    public finalize(): void {
+        this._finalize();
+        Object.values(this.children).forEach(child => child.finalize());
     }
 
     public destroy(): void {

@@ -10,6 +10,7 @@ import { TripListPage } from '@/pages/TripListPage';
 import { MapPage } from '@/pages/MapPage';
 
 import { AppState, IPageConstructor } from '../model';
+import { SearchPage } from '@/pages/SearchPage';
 
 export type Route = {
     href: string;
@@ -66,11 +67,16 @@ export const config: Record<string, Route> = {
         view: PlaceSelectPage,
         authOnly: true,
     },
+    search: {
+        href: '/search?q=:string',
+        hrefRegex: /^\/search(?:\?q=(?<query>[^&]*))?$/,
+        view: SearchPage,
+    },
     map: {
         href: '/map',
         hrefRegex: /^\/map$/,
         view: MapPage,
-},
+    },
 };
 
 export const appState: AppState = {

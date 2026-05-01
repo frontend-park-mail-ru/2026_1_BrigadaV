@@ -29,7 +29,7 @@ export class TripDetailPage extends BasePage {
         };
     }
 
-    protected override getTemplateData(): Record<string, any> {
+    protected override getTemplateData(): Record<string, unknown> {
         return {
             styles,
             tripId: this.trip.id,

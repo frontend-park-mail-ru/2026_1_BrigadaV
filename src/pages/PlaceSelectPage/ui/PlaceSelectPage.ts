@@ -12,6 +12,7 @@ import { handlePlaceRemove } from '../handlers/handlePlaceRemove';
 import { PlaceSelectPageParams } from '../model/types';
 import template from './PlaceSelectPage.hbs?compiled';
 import styles from './style.module.scss';
+import { focusField } from '@/shared/lib';
 
 export class PlaceSelectPage extends BasePage {
     protected override template = template;
@@ -38,7 +39,7 @@ export class PlaceSelectPage extends BasePage {
         const page = new PlaceSelectPage(appState);
 
         page.addedPlaces = new Set(await fetchAddedPlaces(parameters.tripId));
-       
+
         page.tripId = parameters.tripId;
 
         page.setupComponents();
@@ -54,7 +55,7 @@ export class PlaceSelectPage extends BasePage {
             filter: new Field({
                 type: 'text',
                 rightIcon: '/icons/search.svg',
-                onRightIconClick: focus,
+                onRightIconClick: focusField,
                 attributes: {
                     placeholder: 'Введите название места',
                     disabled: '',
@@ -67,7 +68,7 @@ export class PlaceSelectPage extends BasePage {
         };
     }
 
-    protected override getTemplateData(): Record<string, any> {
+    protected override getTemplateData(): Record<string, unknown> {
         return {
             styles,
             tripId: this.tripId
