@@ -21,8 +21,8 @@ export async function updateAlbum(album: Album): Promise<Album> {
 }
 
 // DELETE /api/albums/{id}
-export async function deleteAlbum(albumId: number): Promise<void> {
-    await request(`${BASE}/${albumId}`, { method: 'DELETE' });
+export async function deleteAlbum(tripId: number): Promise<void> {
+    await request(`${BASE}/${tripId}`, { method: 'DELETE' });
 }
 
 //плюс загрузка и удаление фото

@@ -70,4 +70,12 @@ export class TripDetailPage extends BasePage {
             albumDialog: new AlbumDialog({ modalId: 'album-dialog-modal' })
         };
     }
+
+        protected override initListeners(): void {
+        super.initListeners();
+        const trigger = this.element?.querySelector('[data-ref="album-trigger"]');
+        trigger?.addEventListener('click', () => {
+            this.children.albumDialog.show(this.trip.id);
+        });
+    }
 }

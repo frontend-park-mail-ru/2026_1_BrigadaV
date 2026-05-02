@@ -2,7 +2,7 @@ import { BaseForm } from '@/shared/lib/component/BaseForm';
 import { stringToElement } from '@/shared/utils';
 import { Toast } from '@/shared/ui/Toast';
 import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
-import { fetchAlbumByTripId } from '../../../api/album';
+import { fetchAlbumByTripId, deleteAlbum } from '../../../api/album';
 
 import { AlbumDialogProps } from '../model//types';
 import styles from './style.module.scss';
@@ -70,9 +70,13 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
         });
 
         if (confirmed) {
-            this.releaseBlobUrls();
-            this.photos = [];
-            this.renderPhotos();
+            try {
+                await deleteAlbum(this.tripId);
+                Toast({ message: 'Альбом удалён', type: 'info' });
+                this.element?.close();
+            } catch {
+                Toast({ message: 'Не удалось удалить альбом', type: 'error' });
+            }
         }
     };
 
