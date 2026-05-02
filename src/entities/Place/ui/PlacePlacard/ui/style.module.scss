@@ -12,6 +12,7 @@
 
     &__image {
         width: 100%;
+        min-width: 0;
         height: 100%;
         flex: 0 0 300px;
         object-fit: cover;

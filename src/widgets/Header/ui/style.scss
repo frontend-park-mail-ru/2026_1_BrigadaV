@@ -1,24 +1,49 @@
 @use '@/shared/styles/variables' as *;
 @use '@/shared/styles/mixins' as *;
 
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
 .header {
     position: sticky;
     top: 0;
     z-index: 100;
     display: flex;
-    padding: 0.75rem 2.5rem;
+    padding: 0.75rem 1rem;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
+    gap: 0.75rem 1rem;
     background-color: $surface-0;
-
-    &__search {
-        width: 40vw;
-        margin: 0;
-    }
 
     &__name {
         @include typo-h2;
         color: $guidely-primary;
         font-weight: bold;
+        font-size: 2.25rem;
+    }
+
+    &__search {
+        width: clamp(200px, 90%, 600px);
+    }
+
+    &__account {
+        order: 2;
+    }
+
+    @media (min-width: 1024px) {
+        padding: 0.75rem 2.5rem;
+        flex-wrap: nowrap;
+        gap: 0;
+
+        &__name {
+            @include typo-h2;
+            color: $guidely-primary;
+            font-weight: bold;
+        }
+
+        &__account {
+            order: 3;
+        }
     }
 }

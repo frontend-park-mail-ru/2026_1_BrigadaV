@@ -1,4 +1,9 @@
 <form class="{{className}} auth-form">
+
+  <a href="{{url '/'}}" data-link>
+    <img src="/icons/arrow-left.svg" class="{{ s 'auth-form__back'}}">
+  </a>
+
   <h4 class="auth-form__title">{{title}}</h4>
 
   <div class="auth-form__fields">
@@ -13,19 +18,19 @@
         {{redirectText}}
       </a>
     </div>
+  </div>
 
-    <hr class="auth-form__separator">
+  <hr class="auth-form__separator">
 
-    <div class="auth-form__sso-auth">
+  <div class="auth-form__sso-auth">
 
-      <button class="auth-form__vk-auth button-oauth" disabled>
-        <img src="/icons/vk.svg" class="button-oauth__icon">
-        <span class="button-oauth__text">Войти через VK</span>
-      </button>
+    <button class="auth-form__vk-auth button-oauth" disabled>
+      <img src="/icons/vk.svg" class="button-oauth__icon">
+      <span class="button-oauth__text">Войти через VK</span>
+    </button>
 
-      <button class="auth-form__yandex-auth button-oauth" disabled>
-        <img src="/icons/yandex.svg" class="button-oauth__icon">
-        <span class="button-oauth__text">Войти с Яндекс ID</span>
-      </button>
-    </div>
+    <button class="auth-form__yandex-auth button-oauth" disabled>
+      <img src="/icons/yandex.svg" class="button-oauth__icon">
+      <span class="button-oauth__text">Войти с Яндекс ID</span>
+    </button>
 </form>

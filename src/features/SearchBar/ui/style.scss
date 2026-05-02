@@ -3,6 +3,7 @@
 
 .search {
     display: flex;
+    margin: 0;
     align-items: center;
     gap: 0.5rem;
 
@@ -18,5 +19,11 @@
     &__drop-down {
         position: absolute;
         inset: calc(100% + 1.75rem) 0 auto;
+    }
+
+    @media (max-width: 768px) {
+        &__button {
+            display: none;
+        }
     }
 }
