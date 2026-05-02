@@ -24,7 +24,8 @@
     }
 
     &__search {
-        width: clamp(200px, 90%, 600px);
+        width: clamp(200px, 100%, 600px);
+        order: 3;
     }
 
     &__account {

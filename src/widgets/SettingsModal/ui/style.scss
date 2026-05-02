@@ -2,30 +2,45 @@
 @use '@/shared/styles/mixins' as *;
 
 .settings {
-    width: clamp(400px, 90%, 800px);
+    width: clamp(400px, 95%, 1000px);
     padding: 2.25rem 9.75rem 4rem 4rem;
     background-color: $surface-0;
     border: none;
     border-radius: 8px;
 
-    @media (max-height: 768px) {
-        padding-block: 2rem 0;
+    @media (max-width: 1024px) {
+        padding: 2.25rem 2rem 1.25rem;
     }
 
     &__form {
         display: grid;
+        margin: 0;
         grid-template-areas:
             "avatar fields"
             ". actions";
         grid-template-columns: max-content 1fr;
         gap: 2rem 9.75rem;
+
+        @media (max-width: 1024px) {
+            grid-template-areas:
+                "avatar"
+                "fields"
+                "actions";
+            grid-template-columns: 1fr;
+        }
     }
 
     &__avatar {
-        width: 128px;
-        height: 128px;
+        --size: 128px;
+        aspect-ratio: 1 / 1;
+        width: var(--size);
         grid-area: avatar;
         object-fit: cover;
+
+        @media (max-width: 1024px) {
+            --size: 80px;
+            justify-self: center;
+        }
     }
 
     &__fields {
@@ -48,6 +63,11 @@
         display: flex;
         grid-area: actions;
         gap: 0.5rem;
+
+        @media (max-width: 1024px) {
+            width: 100%;
+            justify-content: space-between;
+        }
     }
 
     &__submit {

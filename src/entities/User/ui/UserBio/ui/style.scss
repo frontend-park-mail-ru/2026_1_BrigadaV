@@ -8,12 +8,21 @@
     grid-template-columns: repeat(2, max-content);
     column-gap: 3rem;
 
+    @media (max-width: 1024px) {
+        column-gap: 1.5rem;
+    }
+
     &__avatar {
+        --size: 128px;
         aspect-ratio: 1 / 1;
-        width: 128px;
+        width: var(--size);
         grid-area: avatar;
         border-radius: 8px;
         object-fit: cover;
+
+        @media (max-width: 1024px) {
+            --size: 80px;
+        }
     }
 
     &__meta {

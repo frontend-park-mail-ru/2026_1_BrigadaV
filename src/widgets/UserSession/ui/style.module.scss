@@ -18,14 +18,19 @@
     }
 
     &__avatar {
-        width: 40px;
-        height: 40px;
+        --size: 40px;
+        width: var(--size);
+        height: var(--size);
         border-radius: 50%;
         object-fit: cover;
         object-position: center;
 
         &--default {
             opacity: 50%;
+        }
+
+        @media (max-width: 1024px) {
+            --size: 32px;
         }
     }
 
