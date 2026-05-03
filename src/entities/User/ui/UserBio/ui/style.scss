@@ -5,7 +5,7 @@
     grid-template-areas:
         "avatar meta"
         "avatar about";
-    grid-template-columns: repeat(2, max-content);
+    grid-template-columns: max-content 1fr;
     column-gap: 3rem;
 
     @media (max-width: 1024px) {

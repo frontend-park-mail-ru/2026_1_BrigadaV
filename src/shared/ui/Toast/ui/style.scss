@@ -6,6 +6,7 @@
     position: fixed;
     inset: auto 20px 60px auto;
     z-index: 999;
+    width: clamp(200px, 70%, 400px);
     margin: 0;
     padding: 1rem;
 
@@ -32,7 +33,6 @@
     }
 
     &__message {
-        max-width: 20vw;
         text-wrap: balance;
     }
 

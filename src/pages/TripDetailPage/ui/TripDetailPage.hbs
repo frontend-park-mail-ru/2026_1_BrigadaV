@@ -4,8 +4,8 @@
   <div data-slot="trip-banner"></div>
 
   <section class="{{s 'places'}}">
-    <h3 class="places__header">Интересные места</h3>
-    <div data-slot="place-list"></div>
+    <h3 class="{{s 'places__header'}}">Интересные места</h3>
+    <div data-slot="place-list" class="{{s 'places__list'}}"></div>
   </section>
 
   <a href="{{url '/place-select' tripId}}" class="{{s 'add-place'}}" data-link>
