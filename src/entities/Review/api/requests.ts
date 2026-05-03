@@ -17,7 +17,7 @@ export const fetchPlaceReviews = async (placeId: number): Promise<Review[]> => {
 export const deleteReview = async (data: DeleteReviewRequest) => {
     return await request(`/reviews/${data.id}`, {
         method: 'DELETE',
-    });
+    }, 8087);
 };
 
 export const createReview = async (data: CreateReviewRequest) => {
@@ -28,5 +28,5 @@ export const createReview = async (data: CreateReviewRequest) => {
             place_id: data.id,
             visit_date: data.createdAt
         }),
-    });
+    }, 8087);
 };

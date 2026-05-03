@@ -18,13 +18,13 @@ export default defineConfig({
         }),
         ViteImageOptimizer(),
     ],
-    // server: {
-    //     proxy: {
-    //         '/api': {
-    //             target: 'http://guidely.ru:8080',
-    //             changeOrigin: true,
-    //             secure: false,
-    //         },
-    //     }
-    // }
+    server: {
+        proxy: {
+            '/api': {
+                target: 'http://guidely.ru:8080',
+                changeOrigin: true,
+                secure: false,
+            },
+        }
+    }
 });

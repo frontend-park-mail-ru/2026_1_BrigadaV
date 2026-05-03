@@ -15,7 +15,7 @@ export const registerUser = async (data: RegisterRequest): Promise<UserAuth> => 
     const dto = await request<RegisterDTO>('/register', {
         method: 'POST',
         body: JSON.stringify(data),
-    });
+    }, 8085);
 
     return mapUserAuth(dto!);
 };
@@ -24,7 +24,7 @@ export const loginUser = async (data: LoginRequest): Promise<UserAuth> => {
     const dto = await request<LoginDTO>('/login', {
         method: 'POST',
         body: JSON.stringify(data),
-    });
+    }, 8085);
 
     return mapUserAuth(dto!);
 };
@@ -32,13 +32,13 @@ export const loginUser = async (data: LoginRequest): Promise<UserAuth> => {
 export const logoutUser = async (): Promise<null> => {
     return await request('/logout', {
         method: 'POST',
-    });
+    }, 8085);
 };
 
 export const authMe = async (): Promise<UserAuth | null> => {
     const dto = await request<LoginDTO>('/user/me', {
         method: 'GET'
-    });
+    }, 8085);
 
     if (!dto) return null;
 
@@ -48,7 +48,7 @@ export const authMe = async (): Promise<UserAuth | null> => {
 export const fetchMe = async (): Promise<User> => {
     const dto = await request<UserDTO>('/profile', {
         method: 'GET'
-    });
+    }, 8085);
 
     if (!dto) throw new Error('Couldn\'t fetch current user');
 
