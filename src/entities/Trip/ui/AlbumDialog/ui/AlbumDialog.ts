@@ -212,9 +212,9 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
     // ---------- жизненный цикл ----------
 
     protected override initListeners(): void {
-        super.initListeners();
+        //super.initListeners();
 
-        const submitBtn = this.element?.querySelector('.album-dialog__submit');
+        const submitBtn = this.element?.querySelector('[data-ref="submit"]');
         submitBtn?.addEventListener('click', (e) => {
             e.preventDefault();
             this.handleSubmit();
