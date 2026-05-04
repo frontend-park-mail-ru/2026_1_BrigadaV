@@ -23,7 +23,7 @@
     padding-bottom: 250px;
 
     @media (min-width: 1024px) {
-        min-height: calc(100vh - 5rem - 2rem);
+        max-height: calc(100vh - 5rem - 2rem);
     }
 }
 
