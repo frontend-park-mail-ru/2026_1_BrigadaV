@@ -32,6 +32,10 @@
     flex-direction: column;
     gap: 0.5rem;
 
+    &__list {
+        width: 825px;
+    }
+
     @media (max-width: 1024px) {
         border-radius: 8px;
 
@@ -40,6 +44,7 @@
         }
 
         &__list {
+            width: 100%;
             padding-inline: 0.5rem;
         }
     }
@@ -58,7 +63,8 @@
     border-radius: 8px;
 
     @media (max-width: 1024px) {
-        width: 90%;
+        width: calc(100% - 1rem);
+        margin-inline: 0.5rem;
         padding: 1.25rem;
         align-self: center;
 

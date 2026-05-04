@@ -1,9 +1,9 @@
 import { ApiError } from './lib/ApiError';
 
-// export const BACKEND_ORIGIN = import.meta.env.DEV
-//     ? 'http://localhost:5173'
-//     : 'http://guidely.ru:8080';
-export const BACKEND_ORIGIN = 'http://localhost:8080';
+export const BACKEND_ORIGIN = import.meta.env.DEV
+    ? 'http://localhost:5173'
+    : 'http://guidely.ru:8080';
+// export const BACKEND_ORIGIN = 'http://localhost:8080';
 
 
 export const API_URL = `${BACKEND_ORIGIN}/api`;
