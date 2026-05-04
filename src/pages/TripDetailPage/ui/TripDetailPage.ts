@@ -7,6 +7,8 @@ import { AppState } from '@/shared/model';
 import { Header } from '@/widgets/Header';
 import { TripPlaceList } from '@/widgets/TripPlaceList/ui/TripPlaceList';
 
+import { AlbumDialog } from '@/entities/Trip/ui/AlbumDialog';
+
 import { handleTripDelete } from '../handler/handleTripDelete';
 import { TripDetailPageParams } from '../model/types';
 import styles from './style.module.scss';
@@ -21,6 +23,7 @@ export class TripDetailPage extends BasePage {
         header: Header,
         tripBanner: TripBanner,
         placeList: TripPlaceList,
+        albumDialog: AlbumDialog;
     };
 
     protected override get eventHandlers(): Record<string, Callback> {
@@ -62,7 +65,17 @@ export class TripDetailPage extends BasePage {
             placeList: new TripPlaceList({
                 className: styles['place-list'],
                 places: this.trip.places,
-            })
+            }),
+
+            albumDialog: new AlbumDialog({ modalId: 'album-dialog-modal' })
         };
+    }
+
+        protected override initListeners(): void {
+        super.initListeners();
+        const trigger = this.element?.querySelector('[data-ref="album-trigger"]');
+        trigger?.addEventListener('click', () => {
+            this.children.albumDialog.show(this.trip.id);
+        });
     }
 }
