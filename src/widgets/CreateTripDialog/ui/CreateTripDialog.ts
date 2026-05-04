@@ -20,7 +20,7 @@ export class CreateTripDialog extends BaseForm<CreateTripDialogFields, HTMLDialo
                     name: 'title',
                     maxlength: 255,
                     minlength: 1,
-                    placeholder: 'например, хотите уехать жить в Лондон',
+                    placeholder: 'хочу уехать жить в Лондон',
                     required: '',
                 }
             }),

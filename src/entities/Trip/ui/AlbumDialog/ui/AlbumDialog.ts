@@ -26,7 +26,18 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
 
     public async show(tripId: number): Promise<void> {
         this.tripId = tripId;
+        console.log('[AlbumDialog] show() called');
+        console.log('tripId value:', tripId);
+        console.log('tripId type:', typeof tripId);
+        console.log('isNaN?', isNaN(tripId as number));
+        if (!tripId || isNaN(tripId as number)) {
+        console.error('CRITICAL: tripId is invalid! Cannot proceed.');
+        Toast({ message: 'Ошибка: ID поездки не указан', type: 'error' });
+        return;
+    }
 
+    this.tripId = tripId;
+    console.log('this.tripId set to:', this.tripId);
         try {
             const album = await fetchAlbumByTripId(tripId);
             if (album) {

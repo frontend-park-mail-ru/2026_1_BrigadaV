@@ -10,10 +10,13 @@
 
 .main {
     display: flex;
-    padding: 0 7.5rem;
     flex-direction: column;
     gap: 2rem;
     background-color: $surface-0;
+
+    @media (min-width: 1024px) {
+        padding: 0 7.5rem;
+    }
 }
 
 .user-profile {
@@ -27,6 +30,15 @@
     row-gap: 2.25rem;
     background-color: $white;
     border-radius: 8px;
+
+    @media (max-width: 1024px) {
+        padding: 1.5rem 2.25rem;
+        grid-template-areas:
+            "bio"
+            "edit"
+            "navigation";
+        border-radius: 0;
+    }
 
     &__bio {
         grid-area: bio;
@@ -45,7 +57,12 @@
 
         transition: background-color $timing-animation-medium;
 
+        @media (max-width: 1024px) {
+            place-self: start;
+        }
+
         &:not([disabled]) {
+
             &:hover,
             &:focus-visible {
                 background-color: $surface-1;
@@ -60,5 +77,14 @@
 
     &__navigation {
         grid-area: navigation;
+    }
+}
+
+.active-section {
+    width: 100%;
+
+    @media (min-width: 1024px) {
+        width: max-content;
+        min-height: 100px;
     }
 }

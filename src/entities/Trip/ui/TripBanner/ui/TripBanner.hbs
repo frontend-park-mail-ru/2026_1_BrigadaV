@@ -1,5 +1,9 @@
 <article class="{{s 'banner'}} {{className}}">
+  {{#if trip.preview}}
   <img src="{{trip.preview}}" class="{{s 'banner__bg'}}">
+  {{else}}
+  <img src="/assets/trip-preview.jpg" class="{{s 'banner__bg'}}"></img>
+  {{/if}}
 
   <div class="{{s 'banner__content'}}">
     <h2 class="{{s 'banner__title'}}">{{trip.title}}</h2>

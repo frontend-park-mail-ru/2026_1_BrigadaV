@@ -18,14 +18,19 @@
     }
 
     &__avatar {
-        width: 40px;
-        height: 40px;
+        --size: 40px;
+        width: var(--size);
+        height: var(--size);
         border-radius: 50%;
         object-fit: cover;
         object-position: center;
 
         &--default {
             opacity: 50%;
+        }
+
+        @media (max-width: 1024px) {
+            --size: 32px;
         }
     }
 
@@ -41,7 +46,8 @@
     @include typo-p;
     position: relative;
     display: flex;
-    align-items: center;
+    flex-direction: column-reverse;
+    align-items: end;
     gap: 0.5rem;
 
     &__log-in {
@@ -53,12 +59,17 @@
     &__sign-up {
         @include button-secondary;
     }
+
+    @media (min-width: 1024px) {
+        flex-direction: row;
+    }
 }
 
 .auth-prompt {
     @include typo-p;
     position: relative;
     display: flex;
+    flex-direction: column-reverse;
     align-items: center;
     gap: 0.5rem;
 
@@ -68,5 +79,9 @@
 
     &__link {
         @include button-primary;
+    }
+
+    @media (min-width: 1024px) {
+        flex-direction: row;
     }
 }

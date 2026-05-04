@@ -72,8 +72,18 @@ export class EditTripDialog extends BaseForm<EditTripDialogFields, HTMLDialogEle
         };
     }
 
+    private updateButtonText = (): void => {
+        if (window.innerWidth <= 1024 || window.innerHeight <= 768) {
+            this.fields.delete.textContent = 'Удалить';
+        } else {
+            this.fields.delete.textContent = 'Удалить поездку';
+        }
+    };
     protected override initListeners(): void {
         super.initListeners();
+
+        this.updateButtonText();
+        window.addEventListener('resize', this.updateButtonText);
 
         const deleteButton = this.element?.querySelector('[data-ref="delete"]');
         deleteButton?.addEventListener('click', this.handleDelete);
