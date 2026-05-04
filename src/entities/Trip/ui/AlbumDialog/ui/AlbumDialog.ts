@@ -25,6 +25,11 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
     }
 
     public async show(tripId: number): Promise<void> {
+        if (!tripId) {
+        Toast({ message: 'Ошибка: не указан ID поездки', type: 'error' });
+        return;
+    }
+        
         this.tripId = tripId;
         console.log('[AlbumDialog] show() called');
         console.log('tripId value:', tripId);
@@ -41,11 +46,9 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
         try {
             const album = await fetchAlbumByTripId(tripId);
             if (album) {
-                this.albumId = album.ID;
-                const serverPhotos = await fetchAlbumPhotos(this.albumId);
+                const serverPhotos = await fetchAlbumPhotos(tripId);
                 this.photos = serverPhotos.map(p => ({ id: p.id, url: p.url }));
             } else {
-                this.albumId = null;
                 this.photos = [];
                 Toast({ message: 'Альбом ещё не создан', type: 'error' });
             }
