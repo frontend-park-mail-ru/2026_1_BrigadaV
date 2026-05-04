@@ -74,7 +74,7 @@ export const config: Record<string, Route> = {
     },
     map: {
         href: '/map',
-        hrefRegex: /^\/map$/,
+        hrefRegex: /^\/map(\?.*)?$/,
         view: MapPage,
     },
 };
