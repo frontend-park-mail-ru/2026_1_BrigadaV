@@ -57,3 +57,21 @@ export const searchPlace = async (query: string): Promise<Place[]> => {
 
     return dto.map(mapPlace);
 };
+
+export const getPlacesByCategory = async (categoryId: number): Promise<Place[]> => {
+
+    const url = new URL('/places', window.location.origin);
+
+    url.searchParams.set('category_id', String(categoryId));
+
+    const dto = await request<PlaceDTO[]>(url.pathname + url.search, {
+
+        method: 'GET',
+
+    });
+
+    if (!dto) return [];
+
+    return dto.map(mapPlace);
+
+};
