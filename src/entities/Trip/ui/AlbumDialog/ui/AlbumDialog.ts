@@ -4,6 +4,8 @@ import { Toast } from '@/shared/ui/Toast';
 import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 import { fetchAlbumByTripId, fetchAlbumPhotos, uploadPhoto, deletePhoto } from '../../../api/album';
 
+import { BACKEND_ORIGIN } from '@/shared/api/api';
+
 import { AlbumDialogProps } from '../model//types';
 import styles from './style.module.scss';
 import template from './AlbumDialog.hbs?compiled';
@@ -53,7 +55,7 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
                 const serverPhotos = await fetchAlbumPhotos(tripId);
                 console.log('[AlbumDialog] received photos from server:', serverPhotos);
 
-                this.photos = serverPhotos.map(p => ({ id: p.id, url: p.url }));
+                this.photos = serverPhotos.map(p => ({ id: p.id, url: import.meta.env.DEV ? p.url : BACKEND_ORIGIN + p.url }));
                 console.log('[AlbumDialog] mapped photos:', this.photos);
 
             } else {
