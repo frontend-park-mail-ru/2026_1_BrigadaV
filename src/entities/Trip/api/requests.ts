@@ -52,6 +52,22 @@ export const updateTrip = async (data: UpdateTripRequest): Promise<any> => {
 
 
 export const fetchTrip = async (tripId: number): Promise<Trip> => {
+
+    // ВРЕМЕННО: мок для dev-режима – вернуть фейковую поездку по id = 999
+    if (import.meta.env.DEV && tripId === 999) {
+        return {
+            id: 999,
+            title: 'Тестовая поездка',
+            location: 'Где-то',
+            preview: '/images/test-bg.jpg',     // любой существующий или data:image
+            startDate: new Date(),
+            endDate: new Date(),
+            description: 'Для проверки альбома',
+            places: [],
+        };
+    }
+
+    
     const dto = await request<TripDTO>(`/trips/${tripId}`, {
         method: 'GET',
     });
