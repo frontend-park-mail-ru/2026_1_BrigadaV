@@ -25,7 +25,17 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
     }
 
     public async show(tripId: number): Promise<void> {
+    console.group('[AlbumDialog.show]');
+    console.log('Received tripId:', tripId);
+    console.log('Type of tripId:', typeof tripId);
+    console.log('Is undefined?', tripId === undefined);
+    console.log('Is null?', tripId === null);
+    console.log('Is NaN?', isNaN(tripId as number));
+    console.log('String value:', String(tripId));
+    console.trace('Call stack:');
+    console.groupEnd();
         if (!tripId || isNaN(tripId)) {
+            console.error('[AlbumDialog] Invalid tripId, showing error toast');
             Toast({ message: 'Не удалось определить поездку', type: 'error' });
             return;
         }
