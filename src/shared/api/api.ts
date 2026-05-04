@@ -1,18 +1,14 @@
 import { ApiError } from './lib/ApiError';
 
-export const BACKEND_ORIGIN = import.meta.env.DEV
-    ? 'http://localhost:5173'
-    : 'http://guidely.ru';
-// export const BACKEND_ORIGIN = 'http://localhost:8080';
+// export const BACKEND_ORIGIN = import.meta.env.DEV
+//     ? 'http://localhost:5173'
+//     : 'http://guidely.ru:8080';
+export const BACKEND_ORIGIN = 'http://localhost:8080';
 
 
 export const API_URL = `${BACKEND_ORIGIN}/api`;
 
 let cachedCSRFToken: string | null = null;
-
-const makeAPIURL = (port: number, path: string) => {
-    return `${BACKEND_ORIGIN}:${port}${path}`;
-}
 
 const getCSRFToken = async (): Promise<string> => {
     if (cachedCSRFToken) return cachedCSRFToken;
@@ -32,8 +28,8 @@ const getCSRFToken = async (): Promise<string> => {
     return '';
 };
 
-export const request = async <T = unknown>(path: string, options: RequestInit, port: number = 8080,) => {
-    const url = makeAPIURL(port, path);
+export const request = async <T = unknown>(path: string, options: RequestInit) => {
+    const url = `${API_URL}${path}`;
 
     const method = options.method?.toUpperCase() ?? 'GET';
     const needCSRF = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method);
