@@ -7,6 +7,14 @@
     border: none;
     border-radius: 8px;
 
+    &__counter {
+    display: block;
+    text-align: right;
+    @include typo-small;
+    color: $color-text-muted;
+    margin-top: -15rem;
+}
+
     &__form {
         display: flex;
         flex-direction: column;
@@ -52,7 +60,7 @@
         height: 200px;
         overflow-x: auto;
         overflow-y: hidden;
-        padding-bottom: 0.5rem;
+        padding-bottom: 0;
     }
 
     .photo-item {
