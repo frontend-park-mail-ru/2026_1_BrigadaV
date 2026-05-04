@@ -145,6 +145,8 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
     };
 
     protected override handleSubmit = async(): Promise<void> => {
+        console.log('[AlbumDialog] submit called, tripId =', this.tripId);
+
         if (!this.tripId) {
             Toast({ message: 'Невозможно сохранить: альбом не найден', type: 'error' });
             return;
@@ -211,6 +213,12 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
 
     protected override initListeners(): void {
         super.initListeners();
+
+        const submitBtn = this.element?.querySelector('.album-dialog__submit');
+        submitBtn?.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.handleSubmit();
+        });
 
         const fileInput = this.element?.querySelector('[data-ref="file-input"]') as HTMLInputElement;
         fileInput?.addEventListener('change', this.handleFileChange);
