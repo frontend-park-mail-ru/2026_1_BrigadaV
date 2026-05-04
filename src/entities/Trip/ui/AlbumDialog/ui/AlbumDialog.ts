@@ -144,7 +144,7 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
     }
     };
 
-    protected override async handleSubmit(): Promise<void> {
+    protected override handleSubmit = async(): Promise<void> => {
         if (!this.tripId) {
             Toast({ message: 'Невозможно сохранить: альбом не найден', type: 'error' });
             return;
