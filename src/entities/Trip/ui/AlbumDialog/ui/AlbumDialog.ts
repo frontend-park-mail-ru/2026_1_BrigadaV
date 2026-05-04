@@ -16,7 +16,6 @@ type LocalPhoto = {
 
 export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
     private tripId!: number;
-    private albumId: number | null = null;
     private photos: LocalPhoto[] = [];
     private removedIds = new Set<number>();
 
@@ -48,7 +47,6 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
 
             this.element?.showModal();
         } catch {
-            this.albumId = null;
             this.photos = [];
             Toast({ message: 'Не удалось загрузить альбом', type: 'error' });
         }
@@ -106,7 +104,7 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
     };*/
 
     private handleDeleteAlbum = async () => {
-    if (!this.albumId) {
+    if (!this.tripId) {
         Toast({ message: 'Альбом ещё не создан', type: 'error' });
         return;
     }
@@ -130,7 +128,7 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
         try {
             // Удаляем каждое сохранённое фото по одному
             for (const photo of savedPhotos) {
-                await deletePhoto(this.albumId, photo.id!);
+                await deletePhoto(this.tripId, photo.id!);
             }
             Toast({ message: 'Альбом очищен', type: 'info' });
         } catch {
@@ -147,7 +145,7 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
     };
 
     protected override async handleSubmit(): Promise<void> {
-        if (!this.albumId) {
+        if (!this.tripId) {
             Toast({ message: 'Невозможно сохранить: альбом не найден', type: 'error' });
             return;
         }
@@ -156,7 +154,7 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
             //загружаем новые фото
             for (const photo of this.photos) {
                 if (!photo.id && photo.file) {
-                    const uploaded = await uploadPhoto(this.albumId, photo.file);
+                    const uploaded = await uploadPhoto(this.tripId, photo.file);
                     photo.id = uploaded.id;
                     //фото больше не blob, освобождаем
                     if (photo.url.startsWith('blob:')) URL.revokeObjectURL(photo.url);
@@ -166,7 +164,7 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
 
             //удаляем помеченные фото
             for (const photoId of this.removedIds) {
-                await deletePhoto(this.albumId, photoId);
+                await deletePhoto(this.tripId, photoId);
             }
 
             Toast({ message: 'Альбом сохранён', type: 'info' });
