@@ -18,7 +18,7 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
     private tripId!: number;
     private albumId: number | null = null;
     private photos: LocalPhoto[] = [];
-    private removedIds = new Set<number>(); 
+    private removedIds = new Set<number>();
 
     constructor(private props: AlbumDialogProps) {
         super();

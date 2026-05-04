@@ -1,7 +1,7 @@
 import { request } from '@/shared/api';
 import { Album, AlbumPhoto } from '../model/types';
 
-const BASE = '/api/albums';
+const BASE = '/albums';
 
 // GET /api/trips/{tripId}/album
 export async function fetchAlbumByTripId(tripId: number): Promise<Album | null> {
