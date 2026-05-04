@@ -43,6 +43,6 @@ export type PlaceSummaryDTO = PlaceBaseDTO & {
 
 export type PlaceDTO = PlaceBaseDTO & {
     locality: LocalityDTO;
-    category?: CategoryDTO;
+    category: CategoryDTO;
     created_at: string;
 };

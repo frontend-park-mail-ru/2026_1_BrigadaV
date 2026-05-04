@@ -57,3 +57,18 @@ export const searchPlace = async (query: string): Promise<Place[]> => {
 
     return dto.map(mapPlace);
 };
+
+type Category = {
+    id: number;
+    name: string;
+}
+
+export const fetchPlaceCategories = async (): Promise<Category[]> => {
+    const dto = await request<any[]>('/categories', {
+        method: 'GET',
+    })
+
+    if (!dto) return [];
+
+    return dto;
+}
