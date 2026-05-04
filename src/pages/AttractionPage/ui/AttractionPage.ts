@@ -59,7 +59,14 @@ export class AttractionPage extends BasePage {
         const page = new AttractionPage(appState);
 
         const place = await fetchPlace(parameters.placeId);
+
+//        console.log('Raw place from API:', place);
+
         page.place = place;
+
+
+//       console.log('Coords from API – lat:', place.lat, 'lon:', place.lon);
+
 
         if (page.place.lat === null || page.place.lon === null) {
             page.place.lat = 55.751244;
