@@ -5,9 +5,9 @@ import { PlacePlacard } from '@/entities/Place/ui/PlacePlacard';
 import { BaseList } from '@/shared/lib/component/BaseList';
 import { IComponent } from '@/shared/model';
 
-import { PlaceListProps } from '../model/types';
+import { TripPlaceListProps } from '../model/types';
 
-export class TripPlaceList extends BaseList<PlaceSummary, PlaceListProps> {
+export class TripPlaceList extends BaseList<PlaceSummary, TripPlaceListProps> {
     protected override listClassName = 'trip-place-list';
     protected override itemClassName = 'trip-place-list__item';
 

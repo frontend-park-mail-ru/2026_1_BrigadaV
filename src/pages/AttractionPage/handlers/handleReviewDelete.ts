@@ -2,9 +2,6 @@ import { deleteReview } from '@/entities/Review/api';
 import { ReviewCardPayload } from '@/entities/Review/ui/ReviewCard/model/types';
 import { eventBus } from '@/shared/lib';
 import { Toast } from '@/shared/ui/Toast';
-import { ReviewDetailsModal } from '@/widgets/ReviewDetailsModal';
-import { ReviewDetailsModalPayload } from '@/widgets/ReviewDetailsModal/model/types';
-import { ReviewList } from '@/widgets/ReviewList';
 
 export const handleReviewDelete = async ({ data }: { data: ReviewCardPayload }): Promise<void> => {
     try {

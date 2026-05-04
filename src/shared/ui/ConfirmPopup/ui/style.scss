@@ -2,7 +2,7 @@
 @use '@/shared/styles/variables' as *;
 
 .confirm-popup {
-    max-width: 410px;
+    width: clamp(200px, 90%, 410px);
     padding: 1.5rem;
     flex-direction: column;
     gap: 1rem;

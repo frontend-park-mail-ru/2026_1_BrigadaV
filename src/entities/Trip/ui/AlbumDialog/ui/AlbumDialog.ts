@@ -31,6 +31,15 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
     }
         
         this.tripId = tripId;
+        console.log('[AlbumDialog] show() called');
+        console.log('tripId value:', tripId);
+        console.log('tripId type:', typeof tripId);
+        console.log('isNaN?', isNaN(tripId as number));
+        if (!tripId || isNaN(tripId as number)) {
+        console.error('CRITICAL: tripId is invalid! Cannot proceed.');
+        Toast({ message: 'Ошибка: ID поездки не указан', type: 'error' });
+        return;
+    }
 
         this.releaseBlobUrls();
         this.photos = [];

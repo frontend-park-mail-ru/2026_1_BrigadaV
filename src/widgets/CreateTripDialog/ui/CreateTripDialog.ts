@@ -20,7 +20,7 @@ export class CreateTripDialog extends BaseForm<CreateTripDialogFields, HTMLDialo
                     name: 'title',
                     maxlength: 255,
                     minlength: 1,
-                    placeholder: 'например, хотите уехать жить в Лондон',
+                    placeholder: 'хочу уехать жить в Лондон',
                     required: '',
                 }
             }),
@@ -54,26 +54,26 @@ export class CreateTripDialog extends BaseForm<CreateTripDialogFields, HTMLDialo
         let command: string | undefined;
 
         switch (true) {
-            case event.type === 'cancel':
-                command = 'close';
-                break;
-            case 'command' in event:
-                command = (event as CommandEvent).command;
-                break;
-            default: return;
+        case event.type === 'cancel':
+            command = 'close';
+            break;
+        case 'command' in event:
+            command = (event as CommandEvent).command;
+            break;
+        default: return;
         }
 
         event.preventDefault();
 
         switch (command) {
-            case 'show-modal':
-                this.element.showModal();
-                this.element.classList.add(styles['is-visible']);
-                break;
+        case 'show-modal':
+            this.element.showModal();
+            this.element.classList.add(styles['is-visible']);
+            break;
 
-            case 'close':
-                this.close();
-                break;
+        case 'close':
+            this.close();
+            break;
         }
     };
 

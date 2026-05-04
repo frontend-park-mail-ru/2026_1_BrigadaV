@@ -4,13 +4,15 @@
 .about-me {
     @include typo-p;
     display: flex;
-    width: max-content;
-    min-height: 100px;
     padding: 1rem 2.25rem;
     flex-direction: column;
     gap: 1rem;
     background-color: $white;
     border-radius: 8px;
+
+    @media (max-width: 1024px) {
+        border-radius: 0;
+    }
 
     &__suggested {
         display: flex;

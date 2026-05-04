@@ -8,29 +8,52 @@
 
 .main {
     display: flex;
-    padding: 0 3.5rem 3rem;
     flex-direction: column;
     gap: 1.5rem;
+    background-color: $surface-0;
+
+    @media (min-width: 1024px) {
+        padding: 0 3.5rem 3rem;
+    }
 }
 
 .trip-banner {
-    width: clamp(300px, 70vw, 850px);
+    width: 100%;
+    height: 300px;
+
+    @media (min-width: 1024px) {
+        width: 850px;
+    }
 }
 
 .places {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-}
 
-.place-list {
-    width: clamp(250px, 65vw, 800px);
+    &__list {
+        width: 825px;
+    }
+
+    @media (max-width: 1024px) {
+        border-radius: 8px;
+
+        &__header {
+            margin-left: 1rem;
+        }
+
+        &__list {
+            width: 100%;
+            padding-inline: 0.5rem;
+        }
+    }
 }
 
 .add-place {
     display: flex;
-    width: clamp(250px, 65vw, 800px);
-    padding: 2.75rem;
+
+    width: 825px;
+    padding-block: 2.75rem;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
@@ -38,11 +61,26 @@
     border: 1px solid $color-border-button;
     border-radius: 8px;
 
+    @media (max-width: 1024px) {
+        width: calc(100% - 1rem);
+        margin-inline: 0.5rem;
+        padding: 1.25rem;
+        align-self: center;
+
+        &__text {
+            font-size: 1rem;
+        }
+    }
+
     &__image {
         --size: 20px;
 
         width: var(--size);
         height: var(--size);
+
+        @media (max-width: 1024px) {
+            --size: 16px;
+        }
     }
 }
 

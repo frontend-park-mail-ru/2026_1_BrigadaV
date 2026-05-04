@@ -12,6 +12,9 @@ export const mapPlaceSummary = (dto: PlaceSummaryDTO): PlaceSummary => ({
     image: resolveImage(dto),
     price: dto.price / 100,
     isLiked: dto.is_liked,
+
+    lat: (dto as PlaceDTO).locality?.Latitude,
+    lon: (dto as PlaceDTO).locality?.Longitude,
 });
 
 export const mapPlace = (dto: PlaceDTO): Place => ({

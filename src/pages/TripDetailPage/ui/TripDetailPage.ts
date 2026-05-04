@@ -17,7 +17,7 @@ import template from './TripDetailPage.hbs?compiled';
 export class TripDetailPage extends BasePage {
     protected override template = template;
     protected override styles = styles;
-    protected override pageClassName = 'trip-list-page';
+    protected override pageClassName = 'trip-detail-page';
 
     declare children: {
         header: Header,
@@ -32,7 +32,7 @@ export class TripDetailPage extends BasePage {
         };
     }
 
-    protected override getTemplateData(): Record<string, any> {
+    protected override getTemplateData(): Record<string, unknown> {
         return {
             styles,
             tripId: this.trip.id,

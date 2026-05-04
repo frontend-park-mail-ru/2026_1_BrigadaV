@@ -1,8 +1,10 @@
 import { ApiError } from './lib/ApiError';
 
 export const BACKEND_ORIGIN = import.meta.env.DEV
-    ? 'http://localhost:8080'
+    ? 'http://localhost:5173'
     : 'http://guidely.ru:8080';
+// export const BACKEND_ORIGIN = 'http://localhost:8080';
+
 
 export const API_URL = `${BACKEND_ORIGIN}/api`;
 
@@ -21,9 +23,8 @@ const getCSRFToken = async (): Promise<string> => {
         const data = await response.json();
         cachedCSRFToken = data.csrf_token;
         return cachedCSRFToken || '';
-    } catch (error) {
-        console.error(error);
-    }
+    } catch { }
+
     return '';
 };
 

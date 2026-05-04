@@ -1,0 +1,33 @@
+@use '@/shared/styles/variables' as *;
+
+.drop-down {
+    display: flex;
+    padding: 0.75rem 1.25rem;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: $white;
+    border-radius: 8px;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    &__header {
+        font-size: 14px;
+    }
+
+    &__list {
+        display: none;
+        max-height: 350px;
+        flex-direction: column;
+        gap: 1.75rem;
+        overflow-y: auto;
+    }
+
+    &[data-state="hidden"] {
+        display: none;
+    }
+
+    &[data-state="empty"] &__list,
+    &[data-state="prompt"] &__list {
+        display: flex;
+    }
+}

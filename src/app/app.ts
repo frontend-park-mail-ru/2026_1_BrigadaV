@@ -30,5 +30,5 @@ export const App = async () => {
         }
     });
 
-    navigate(window.location.pathname);
+    navigate(window.location.pathname + window.location.search);
 };

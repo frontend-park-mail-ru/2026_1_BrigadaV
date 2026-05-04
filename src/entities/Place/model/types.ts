@@ -7,6 +7,9 @@ export type PlaceSummary = {
     price: number;
     isLiked: boolean;
     reviewCount: number;
+
+    lat?: number;
+    lon?: number;
 }
 
 export type Place = PlaceSummary & {

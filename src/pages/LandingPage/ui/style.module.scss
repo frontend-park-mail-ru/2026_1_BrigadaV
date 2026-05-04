@@ -7,13 +7,23 @@
 
 .main {
     display: flex;
-    padding: 1rem 2.5rem;
+    padding-bottom: 1rem;
     flex-direction: column;
-    gap: 4.5rem;
+    gap: 2.5rem;
     background-color: $surface-0;
 
-    &>section {
-        min-height: calc(100vh - 5rem - 2rem); // <available space> - <header>, and make little gap
+    @media (min-width: 1024px) {
+        padding: 1rem 2.5rem;
+        gap: 4.5rem;
+    }
+}
+
+.hero {
+    min-height: auto;
+    padding-bottom: 250px;
+
+    @media (min-width: 1024px) {
+        max-height: calc(100vh - 5rem - 2rem);
     }
 }
 
@@ -24,5 +34,13 @@
 
     &__title {
         text-align: center;
+    }
+
+    @media (max-width: 768px) {
+        gap: 2.5rem;
+
+        &__title {
+            font-size: 1.25rem;
+        }
     }
 }

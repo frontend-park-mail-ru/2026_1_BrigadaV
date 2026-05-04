@@ -7,12 +7,11 @@
     right: 0;
     display: flex;
     width: clamp(300px, 90%, 500px);
-    height: 100vh;
+    height: 100dvh;
     max-height: none;
     margin: 0;
     margin-left: auto;
-    padding-block: 4.5rem 0;
-    padding-inline: 3rem;
+    padding: 4.5rem 3rem 0;
     flex-direction: column;
     border: none;
     border-radius: 8px 0 0 8px;
@@ -20,6 +19,10 @@
     translate: 100%;
     transition:
         translate $timing-animation-medium;
+
+    @media (max-width: 1024px) {
+        padding-inline: 2rem;
+    }
 
     &.is-visible {
         translate: 0;
@@ -40,6 +43,12 @@
         right: 1.5rem;
         background: transparent;
         border: none;
+    }
+
+    @media (max-width: 1024px) {
+        &__header {
+            font-size: 1.5rem;
+        }
     }
 
     &__close-image {

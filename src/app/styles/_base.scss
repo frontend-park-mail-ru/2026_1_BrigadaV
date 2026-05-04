@@ -1,5 +1,7 @@
 @use '@/shared/styles/variables' as *;
 
+@import 'leaflet/dist/leaflet.css';
+
 a {
     text-decoration: none;
 }

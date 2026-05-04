@@ -8,8 +8,8 @@ export type LocalityDTO = {
     id: number;
     name: string;
     country: string;
-    latitude: number;
-    longitude: number;
+    Latitude: number;
+    Longitude: number;
 };
 
 export type PlacePhotoDTO = {

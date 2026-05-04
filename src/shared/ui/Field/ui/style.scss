@@ -6,9 +6,11 @@
     flex-direction: column;
     gap: 0.5rem;
 
-    @media (max-height: 768px) {
+
+    @media (min-width: 1024px) and (max-height: 800px) {
         gap: 0.25rem;
     }
+
 
     &--error &__error-wrapper {
         display: flex;

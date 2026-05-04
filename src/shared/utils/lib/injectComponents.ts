@@ -4,6 +4,7 @@ export const injectComponents = (parent: HTMLElement, slots: Record<string, ICom
     Object.entries(slots).forEach(([name, component]) => {
         const kebabName = camelToKebab(name);
         const slot = parent.querySelector(`[data-slot="${kebabName}"]`);
+
         if (slot && component) {
             const renderedElement = component.render();
 

@@ -8,7 +8,11 @@ export type FieldProps = {
     rightIcon?: string;
     leftIcon?: string;
     note?: string;
-    attributes: Record<string, string | number>;
+    attributes?: Record<string, string | number>;
     onLeftIconClick?: (instance: Field) => void;
     onRightIconClick?: (instance: Field) => void;
+
+    onFocus?: (inputValue: string, event?: Event) => void;
+    onBlur?: (inputValue: string, event?: Event) => void;
+    onInput?: (inputValue: string, event?: InputEvent) => void;
 }

@@ -1,7 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Callback<T = any> = (data: T) => void;
 
 class EventBus {
-    events: Record<string, Callback<any>[]> = {};
+    events: Record<string, Callback[]> = {};
 
     constructor() { }
 

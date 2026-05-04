@@ -1,7 +1,12 @@
 <article class="{{s 'card'}}" data-id="{{trip.id}}">
   <a href="{{url '/trip' trip.id}}" class="{{s 'card__link'}}" data-link data-ref="link"></a>
 
+  {{#if trip.preview}}
   <img src="{{trip.preview}}" class="{{s 'card__preview'}}">
+  {{else}}
+  <img src="/assets/trip-preview.jpg" class="{{s 'card__preview'}}">
+  {{/if}}
+
   <div class="{{s 'card__content'}}">
     <h3 class="{{s 'card__title'}}">{{trip.title}}</h3>
 

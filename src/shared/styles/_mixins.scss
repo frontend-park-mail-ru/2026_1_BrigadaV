@@ -115,6 +115,30 @@
     }
 }
 
+@mixin button-tertiary {
+    @include typo-p;
+    padding: 0.5rem 1rem;
+    color: $color-text-main;
+    background-color: $white;
+    border: none;
+    border-radius: 8px;
+
+    transition: background-color $timing-animation-medium;
+
+    &[disabled] {
+        color: $color-interactable-disabled;
+        cursor: default;
+    }
+
+    &:not([disabled]) {
+
+        &:hover,
+        &:focus-visible {
+            background-color: $surface-1;
+        }
+    }
+}
+
 @mixin button-oauth {
     @include typo-p;
     display: flex;
@@ -125,11 +149,11 @@
     border: none;
     border-radius: 8px;
 
-    @media (max-height: 768px) {
-        .button-oauth__text {
-            display: none;
-        }
-    }
+    // @media (max-height: 768px) {
+    //     .button-oauth__text {
+    //         display: none;
+    //     }
+    // }
 }
 
 @mixin field {
