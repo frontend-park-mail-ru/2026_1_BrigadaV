@@ -5,7 +5,7 @@ const BASE = '/albums';
 
 // GET /api/trips/{tripId}/album
 export async function fetchAlbumByTripId(tripId: number): Promise<Album | null> {
-    const album = await request<Album>(`/api/trips/${tripId}/album`, { method: 'GET' });
+    const album = await request<Album>(`/trips/${tripId}/album`, { method: 'GET' });
     return album ?? null;
 }
 
