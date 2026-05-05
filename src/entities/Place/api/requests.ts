@@ -63,6 +63,12 @@ type Category = {
     name: string;
 }
 
+// todo make category entity
+const mapCategory = (dto: any) => ({
+    id: dto.ID,
+    name: dto.Name,
+})
+
 export const fetchPlaceCategories = async (): Promise<Category[]> => {
     const dto = await request<any[]>('/categories', {
         method: 'GET',
@@ -70,5 +76,5 @@ export const fetchPlaceCategories = async (): Promise<Category[]> => {
 
     if (!dto) return [];
 
-    return dto;
+    return dto.map(mapCategory);
 }

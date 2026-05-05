@@ -30,11 +30,15 @@ export class SearchPage extends BasePage {
     public static async create(appState: AppState, parameters: SearchPageParameters): Promise<SearchPage> {
         const page = new SearchPage(appState);
 
-        page.randomPlaces= await getPlaces();
+        page.randomPlaces = await getPlaces();
 
         page.currentQueryList = page.randomPlaces;
+        console.log('here');
+
 
         page.categoryList = await fetchPlaceCategories();
+        console.log(page.categoryList);
+
 
         if (parameters.query) {
             page.query = parameters.query;
