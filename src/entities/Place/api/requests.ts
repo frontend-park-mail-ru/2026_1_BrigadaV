@@ -67,14 +67,14 @@ type Category = {
 const mapCategory = (dto: any) => ({
     id: dto.ID,
     name: dto.Name,
-})
+});
 
 export const fetchPlaceCategories = async (): Promise<Category[]> => {
     const dto = await request<any[]>('/categories', {
         method: 'GET',
-    })
+    });
 
     if (!dto) return [];
 
     return dto.map(mapCategory);
-}
+};

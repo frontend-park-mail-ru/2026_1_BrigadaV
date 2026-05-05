@@ -4,13 +4,13 @@
 .trip-detail-page {
     @include default-page-layout;
     gap: 1rem;
+    background-color: $surface-0;
 }
 
 .main {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    background-color: $surface-0;
 
     @media (min-width: 1024px) {
         padding: 0 3.5rem 3rem;
@@ -87,19 +87,19 @@
 
 .album-trigger {
     position: fixed;
-    bottom: 1.5rem;
     right: 3.5rem;
+    bottom: 1.5rem;
+    z-index: 2;
+    display: flex;
     width: 48px;
     height: 48px;
-    border-radius: 50%;
-    background: $surface-0;
-    border: 1px solid $color-border-button;
-    display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
+    background: $surface-0;
+    border: 1px solid $color-border-button;
+    border-radius: 50%;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    z-index: 2;
+    cursor: pointer;
 
     img {
         width: 24px;

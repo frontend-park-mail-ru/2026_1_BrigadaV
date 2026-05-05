@@ -8,15 +8,22 @@
 }
 
 .main {
-    display: grid;
-    padding: 0rem 4.5rem 2rem;
-    grid-template-areas:
-        "meta meta"
-        "gallery gallery"
-        "reviews working-hours";
-    grid-template-columns: 1fr max-content;
-    column-gap: 10rem;
+    display: flex;
+    padding: 0 0.5rem;
+    flex-direction: column;
     background-color: $surface-0;
+
+    @media (min-width: 1024px) {
+        display: grid;
+        padding: 0rem 4.5rem 2rem;
+        grid-template-areas:
+            "meta meta"
+            "gallery gallery"
+            "reviews working-hours"
+            "map map";
+        grid-template-columns: 1fr max-content;
+        column-gap: 10rem;
+    }
 }
 
 .attraction-meta {
@@ -32,6 +39,10 @@
     &__name {
         grid-area: name;
         font-size: 3.5rem;
+
+        @media (max-width: 1024px) {
+            font-size: 2.25rem;
+        }
     }
 
     &__rating {
@@ -117,12 +128,16 @@
 .working-hours {
     grid-area: working-hours;
     align-self: start;
+
+    @media (max-width: 1024px) {
+        width: 100%;
+        margin-top: 2rem;
+    }
 }
 
 .map-wrapper {
-  margin-top: 2rem;
-  margin-left: auto;
-  margin-right: auto;
-  width: 150%;
-  height: 300px;
+    width: 100%;
+    min-height: 300px;
+    margin-top: 2rem;
+    grid-area: map;
 }

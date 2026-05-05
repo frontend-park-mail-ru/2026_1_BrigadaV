@@ -82,7 +82,6 @@ export class AttractionPage extends BasePage {
             ...(authorized && {
                 likeButton: new LikeButton({
                     className: styles['attraction-meta__like'],
-                    label: 'Сохранить',
                     isLiked: this.place.isLiked,
                 })
             }),
@@ -117,6 +116,13 @@ export class AttractionPage extends BasePage {
             }),
 
         };
+    }
+
+    protected override initListeners(): void {
+        super.initListeners();
+
+        this.updateLikeLabel();
+        window.addEventListener('resize', this.updateLikeLabel);
     }
 
     private handleShowDetails = (data: ReviewCardPayload): void => {
@@ -173,5 +179,13 @@ export class AttractionPage extends BasePage {
 
         this.fields['rating'].textContent = this.place.rating!.toString();
         this.fields['rating'].style.setProperty('--rating', this.place.rating!.toString());
+    };
+
+    private updateLikeLabel = (): void => {
+        if (window.innerWidth <= 1024) {
+            this.children.likeButton?.setLabel('');
+        } else {
+            this.children.likeButton?.setLabel('Сохранить');
+        }
     };
 }

@@ -7,7 +7,6 @@ import { AppState } from '@/shared/model';
 import { Field } from '@/shared/ui';
 import { focusField } from '@/shared/lib';
 import { fetchPlaceCategories, getPlaces, Place, searchPlace } from '@/entities/Place';
-import { getRandomElements } from '@/shared/utils';
 import { debounce } from '@/shared/utils/lib/debounce';
 import { SearchPageParameters } from '../model/types';
 
@@ -33,12 +32,8 @@ export class SearchPage extends BasePage {
         page.randomPlaces = await getPlaces();
 
         page.currentQueryList = page.randomPlaces;
-        console.log('here');
-
 
         page.categoryList = await fetchPlaceCategories();
-        console.log(page.categoryList);
-
 
         if (parameters.query) {
             page.query = parameters.query;

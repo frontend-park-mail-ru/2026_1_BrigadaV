@@ -7,6 +7,10 @@
     border: none;
     border-radius: 8px;
 
+    @media (max-width: 1024px) {
+        padding: 1.75rem 2rem 1rem;
+    }
+
     &__form {
         display: flex;
         flex-direction: column;
@@ -39,6 +43,10 @@
     &__actions {
         display: flex;
         gap: 1rem;
+
+        @media (max-width: 1024px) {
+            justify-content: space-between;
+        }
     }
 
     &__cancel {

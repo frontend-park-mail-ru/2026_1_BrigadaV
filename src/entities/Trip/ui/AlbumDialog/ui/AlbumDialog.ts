@@ -26,23 +26,17 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
 
     public async show(tripId: number): Promise<void> {
         if (!tripId) {
-        Toast({ message: 'Ошибка: не указан ID поездки', type: 'error' });
-        return;
-    }
-        
-        this.tripId = tripId;
-        console.log('[AlbumDialog] show() called');
-        console.log('tripId value:', tripId);
-        console.log('tripId type:', typeof tripId);
-        console.log('isNaN?', isNaN(tripId as number));
-        if (!tripId || isNaN(tripId as number)) {
-        console.error('CRITICAL: tripId is invalid! Cannot proceed.');
-        Toast({ message: 'Ошибка: ID поездки не указан', type: 'error' });
-        return;
-    }
+            Toast({ message: 'Ошибка: не указан ID поездки', type: 'error' });
+            return;
+        }
 
-    this.tripId = tripId;
-    console.log('this.tripId set to:', this.tripId);
+        this.tripId = tripId;
+        if (!tripId || isNaN(tripId as number)) {
+            Toast({ message: 'Ошибка: ID поездки не указан', type: 'error' });
+            return;
+        }
+
+        this.tripId = tripId;
         try {
             const album = await fetchAlbumByTripId(tripId);
             if (album) {
@@ -96,7 +90,7 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
         this.renderPhotos();
     };
 
-/*    private handleDeleteAll = async () => {
+    /*    private handleDeleteAll = async () => {
         if (this.photos.length === 0) return;
 
         const confirmed = await ConfirmPopup({
@@ -117,44 +111,44 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
     };*/
 
     private handleDeleteAlbum = async () => {
-    if (!this.albumId) {
-        Toast({ message: 'Альбом ещё не создан', type: 'error' });
-        return;
-    }
-
-    // Собираем только сохранённые на сервере фото (у которых есть id)
-    const savedPhotos = this.photos.filter(p => p.id !== undefined);
-    if (savedPhotos.length === 0) {
-        Toast({ message: 'В альбоме нет сохранённых фотографий', type: 'info' });
-        this.element?.close();
-        return;
-    }
-
-    const confirmed = await ConfirmPopup({
-        prompt: 'Вы действительно хотите удалить все фотографии из альбома?',
-        note: 'Это действие нельзя отменить.',
-        cancelText: 'Отменить',
-        confirmText: 'Удалить',
-    });
-
-    if (confirmed) {
-        try {
-            // Удаляем каждое сохранённое фото по одному
-            for (const photo of savedPhotos) {
-                await deletePhoto(this.albumId, photo.id!);
-            }
-            Toast({ message: 'Альбом очищен', type: 'info' });
-        } catch {
-            Toast({ message: 'Не удалось удалить все фотографии', type: 'error' });
-        } finally {
-            // Очищаем локальное состояние и закрываем диалог
-            this.releaseBlobUrls();
-            this.photos = [];
-            this.removedIds.clear();
-            this.renderPhotos();
-            this.element?.close();
+        if (!this.albumId) {
+            Toast({ message: 'Альбом ещё не создан', type: 'error' });
+            return;
         }
-    }
+
+        // Собираем только сохранённые на сервере фото (у которых есть id)
+        const savedPhotos = this.photos.filter(p => p.id !== undefined);
+        if (savedPhotos.length === 0) {
+            Toast({ message: 'В альбоме нет сохранённых фотографий', type: 'info' });
+            this.element?.close();
+            return;
+        }
+
+        const confirmed = await ConfirmPopup({
+            prompt: 'Вы действительно хотите удалить все фотографии из альбома?',
+            note: 'Это действие нельзя отменить.',
+            cancelText: 'Отменить',
+            confirmText: 'Удалить',
+        });
+
+        if (confirmed) {
+            try {
+            // Удаляем каждое сохранённое фото по одному
+                for (const photo of savedPhotos) {
+                    await deletePhoto(this.albumId, photo.id!);
+                }
+                Toast({ message: 'Альбом очищен', type: 'info' });
+            } catch {
+                Toast({ message: 'Не удалось удалить все фотографии', type: 'error' });
+            } finally {
+            // Очищаем локальное состояние и закрываем диалог
+                this.releaseBlobUrls();
+                this.photos = [];
+                this.removedIds.clear();
+                this.renderPhotos();
+                this.element?.close();
+            }
+        }
     };
 
     protected override async handleSubmit(): Promise<void> {
@@ -203,7 +197,7 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
             const removeBtn = document.createElement('button');
             removeBtn.type = 'button';
             removeBtn.className = styles['photo-item__remove'];
-            removeBtn.innerHTML = `<img src="/icons/x.svg" alt="Удалить">`;
+            removeBtn.innerHTML = '<img src="/icons/x.svg" alt="Удалить">';
             removeBtn.addEventListener('click', () => this.handleRemovePhoto(index));
 
             div.appendChild(img);
@@ -228,7 +222,7 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
         const fileInput = this.element?.querySelector('[data-ref="file-input"]') as HTMLInputElement;
         fileInput?.addEventListener('change', this.handleFileChange);
 
-/*        const deleteAllBtn = this.element?.querySelector('[data-ref="delete-all"]');
+        /*        const deleteAllBtn = this.element?.querySelector('[data-ref="delete-all"]');
         deleteAllBtn?.addEventListener('click', this.handleDeleteAll);*/
 
         const deleteAlbumBtn = this.element?.querySelector('[data-ref="delete-all"]');
