@@ -13,12 +13,13 @@ export const mapPlaceSummary = (dto: PlaceSummaryDTO): PlaceSummary => ({
     price: dto.price / 100,
     isLiked: dto.is_liked,
 
-    lat: (dto as PlaceDTO).locality?.Latitude,
-    lon: (dto as PlaceDTO).locality?.Longitude,
+    lat: dto.latitude,
+    lon: dto.longitude,
 });
 
 export const mapPlace = (dto: PlaceDTO): Place => ({
     ...mapPlaceSummary(dto),
+    categoryId: dto.category.id,
     location: dto.locality.name,
     country: dto.locality.country,
 });

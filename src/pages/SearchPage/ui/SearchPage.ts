@@ -6,8 +6,7 @@ import { PlaceList } from './PlaceList/PlaceList';
 import { AppState } from '@/shared/model';
 import { Field } from '@/shared/ui';
 import { focusField } from '@/shared/lib';
-import { getPlaces, Place, searchPlace } from '@/entities/Place';
-import { getRandomElements } from '@/shared/utils';
+import { fetchPlaceCategories, getPlaces, Place, searchPlace } from '@/entities/Place';
 import { debounce } from '@/shared/utils/lib/debounce';
 import { SearchPageParameters } from '../model/types';
 
@@ -22,14 +21,19 @@ export class SearchPage extends BasePage {
         placeList: PlaceList;
     };
 
+    private categoryList: { id: number; name: string }[] = [];
+    private currentQueryList: Place[] = [];
     private randomPlaces!: Place[];
     private query = '';
 
     public static async create(appState: AppState, parameters: SearchPageParameters): Promise<SearchPage> {
         const page = new SearchPage(appState);
 
-        const places = await getPlaces();
-        page.randomPlaces = getRandomElements(places, 7);
+        page.randomPlaces = await getPlaces();
+
+        page.currentQueryList = page.randomPlaces;
+
+        page.categoryList = await fetchPlaceCategories();
 
         if (parameters.query) {
             page.query = parameters.query;
@@ -66,13 +70,59 @@ export class SearchPage extends BasePage {
 
     private handleInput = async (inputValue: string) => {
         if (inputValue === '') {
-            this.children.placeList.setItems(this.randomPlaces);
+            this.currentQueryList = this.randomPlaces;
             return;
         }
 
-        const searchResults = await searchPlace(inputValue);
-        this.children.placeList.setItems(searchResults);
+        this.currentQueryList = await searchPlace(inputValue);
+        this.applyFilters();
     };
+
+    private applyFilters() {
+        if (!this.element) return;
+
+        const checkedInputs = this.element.querySelectorAll<HTMLInputElement>(
+            `.${this.styles['categories__input']}:checked`
+        );
+        const selectedIds = Array.from(checkedInputs).map(input => input.dataset.id);
+
+        if (selectedIds.length === 0) {
+            this.children.placeList.setItems(this.currentQueryList);
+            return;
+        }
+
+        const filtered = this.currentQueryList.filter(place =>
+            selectedIds.includes(place.categoryId?.toString())
+        );
+
+        this.children.placeList.setItems(filtered);
+    }
+
+    private renderCategories() {
+        const baseContainer = this.fields['category-base'];
+        const extendedContainer = this.fields['category-extended'];
+
+        const baseCategories = this.categoryList.slice(0, 4);
+        const extendedCategories = this.categoryList.slice(4);
+
+        const createItem = (category: { id: number; name: string }) => {
+            const li = document.createElement('li');
+            li.className = this.styles['categories__item'];
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = this.styles['categories__input'];
+            checkbox.dataset.id = category.id.toString();
+            checkbox.addEventListener('change', () => this.applyFilters());
+
+            li.appendChild(checkbox);
+            li.append(category.name);
+            return li;
+        };
+
+        baseCategories.forEach(category => baseContainer.appendChild(createItem(category)));
+        extendedCategories.forEach(category => extendedContainer.appendChild(createItem(category)));
+    }
 
     protected override initListeners(): void {
         super.initListeners();
@@ -116,11 +166,12 @@ export class SearchPage extends BasePage {
         });
     }
 
-    protected override _render(): HTMLElement {
-        super._render();
+    public override render(): HTMLElement {
+        super.render();
         if (this.query) {
             this.handleInput(this.query);
         }
+        this.renderCategories();
         return this.element!;
     }
 

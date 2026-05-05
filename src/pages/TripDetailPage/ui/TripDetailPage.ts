@@ -71,7 +71,7 @@ export class TripDetailPage extends BasePage {
         };
     }
 
-        protected override initListeners(): void {
+    protected override initListeners(): void {
         super.initListeners();
         const trigger = this.element?.querySelector('[data-ref="album-trigger"]');
         trigger?.addEventListener('click', () => {

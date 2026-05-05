@@ -2,13 +2,13 @@
 
 <main class="{{s 'main'}}">
   <div class="{{s 'query'}}">
-    <button class="{{s 'query__button'}}">Фильтры</button>
+    <button class="{{s 'query__button'}}" disabled>Фильтры</button>
     <div data-slot="query" class="{{s 'query__field'}}"></div>
   </div>
   <ul class="{{s 'filters'}}">
-    <li class="{{s 'filters__item'}}"><button class="{{s 'filters__button'}}">Места</button></li>
+    {{!-- <li class="{{s 'filters__item'}}"><button class="{{s 'filters__button'}}">Места</button></li>
     <li class="{{s 'filters__item'}}"><button class="{{s 'filters__button'}}">Отели</button></li>
-    <li class="{{s 'filters__item'}}"><button class="{{s 'filters__button'}}">Рестораны</button></li>
+    <li class="{{s 'filters__item'}}"><button class="{{s 'filters__button'}}">Рестораны</button></li> --}}
   </ul>
 
   <aside class="{{s 'aside'}}">
@@ -19,18 +19,11 @@
           <img src="/icons/arrow-down.svg" class="{{s 'categories__marker'}}">
         </div>
 
-        <ul class="{{s 'categories__base'}}">
-          <li class="{{s 'categories__item'}}"><input type="checkbox" class="{{s 'categories__input'}}">Музеи</li>
-          <li class="{{s 'categories__item'}}"><input type="checkbox" class="{{s 'categories__input'}}">Галереи</li>
-          <li class="{{s 'categories__item'}}"><input type="checkbox" class="{{s 'categories__input'}}">Парки</li>
-        </ul>
+        <ul class="{{s 'categories__base'}}" data-ref="category-base"></ul>
       </div>
 
       <div class="{{s 'categories__extended-wrapper'}}" data-ref="extended-wrapper">
-        <ul class="{{s 'categories__extended'}}">
-          <li class="{{s 'categories__item'}}"><input type="checkbox" class="{{s 'categories__input'}}">Площади</li>
-          <li class="{{s 'categories__item'}}"><input type="checkbox" class="{{s 'categories__input'}}">Зоопарки</li>
-        </ul>
+        <ul class="{{s 'categories__extended'}}" data-ref="category-extended"></ul>
       </div>
     </div>
   </aside>

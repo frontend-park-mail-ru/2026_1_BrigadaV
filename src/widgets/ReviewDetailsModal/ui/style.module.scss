@@ -10,6 +10,11 @@
     border: 0;
     border-radius: 8px;
 
+    @media (max-width: 1024px) {
+        padding: 1rem;
+        column-gap: 2rem;
+    }
+
     &:open {
         display: grid;
     }
@@ -29,6 +34,10 @@
 
         margin-top: 2.5rem;
         object-fit: cover;
+
+        @media (max-width: 1024px) {
+            --size: 40px;
+        }
     }
 
     &__main {

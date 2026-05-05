@@ -35,6 +35,8 @@ export type PlaceBaseDTO = {
     rating?: number;
     is_liked: boolean;
     price: number;
+    latitude?: number;
+    longitude?: number; 
 };
 
 export type PlaceSummaryDTO = PlaceBaseDTO & {
@@ -43,6 +45,6 @@ export type PlaceSummaryDTO = PlaceBaseDTO & {
 
 export type PlaceDTO = PlaceBaseDTO & {
     locality: LocalityDTO;
-    category?: CategoryDTO;
+    category: CategoryDTO;
     created_at: string;
 };
