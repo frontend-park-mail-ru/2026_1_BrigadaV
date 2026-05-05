@@ -13,6 +13,7 @@ export type PlaceSummary = {
 }
 
 export type Place = PlaceSummary & {
+    categoryId: number;
     location: string;
     country: string;
 }

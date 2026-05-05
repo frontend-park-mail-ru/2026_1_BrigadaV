@@ -19,6 +19,7 @@ export const mapPlaceSummary = (dto: PlaceSummaryDTO): PlaceSummary => ({
 
 export const mapPlace = (dto: PlaceDTO): Place => ({
     ...mapPlaceSummary(dto),
+    categoryId: dto.category.id,
     location: dto.locality.name,
     country: dto.locality.country,
 });

@@ -18,6 +18,11 @@ export class LikeButton extends BaseComponent {
         this.element?.classList.toggle('like--active');
     };
 
+    public setLabel(label: string): void {
+        if (!this.element) return;
+        this.element.textContent = label;
+    }
+
     protected override _render(): HTMLElement {
         return stringToElement(template(this.props));
     }

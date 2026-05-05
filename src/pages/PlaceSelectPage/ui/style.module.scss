@@ -10,7 +10,7 @@
 
 .main {
     display: flex;
-    padding: 0 2rem 1rem;
+    padding-bottom: 1rem;
     flex-direction: column;
     gap: 2rem;
     background-color: $surface-0;
@@ -18,6 +18,11 @@
 
 .page-header {
     display: flex;
+    margin-left: 2rem;
+
+    @media (max-width: 1024px) {
+        margin-left: 1rem;
+    }
 
     &__back-img {
         --size: 40px;

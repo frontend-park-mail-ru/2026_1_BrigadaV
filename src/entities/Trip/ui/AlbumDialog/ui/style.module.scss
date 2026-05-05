@@ -7,6 +7,10 @@
     border: none;
     border-radius: 8px;
 
+    @media (max-width: 1024px) {
+        padding: 1.75rem 2rem 1rem;
+    }
+
     &__form {
         display: flex;
         flex-direction: column;
@@ -20,20 +24,20 @@
 
     &__upload {
         display: flex;
+        padding: 0.75rem 1.25rem;
         align-items: center;
         gap: 0.75rem;
-        padding: 0.75rem 1.25rem;
         border: 1px dashed $color-border-button;
         border-radius: 8px;
-        cursor: pointer;
         transition: background-color $timing-animation-short;
+        cursor: pointer;
 
         span {
-        font-size: 1rem;
-        font-family: $font-body;
-        line-height: 1.6;
-        color: $color-text-main;
-    }
+            color: $color-text-main;
+            font-size: 1rem;
+            font-family: $font-body;
+            line-height: 1.6;
+        }
 
         &:hover {
             background-color: $gray-100;
@@ -47,21 +51,21 @@
 
     &__photos {
         display: flex;
+        height: 200px;
+        padding-bottom: 0.5rem;
         flex-wrap: nowrap;
         gap: 0.75rem;
-        height: 200px;
         overflow-x: auto;
         overflow-y: hidden;
-        padding-bottom: 0.5rem;
     }
 
     .photo-item {
         position: relative;
-        height: 100%;
         aspect-ratio: 1 / 1;
+        height: 100%;
+        flex-shrink: 0;
         border-radius: 8px;
         overflow: hidden;
-        flex-shrink: 0; 
 
         &__img {
             width: 100%;
@@ -73,16 +77,16 @@
             position: absolute;
             top: 4px;
             right: 4px;
+            display: flex;
             width: 24px;
             height: 24px;
-            background: rgba($gray-100, 0.8);
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            display: flex;
             align-items: center;
             justify-content: center;
-            color: $gray-400;   
+            color: $gray-400;
+            background: rgba($gray-100, 0.8);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
 
             img {
                 width: 16px;
