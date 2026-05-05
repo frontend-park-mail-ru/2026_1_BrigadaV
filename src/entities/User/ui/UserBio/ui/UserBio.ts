@@ -30,9 +30,25 @@ export class UserBio extends BaseComponent {
     }
 
     private update = (data: Partial<UserBioProps['user']>) => {
-        if (data.nickname !== undefined) this.fields['nickname'].textContent = data.nickname;
-        if (data.city !== undefined) this.fields['location'].textContent = data.city;
-        if (data.about !== undefined) this.fields['about'].textContent = data.about;
+        const updateField = (refName: string, value?: string) => {
+            const el = this.fields[refName];
+            if (!el) return;
+
+            if (value) {
+                el.textContent = value;
+                el.classList.remove('hidden');
+            } else if (value === '') {
+                el.classList.add('hidden');
+            }
+        };
+
+        if (data.nickname !== undefined) updateField('nickname', data.nickname);
+
+        if (data.city !== undefined) {
+            updateField('location', data.city);
+        }
+
+        if (data.about !== undefined) updateField('about', data.about);
 
         if (data.avatar && this.fields['avatar'] instanceof HTMLImageElement) {
             this.fields['avatar'].src = data.avatar;
