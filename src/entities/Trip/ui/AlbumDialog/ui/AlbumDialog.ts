@@ -192,7 +192,7 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
 
     private renderPhotos() {
         const container = this.element?.querySelector('[data-ref="photos-container"]');
-        console.log('[AlbumDialog] renderPhotos, container found:', container, 'photos count:', this.photos.length);
+//        console.log('[AlbumDialog] renderPhotos, container found:', container, 'photos count:', this.photos.length);
 
         if (!container) return;
         container.innerHTML = '';
