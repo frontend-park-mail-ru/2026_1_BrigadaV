@@ -4,6 +4,8 @@ import { Toast } from '@/shared/ui/Toast';
 import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 import { fetchAlbumByTripId, fetchAlbumPhotos, uploadPhoto, deletePhoto } from '../../../api/album';
 
+import { BACKEND_ORIGIN } from '@/shared/api/api';
+
 import { AlbumDialogProps } from '../model//types';
 import styles from './style.module.scss';
 import template from './AlbumDialog.hbs?compiled';
@@ -16,8 +18,8 @@ type LocalPhoto = {
 
 export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
     private tripId!: number;
-    private albumId: number | null = null;
     private photos: LocalPhoto[] = [];
+    private maxPhotos = 50;
     private removedIds = new Set<number>();
 
     constructor(private props: AlbumDialogProps) {
@@ -36,24 +38,28 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
             return;
         }
 
-        this.tripId = tripId;
+        this.releaseBlobUrls();
+        this.photos = [];
+        this.removedIds.clear();
+
         try {
             const album = await fetchAlbumByTripId(tripId);
+//            console.log('[AlbumDialog] album:', album);
             if (album) {
+                this.maxPhotos = album.MaxPhotos || 50; 
                 const serverPhotos = await fetchAlbumPhotos(tripId);
-                this.photos = serverPhotos.map(p => ({ id: p.id, url: p.url }));
+//                console.log('[AlbumDialog] received photos from server:', serverPhotos);
+
+                this.photos = serverPhotos.map(p => ({ id: p.id, url: import.meta.env.DEV ? p.url : BACKEND_ORIGIN + p.url }));
+//                console.log('[AlbumDialog] mapped photos:', this.photos);
+
             } else {
                 this.photos = [];
                 Toast({ message: 'Альбом ещё не создан', type: 'error' });
             }
+//            console.log('[AlbumDialog] photos to render:', this.photos.length);
 
-            this.releaseBlobUrls();
-            this.photos = [];
-            this.renderPhotos();
-
-            this.element?.showModal();
         } catch {
-            this.albumId = null;
             this.photos = [];
             Toast({ message: 'Не удалось загрузить альбом', type: 'error' });
         }
@@ -63,21 +69,41 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
     }
 
     private handleFileChange = (e: Event) => {
-        const input = e.target as HTMLInputElement;
-        const files = input.files;
-        if (!files) return;
+    const input = e.target as HTMLInputElement;
+    const files = input.files;
+    if (!files) return;
 
-        for (const file of Array.from(files)) {
-            if (!file.type.startsWith('image/')) {
-                Toast({ message: 'Можно загружать только изображения', type: 'error' });
-                continue;
-            }
-            const blobUrl = URL.createObjectURL(file);
-            this.photos.push({ url: blobUrl, file });
+    const currentCount = this.photos.length;
+    const availableSlots = this.maxPhotos - currentCount;
+
+    if (availableSlots <= 0) {
+        Toast({
+            message: `Достигнут лимит в ${this.maxPhotos} фотографий. Удалите лишние, чтобы добавить новые.`,
+            type: 'error',
+        });
+        input.value = '';
+        return;
+    }
+
+    const filesToAdd = Array.from(files).slice(0, availableSlots);
+    if (files.length > availableSlots) {
+        Toast({
+            message: `Можно добавить только ${availableSlots} фото. Остальные не будут загружены.`,
+            type: 'error',
+        });
+    }
+
+    for (const file of filesToAdd) {
+        if (!file.type.startsWith('image/')) {
+            Toast({ message: 'Можно загружать только изображения', type: 'error' });
+            continue;
         }
-        input.value = '';   // чтобы можно было повторно выбрать тот же файл (?)
-        this.renderPhotos();
-    };
+        const blobUrl = URL.createObjectURL(file);
+        this.photos.push({ url: blobUrl, file });
+    }
+    input.value = '';
+    this.renderPhotos();
+};
 
     private handleRemovePhoto = (index: number) => {
         const photo = this.photos[index];
@@ -90,31 +116,12 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
         this.renderPhotos();
     };
 
-    /*    private handleDeleteAll = async () => {
-        if (this.photos.length === 0) return;
-
-        const confirmed = await ConfirmPopup({
-            prompt: 'Вы уверены, что хотите удалить все фотографии?',
-            cancelText: 'Отменить',
-            confirmText: 'Удалить',
-        });
-
-        if (confirmed) {
-            try {
-                await deleteAlbum(this.tripId);
-                Toast({ message: 'Альбом удалён', type: 'info' });
-                this.element?.close();
-            } catch {
-                Toast({ message: 'Не удалось удалить альбом', type: 'error' });
-            }
-        }
-    };*/
-
+    
     private handleDeleteAlbum = async () => {
-        if (!this.albumId) {
-            Toast({ message: 'Альбом ещё не создан', type: 'error' });
-            return;
-        }
+    if (!this.tripId) {
+        Toast({ message: 'Альбом ещё не создан', type: 'error' });
+        return;
+    }
 
         // Собираем только сохранённые на сервере фото (у которых есть id)
         const savedPhotos = this.photos.filter(p => p.id !== undefined);
@@ -134,13 +141,13 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
         if (confirmed) {
             try {
             // Удаляем каждое сохранённое фото по одному
-                for (const photo of savedPhotos) {
-                    await deletePhoto(this.albumId, photo.id!);
-                }
-                Toast({ message: 'Альбом очищен', type: 'info' });
-            } catch {
-                Toast({ message: 'Не удалось удалить все фотографии', type: 'error' });
-            } finally {
+            for (const photo of savedPhotos) {
+                await deletePhoto(this.tripId, photo.id!);
+            }
+            Toast({ message: 'Альбом очищен', type: 'info' });
+        } catch {
+            Toast({ message: 'Не удалось удалить все фотографии', type: 'error' });
+        } finally {
             // Очищаем локальное состояние и закрываем диалог
                 this.releaseBlobUrls();
                 this.photos = [];
@@ -151,8 +158,10 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
         }
     };
 
-    protected override async handleSubmit(): Promise<void> {
-        if (!this.albumId) {
+    protected override handleSubmit = async(): Promise<void> => {
+        console.log('[AlbumDialog] submit called, tripId =', this.tripId);
+
+        if (!this.tripId) {
             Toast({ message: 'Невозможно сохранить: альбом не найден', type: 'error' });
             return;
         }
@@ -161,7 +170,7 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
             //загружаем новые фото
             for (const photo of this.photos) {
                 if (!photo.id && photo.file) {
-                    const uploaded = await uploadPhoto(this.albumId, photo.file);
+                    const uploaded = await uploadPhoto(this.tripId, photo.file);
                     photo.id = uploaded.id;
                     //фото больше не blob, освобождаем
                     if (photo.url.startsWith('blob:')) URL.revokeObjectURL(photo.url);
@@ -171,7 +180,7 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
 
             //удаляем помеченные фото
             for (const photoId of this.removedIds) {
-                await deletePhoto(this.albumId, photoId);
+                await deletePhoto(this.tripId, photoId);
             }
 
             Toast({ message: 'Альбом сохранён', type: 'info' });
@@ -183,6 +192,8 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
 
     private renderPhotos() {
         const container = this.element?.querySelector('[data-ref="photos-container"]');
+//        console.log('[AlbumDialog] renderPhotos, container found:', container, 'photos count:', this.photos.length);
+
         if (!container) return;
         container.innerHTML = '';
 
@@ -204,6 +215,11 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
             div.appendChild(removeBtn);
             container.appendChild(div);
         });
+
+        const counter = this.element?.querySelector('[data-ref="photos-counter"]');
+    if (counter) {
+        counter.textContent = `${this.photos.length}/${this.maxPhotos}`;
+    }
     }
 
     // ---------- очистка blob-URL ----------
@@ -217,13 +233,16 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
     // ---------- жизненный цикл ----------
 
     protected override initListeners(): void {
-        super.initListeners();
+        //super.initListeners();
+
+        const submitBtn = this.element?.querySelector('[data-ref="submit"]');
+        submitBtn?.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.handleSubmit();
+        });
 
         const fileInput = this.element?.querySelector('[data-ref="file-input"]') as HTMLInputElement;
         fileInput?.addEventListener('change', this.handleFileChange);
-
-        /*        const deleteAllBtn = this.element?.querySelector('[data-ref="delete-all"]');
-        deleteAllBtn?.addEventListener('click', this.handleDeleteAll);*/
 
         const deleteAlbumBtn = this.element?.querySelector('[data-ref="delete-all"]');
         deleteAlbumBtn?.addEventListener('click', this.handleDeleteAlbum);

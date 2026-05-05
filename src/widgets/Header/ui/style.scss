@@ -24,6 +24,7 @@
     }
 
     &__search {
+        visibility: hidden;
         width: clamp(200px, 100%, 600px);
         order: 3;
     }
@@ -36,6 +37,11 @@
         padding: 0.75rem 2.5rem;
         flex-wrap: nowrap;
         gap: 0;
+
+        &__search {
+            visibility: visible;
+            width: clamp(200px, 100%, 600px);
+        }
 
         &__name {
             @include typo-h2;
