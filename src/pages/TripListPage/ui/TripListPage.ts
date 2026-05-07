@@ -80,31 +80,4 @@ export class TripListPage extends BasePage {
 
         this.children.editTripDialog.show(editData);
     };
-
-    // private handleTripCreate = async ({ instance, data }: {
-    //     instance: CreateTripDialog,
-    //     data: FormData
-    // }): Promise<void> => {
-    // }
-
-    // private handleTripUpdate = async ({ instance, data, tripId }: {
-    //     instance: CreateTripDialog,
-    //     data: FormData
-    // }): Promise<void> => {
-
-    //     const success = await API.updateTrip(tripId, data.title, data.description, data.location, new Date(data['start-date']), new Date(data['end-date']));
-
-    //     if (success.message === 'ok') {
-    //         this.userTripList?.updateTrip(tripId, {
-    //             id: tripId,
-    //             title: data.title,
-    //             description: data.description,
-    //             location: data.location,
-    //             startDate: new Date(data['start-date']),
-    //             endDate: new Date(data['end-date']),
-    //         })
-    //         instance.close();
-    //     }
-    // }
-
 }

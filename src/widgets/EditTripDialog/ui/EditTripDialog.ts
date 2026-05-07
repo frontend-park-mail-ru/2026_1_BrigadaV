@@ -11,6 +11,7 @@ import {
 } from '../model/types';
 import template from './EditTripDialog.hbs?compiled';
 import styles from './style.module.scss';
+import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 
 export class EditTripDialog extends BaseForm<EditTripDialogFields, HTMLDialogElement> {
     private tripId?: number;
@@ -105,7 +106,17 @@ export class EditTripDialog extends BaseForm<EditTripDialogFields, HTMLDialogEle
 
     private handleDelete = async (event: Event): Promise<void> => {
         event.preventDefault();
-        eventBus.emit('EditTripDialog:delete', { instance: this, data: { id: this.tripId } });
+
+        const confirmed = await ConfirmPopup({
+            prompt: 'Вы действительно хотите удалить поездку?',
+            note: 'При удалении поездки будут удалены все сохраненные в ней элементы и примечания. Удаленную поездку нельзя восстановить.',
+            cancelText: 'Отменить',
+            confirmText: 'Удалить',
+        });
+
+        if (confirmed) {
+            eventBus.emit('EditTripDialog:delete', { instance: this, data: { id: this.tripId } });
+        }
     };
 
     public show(data: EditTripInitValues): void {
