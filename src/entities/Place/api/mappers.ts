@@ -1,3 +1,4 @@
+import { mapCategorySummary } from '@/entities/Category';
 import { Place, PlaceSummary } from '../model/types';
 import { PlaceBaseDTO, PlaceDTO, PlaceSummaryDTO } from './types';
 
@@ -19,7 +20,7 @@ export const mapPlaceSummary = (dto: PlaceSummaryDTO): PlaceSummary => ({
 
 export const mapPlace = (dto: PlaceDTO): Place => ({
     ...mapPlaceSummary(dto),
-    categoryId: dto.category.id,
+    category: mapCategorySummary(dto.category),
     location: dto.locality.name,
     country: dto.locality.country,
 });

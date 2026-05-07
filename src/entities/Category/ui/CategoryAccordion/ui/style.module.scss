@@ -1,0 +1,72 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
+.categories {
+    display: flex;
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0;
+    background-color: $white;
+    @media (max-width: 1024px) {
+        width: 200px;
+    }
+
+    transition: gap 50ms;
+
+    &__header {
+        display: flex;
+        margin-bottom: 1rem;
+        justify-content: space-between;
+        cursor: pointer;
+    }
+
+    &__base,
+    &__extended {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    &__input {
+        width: 20px;
+        margin: 0;
+    }
+
+    &__extended-wrapper {
+        display: none;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows $timing-animation-medium;
+        overflow: hidden;
+    }
+
+    &__extended {
+        min-height: 0;
+    }
+
+    &__marker {
+        transition: rotate $timing-animation-medium;
+    }
+
+    &__item {
+        @include typo-p;
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    &--gap-open {
+        gap: 1rem;
+    }
+
+    &--content-open {
+        transition: gap $timing-animation-medium;
+
+        .categories__extended-wrapper {
+            display: grid;
+            grid-template-rows: 1fr;
+        }
+
+        .categories__marker {
+            rotate: 180deg;
+        }
+    }
+}

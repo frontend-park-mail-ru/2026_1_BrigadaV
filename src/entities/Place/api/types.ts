@@ -1,8 +1,4 @@
-export type CategoryDTO = {
-    id: number;
-    name: string;
-    description: string;
-};
+import { CategoryDTO, CategorySummaryDTO } from "@/entities/Category";
 
 export type LocalityDTO = {
     id: number;
@@ -36,7 +32,7 @@ export type PlaceBaseDTO = {
     is_liked: boolean;
     price: number;
     latitude?: number;
-    longitude?: number; 
+    longitude?: number;
 };
 
 export type PlaceSummaryDTO = PlaceBaseDTO & {
@@ -45,6 +41,6 @@ export type PlaceSummaryDTO = PlaceBaseDTO & {
 
 export type PlaceDTO = PlaceBaseDTO & {
     locality: LocalityDTO;
-    category: CategoryDTO;
+    category: CategorySummaryDTO;
     created_at: string;
 };

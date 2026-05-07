@@ -12,20 +12,7 @@
   </ul>
 
   <aside class="{{s 'aside'}}">
-    <div class="{{s 'categories'}}" data-ref="category-accordion">
-      <div class="{{s 'categories__summary'}}">
-        <div class="{{s 'categories__header'}}" data-ref="category-toggle">
-          <h3 class="{{s 'categories__title'}}">Категории</h3>
-          <img src="/icons/arrow-down.svg" class="{{s 'categories__marker'}}">
-        </div>
-
-        <ul class="{{s 'categories__base'}}" data-ref="category-base"></ul>
-      </div>
-
-      <div class="{{s 'categories__extended-wrapper'}}" data-ref="extended-wrapper">
-        <ul class="{{s 'categories__extended'}}" data-ref="category-extended"></ul>
-      </div>
-    </div>
+    <div data-slot="categories"></div>
   </aside>
 
   <div data-slot="place-list" class="{{s 'place-list'}}"></div>
