@@ -1,9 +1,7 @@
 import { registerUser } from '@/entities/User';
-import { ApiError } from '@/shared/api';
 import { appState } from '@/shared/config';
 import { validateEmail, validateNickname, validatePassword } from '@/shared/lib';
 import { navigate } from '@/shared/router';
-import { Toast } from '@/shared/ui/Toast';
 import { AuthForm } from '@/widgets/AuthForm';
 
 import { SignUpPayload } from '../model/types';
@@ -32,7 +30,7 @@ export const handleSignup = async ({ instance, data }: { instance: AuthForm, dat
             field: 'password-repeat',
             message: 'Пароли не совпадают',
         },
-    ]
+    ];
 
     const failures = rules.filter(rule => !rule.check);
 
@@ -47,6 +45,5 @@ export const handleSignup = async ({ instance, data }: { instance: AuthForm, dat
         appState.currentUser = registerRes.data;
         navigate('/');
     } else {
-        console.log(registerRes);
     }
 };

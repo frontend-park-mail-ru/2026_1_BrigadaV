@@ -1,4 +1,5 @@
 import { request } from '@/shared/api';
+
 import { Album, AlbumPhoto } from '../model/types';
 
 const BASE = '/albums';

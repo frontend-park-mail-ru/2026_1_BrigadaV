@@ -1,10 +1,10 @@
 import { BaseComponent } from '@/shared/lib/component/BaseComponent';
+import { navigate } from '@/shared/router';
 import { stringToElement } from '@/shared/utils';
 
 import { PlacePlacardProps } from '../model/types';
 import template from './PlacePlacard.hbs?compiled';
 import styles from './style.module.scss';
-import { navigate } from '@/shared/router';
 
 export class PlacePlacard extends BaseComponent {
     constructor(private props: PlacePlacardProps) { super(); }

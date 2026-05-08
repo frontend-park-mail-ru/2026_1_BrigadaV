@@ -1,3 +1,4 @@
+import { SearchBar } from '@/features/SearchBar';
 import { BasePage } from '@/shared/lib/page/BasePage';
 import { AppState } from '@/shared/model';
 import { Header } from '@/widgets/Header';
@@ -6,7 +7,6 @@ import { RecommendedList } from '@/widgets/RecommendedList';
 
 import template from './LandingPage.hbs?compiled';
 import styles from './style.module.scss';
-import { SearchBar } from '@/features/SearchBar';
 
 export class LandingPage extends BasePage {
     protected template = template;

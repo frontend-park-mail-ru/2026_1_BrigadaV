@@ -1,5 +1,6 @@
 import { request } from '@/shared/api';
 import { ApiResponse } from '@/shared/api/types';
+
 import { Place, PlaceSummary } from '../model/types';
 import { mapPlace, mapPlaceSummary } from './mappers';
 import { PlaceDTO } from './types';

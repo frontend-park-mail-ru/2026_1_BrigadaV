@@ -1,5 +1,6 @@
 import { request } from '@/shared/api';
 import { ApiResponse } from '@/shared/api/types';
+
 import { Trip } from '../model/types';
 import { mapTrip } from './mappers';
 import {

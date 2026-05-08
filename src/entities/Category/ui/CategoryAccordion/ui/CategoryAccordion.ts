@@ -69,7 +69,7 @@ export class CategoryAccordion extends BaseComponent {
 
                     requestAnimationFrame(() => {
                         this.element?.classList.add(styles['categories--content-open']);
-                    })
+                    });
                 }
             };
             this.element.addEventListener('transitionend', handleGapEnd);
@@ -87,7 +87,7 @@ export class CategoryAccordion extends BaseComponent {
             };
             this.element.addEventListener('transitionend', handleContentEnd);
         }
-    }
+    };
 
     protected override initListeners(): void {
         super.initListeners();

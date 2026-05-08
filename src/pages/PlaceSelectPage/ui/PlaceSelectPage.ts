@@ -1,4 +1,5 @@
 import { fetchAddedPlaces } from '@/entities/Place';
+import { focusField } from '@/shared/lib';
 import { Callback } from '@/shared/lib/eventBus/eventBus';
 import { BasePage } from '@/shared/lib/page/BasePage';
 import { AppState } from '@/shared/model';
@@ -12,7 +13,6 @@ import { handlePlaceRemove } from '../handlers/handlePlaceRemove';
 import { PlaceSelectPageParams } from '../model/types';
 import template from './PlaceSelectPage.hbs?compiled';
 import styles from './style.module.scss';
-import { focusField } from '@/shared/lib';
 
 export class PlaceSelectPage extends BasePage {
     protected override template = template;

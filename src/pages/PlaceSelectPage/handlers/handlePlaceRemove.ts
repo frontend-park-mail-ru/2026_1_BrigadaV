@@ -1,5 +1,4 @@
 import { deleteTripPlace } from '@/entities/Place';
-import { deleteReview } from '@/entities/Review/api';
 import { Toast } from '@/shared/ui/Toast';
 import { PlaceTogglePayload } from '@/widgets/PlaceSelectList/model/types';
 

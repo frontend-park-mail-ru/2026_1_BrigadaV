@@ -1,16 +1,15 @@
 import { AttractionPage } from '@/pages/AttractionPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { LoginPage } from '@/pages/LoginPage';
+import { MapPage } from '@/pages/MapPage';
 import { PlaceSelectPage } from '@/pages/PlaceSelectPage';
 import { ProfilePage } from '@/pages/ProfilePage';
+import { SearchPage } from '@/pages/SearchPage';
 import { SignupPage } from '@/pages/SignupPage';
 import { TripDetailPage } from '@/pages/TripDetailPage';
 import { TripListPage } from '@/pages/TripListPage';
 
-import { MapPage } from '@/pages/MapPage';
-
 import { AppState, IPageConstructor } from '../model';
-import { SearchPage } from '@/pages/SearchPage';
 
 export type Route = {
     href: string;

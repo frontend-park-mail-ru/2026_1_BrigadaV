@@ -1,5 +1,6 @@
 import { fetchPlace } from '@/entities/Place';
 import { PlaceSummary } from '@/entities/Place/model/types';
+import { Review } from '@/entities/Review/model/types';
 import { ReviewCardPayload } from '@/entities/Review/ui/ReviewCard/model/types';
 import { Callback } from '@/shared/lib/eventBus/eventBus';
 import { BasePage } from '@/shared/lib/page/BasePage';
@@ -9,6 +10,7 @@ import { formatDate, pluralize } from '@/shared/utils';
 import { injectHandlerContext } from '@/shared/utils/lib/injectHandlerContext';
 import { Gallery } from '@/widgets/Gallery';
 import { Header } from '@/widgets/Header';
+import { MapIframe } from '@/widgets/MapIframe';
 import { ReviewDetailsModal } from '@/widgets/ReviewDetailsModal';
 import { ReviewList } from '@/widgets/ReviewList';
 import { WorkingHours } from '@/widgets/WorkingHours';
@@ -19,9 +21,6 @@ import { handleReviewDelete } from '../handlers/handleReviewDelete';
 import { AttractionPageParameters } from '../model/types';
 import template from './AttractionPage.hbs?compiled';
 import styles from './style.module.scss';
-import { Review } from '@/entities/Review/model/types';
-
-import { MapIframe } from '@/widgets/MapIframe';
 
 const WRITE_REVIEW_DIALOG_ID = 'write-review';
 const REVIEW_DETAILS_MODAL_ID = 'review-details';

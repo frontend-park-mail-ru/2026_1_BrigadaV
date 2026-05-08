@@ -1,11 +1,12 @@
-import { BaseComponent } from '@/shared/lib/component/BaseComponent';
-import { PlaceDropDownListProps, PlaceDropDownStates } from './model/types';
-import { stringToElement } from '@/shared/utils';
 import './style.scss';
 
-import template from './PlaceDropDownList.hbs?compiled';
 import { PlaceSearchItem } from '@/entities/Place/ui/PlaceSearchItem';
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
+import { stringToElement } from '@/shared/utils';
+
 import { SearchResult } from '../model/types';
+import { PlaceDropDownListProps, PlaceDropDownStates } from './model/types';
+import template from './PlaceDropDownList.hbs?compiled';
 
 export class PlaceDropDownList extends BaseComponent {
     private static readonly STATE_HEADERS: Record<string, (props: PlaceDropDownListProps) => string> = {

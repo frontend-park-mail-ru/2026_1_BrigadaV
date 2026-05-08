@@ -15,7 +15,7 @@ export const handleTripCreate = async ({ instance, data, tripList }: { instance:
             places: [],
         };
 
-        tripList.addItem(newTrip, 'afterbegin')
+        tripList.addItem(newTrip, 'afterbegin');
         instance.close();
     }
 };

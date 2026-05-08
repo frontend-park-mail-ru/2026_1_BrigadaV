@@ -1,16 +1,17 @@
-import styles from './style.module.scss';
+import { CategoryAccordion, fetchPlaceCategories } from '@/entities/Category';
+import { fetchPlaces, Place, searchPlace } from '@/entities/Place';
+import { focusField } from '@/shared/lib';
+import { Callback } from '@/shared/lib/eventBus/eventBus';
 import { BasePage } from '@/shared/lib/page/BasePage';
-import template from './SearchPage.hbs?compiled';
-import { Header } from '@/widgets/Header';
-import { PlaceList } from './PlaceList/PlaceList';
 import { AppState } from '@/shared/model';
 import { Field } from '@/shared/ui';
-import { focusField } from '@/shared/lib';
-import { fetchPlaces, Place, searchPlace } from '@/entities/Place';
 import { debounce } from '@/shared/utils/lib/debounce';
+import { Header } from '@/widgets/Header';
+
 import { SearchPageParameters } from '../model/types';
-import { CategoryAccordion, fetchPlaceCategories } from '@/entities/Category';
-import { Callback } from '@/shared/lib/eventBus/eventBus';
+import { PlaceList } from './PlaceList/PlaceList';
+import template from './SearchPage.hbs?compiled';
+import styles from './style.module.scss';
 
 export class SearchPage extends BasePage {
     protected template = template;
@@ -27,7 +28,7 @@ export class SearchPage extends BasePage {
     protected override get eventHandlers(): Record<string, Callback> {
         return {
             'CategoryAccordion:toggle-category': this.handleCategoryToggle
-        }
+        };
     }
 
     private categoryList: { id: number; name: string }[] = [];
@@ -123,7 +124,7 @@ export class SearchPage extends BasePage {
     private handleCategoryToggle = (data: { ids: number[] }) => {
         this.selectedCategoryIds = data.ids;
         this.applyFilters();
-    }
+    };
 
     public override render(): HTMLElement {
         super.render();

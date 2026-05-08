@@ -1,11 +1,11 @@
 import { eventBus } from '@/shared/lib';
 import { BaseComponent } from '@/shared/lib/component/BaseComponent';
+import { navigate } from '@/shared/router';
 import { formatDateRange, stringToElement } from '@/shared/utils';
 
 import { TripCardProps } from '../model/types';
 import styles from './style.module.scss';
 import template from './TripCard.hbs?compiled';
-import { navigate } from '@/shared/router';
 
 export class TripCard extends BaseComponent {
     private get trip() {

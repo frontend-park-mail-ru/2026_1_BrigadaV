@@ -22,7 +22,7 @@ export class PlaceSelectList extends BaseList<Place, SelectPlaceListProps> {
                 return bAdded - aAdded;
             });
 
-            return sortedPlaces
+            return sortedPlaces;
         }
 
         return [];

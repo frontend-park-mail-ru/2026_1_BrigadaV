@@ -1,7 +1,10 @@
-import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+
+import L from 'leaflet';
+
 import { BasePage } from '@/shared/lib/page/BasePage';
 import { AppState } from '@/shared/model';
+
 import template from './MapPage.hbs?compiled';
 import styles from './style.module.scss';
 

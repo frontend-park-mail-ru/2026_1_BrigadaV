@@ -1,16 +1,16 @@
 import './style.scss';
 
+import { fetchPlaces, searchPlace } from '@/entities/Place';
+import { focusField } from '@/shared/lib';
 import { BaseComponent } from '@/shared/lib/component/BaseComponent';
+import { navigate } from '@/shared/router';
 import { Field } from '@/shared/ui';
 import { getRandomElements, stringToElement } from '@/shared/utils';
+import { debounce } from '@/shared/utils/lib/debounce';
 
 import { SearchBarProps, SearchResult } from './model/types';
-import template from './SearchBar.hbs?compiled';
 import { PlaceDropDownList } from './PlaceDropDownList/PlaceDropDownList';
-import { focusField } from '@/shared/lib';
-import { debounce } from '@/shared/utils/lib/debounce';
-import { fetchPlaces, searchPlace } from '@/entities/Place';
-import { navigate } from '@/shared/router';
+import template from './SearchBar.hbs?compiled';
 
 export class SearchBar extends BaseComponent {
     declare protected children: {

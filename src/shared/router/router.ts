@@ -1,10 +1,10 @@
+import { UserAuth } from '@/entities/User';
 import { LandingPage } from '@/pages/LandingPage';
 
 import { appState } from '../config';
 import { Route } from '../config/router';
 import { IPage } from '../model';
 import { findMatch } from './findMatch';
-import { UserAuth } from '@/entities/User';
 
 export type Match = {
     page: Route;

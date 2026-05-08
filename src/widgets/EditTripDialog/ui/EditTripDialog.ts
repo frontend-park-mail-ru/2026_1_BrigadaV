@@ -1,6 +1,7 @@
 import { eventBus, focusField } from '@/shared/lib';
 import { BaseForm } from '@/shared/lib/component/BaseForm';
 import { Field, Textarea } from '@/shared/ui';
+import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 import { stringToElement } from '@/shared/utils';
 
 import {
@@ -11,7 +12,6 @@ import {
 } from '../model/types';
 import template from './EditTripDialog.hbs?compiled';
 import styles from './style.module.scss';
-import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 
 export class EditTripDialog extends BaseForm<EditTripDialogFields, HTMLDialogElement> {
     private tripId?: number;

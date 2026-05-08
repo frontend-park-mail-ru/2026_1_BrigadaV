@@ -1,4 +1,4 @@
-import { CategorySummary } from "@/entities/Category/model/types";
+import { CategorySummary } from '@/entities/Category/model/types';
 
 export type PlaceSummary = {
     id: number;

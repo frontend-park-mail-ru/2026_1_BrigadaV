@@ -4,8 +4,8 @@ import { SearchBar } from '@/features/SearchBar';
 import { BaseComponent } from '@/shared/lib/component/BaseComponent';
 import { stringToElement } from '@/shared/utils';
 
-import template from './Hero.hbs?compiled';
 import { HeroProps } from '../model/types';
+import template from './Hero.hbs?compiled';
 
 export class Hero extends BaseComponent {
     declare protected children: {

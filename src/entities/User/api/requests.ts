@@ -76,5 +76,5 @@ export const updateUser = async (data: UpdateRequest): Promise<ApiResponse<User>
 
     if (!res.ok) return res;
 
-    return {...res, data: mapUser(res.data)}
+    return { ...res, data: mapUser(res.data) };
 };

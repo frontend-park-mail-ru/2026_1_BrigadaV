@@ -1,5 +1,4 @@
 import { UpdateRequest, updateUser, uploadAvatar, User } from '@/entities/User';
-import { ApiResponse } from '@/shared/api';
 import { eventBus, validateAvatar, validateEmail, validateNickname } from '@/shared/lib';
 import { resolveStaticPath } from '@/shared/utils';
 import { SettingsModal } from '@/widgets/SettingsModal';
@@ -25,7 +24,7 @@ export const handleSettingsUpdate = async ({ instance, data, user }: { instance:
             field: 'login',
             message: 'Некорректный формат email',
         },
-    ]
+    ];
 
     const failures = rules.filter(rule => rule.isInvalid);
 

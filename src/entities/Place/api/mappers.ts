@@ -1,4 +1,5 @@
 import { mapCategorySummary } from '@/entities/Category';
+
 import { Place, PlaceSummary } from '../model/types';
 import { PlaceBaseDTO, PlaceDTO, PlaceSummaryDTO } from './types';
 

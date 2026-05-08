@@ -1,4 +1,4 @@
-import { ApiResponse, ErrorDTO } from "./types";
+import { ApiResponse, ErrorDTO } from './types';
 
 export const BACKEND_ORIGIN = import.meta.env.DEV
     ? 'http://localhost:5173'

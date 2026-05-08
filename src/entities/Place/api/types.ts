@@ -1,4 +1,4 @@
-import { CategoryDTO, CategorySummaryDTO } from "@/entities/Category";
+import { CategorySummaryDTO } from '@/entities/Category';
 
 export type LocalityDTO = {
     id: number;

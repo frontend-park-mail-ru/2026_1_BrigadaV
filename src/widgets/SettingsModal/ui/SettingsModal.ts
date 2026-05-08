@@ -5,7 +5,6 @@ import { BaseForm } from '@/shared/lib/component/BaseForm';
 import { Field, Textarea } from '@/shared/ui';
 import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 import { ImageInput } from '@/shared/ui/ImageInput';
-import { Toast } from '@/shared/ui/Toast';
 import { stringToElement } from '@/shared/utils';
 
 import { SettingsFields, SettingsModalProps } from '../model/types';
