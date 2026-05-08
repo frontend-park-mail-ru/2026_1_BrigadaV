@@ -45,7 +45,7 @@ export class AttractionPage extends BasePage {
     protected override get eventHandlers(): Record<string, Callback> {
         return {
             'ReviewCard:show-details': this.handleShowDetails,
-            'WriteReviewDialog:submit': injectHandlerContext(handleReviewCreate, { reviewList: this.children.reviewList, user: this.appState.currentUser, placeId: this.place.id }),
+            'WriteReviewDialog:submit': injectHandlerContext(handleReviewCreate, { user: this.appState.currentUser, placeId: this.place.id }),
             'ReviewDetailsModal:delete': handleReviewDelete,
 
             'ReviewCreate:success': this.reviewSubmitUpdate,
@@ -58,8 +58,10 @@ export class AttractionPage extends BasePage {
     public static async create(appState: AppState, parameters: AttractionPageParameters): Promise<AttractionPage> {
         const page = new AttractionPage(appState);
 
-        const place = await fetchPlace(parameters.placeId);
-        page.place = place;
+        const fetchRes = await fetchPlace(parameters.placeId);
+        if (fetchRes.ok) {
+            page.place = fetchRes.data;
+        }
 
         if (page.place.lat === null || page.place.lon === null) {
             page.place.lat = 55.751244;
@@ -172,8 +174,10 @@ export class AttractionPage extends BasePage {
             this.children.reviewDetailsModal.close();
         }
 
-        const place = await fetchPlace(this.place.id);
-        this.place = place;
+        const fetchRes = await fetchPlace(this.place.id);
+        if (fetchRes.ok) {
+            this.place = fetchRes.data;
+        }
 
         this.fields['review-count'].textContent = `(${this.makeReviewCountText()})`;
 

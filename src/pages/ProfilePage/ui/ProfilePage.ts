@@ -42,8 +42,11 @@ export class ProfilePage extends BasePage {
     public static async create(appState: AppState): Promise<ProfilePage> {
         const page = new ProfilePage(appState);
 
-        const user = await fetchMe();
-        page.user = user;
+        const meRes = await fetchMe();
+
+        if (meRes.ok) {
+            page.user = meRes.data;
+        }
 
         page.setupComponents();
 
@@ -87,25 +90,25 @@ export class ProfilePage extends BasePage {
         const { activeSection: oldSection } = this.children;
 
         switch (tabId) {
-        case 'about':
-            this.children.activeSection = new AboutMe({
-                id: SETTINGS_MODAL_ID,
-                hasAbout: Boolean(this.user.about),
-                hasReviews: Boolean(this.user.hasReviews),
-                joinDate: this.user.createdAt,
-            });
-            break;
-        case 'trips':
-        case 'comments':
-            this.children.activeSection = new DummyProfileSection();
-            break;
-        default:
-            this.children.activeSection = new AboutMe({
-                id: SETTINGS_MODAL_ID,
-                hasAbout: Boolean(this.user.about),
-                hasReviews: Boolean(this.user.hasReviews),
-                joinDate: this.user.createdAt,
-            });
+            case 'about':
+                this.children.activeSection = new AboutMe({
+                    id: SETTINGS_MODAL_ID,
+                    hasAbout: Boolean(this.user.about),
+                    hasReviews: Boolean(this.user.hasReviews),
+                    joinDate: this.user.createdAt,
+                });
+                break;
+            case 'trips':
+            case 'comments':
+                this.children.activeSection = new DummyProfileSection();
+                break;
+            default:
+                this.children.activeSection = new AboutMe({
+                    id: SETTINGS_MODAL_ID,
+                    hasAbout: Boolean(this.user.about),
+                    hasReviews: Boolean(this.user.hasReviews),
+                    joinDate: this.user.createdAt,
+                });
         }
 
         const renderedSection = this.children.activeSection.render();

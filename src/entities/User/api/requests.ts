@@ -1,4 +1,4 @@
-import { request } from '@/shared/api';
+import { ApiResponse, request } from '@/shared/api';
 
 import { User, UserAuth } from '../model/types';
 import { mapUser, mapUserAuth } from './mappers';
@@ -11,71 +11,70 @@ import {
     UserDTO
 } from './types';
 
-export const registerUser = async (data: RegisterRequest): Promise<UserAuth> => {
-    const dto = await request<RegisterDTO>('/register', {
+export const registerUser = async (data: RegisterRequest): Promise<ApiResponse<UserAuth>> => {
+    const res = await request<RegisterDTO>('/register', {
         method: 'POST',
         body: JSON.stringify(data),
     });
 
-    return mapUserAuth(dto!);
+    if (!res.ok) return res;
+    return { ...res, data: mapUserAuth(res.data) };
 };
 
-export const loginUser = async (data: LoginRequest): Promise<UserAuth> => {
-    const dto = await request<LoginDTO>('/login', {
+export const loginUser = async (data: LoginRequest): Promise<ApiResponse<UserAuth>> => {
+    const res = await request<LoginDTO>('/login', {
         method: 'POST',
         body: JSON.stringify(data),
     });
 
-    return mapUserAuth(dto!);
+    if (!res.ok) return res;
+    return { ...res, data: mapUserAuth(res.data) };
 };
 
-export const logoutUser = async (): Promise<null> => {
+export const logoutUser = async (): Promise<ApiResponse<void>> => {
     return await request('/logout', {
         method: 'POST',
     });
 };
 
-export const authMe = async (): Promise<UserAuth | null> => {
-    const dto = await request<LoginDTO>('/user/me', {
-        method: 'GET'
-    });
+export const authMe = async (): Promise<ApiResponse<UserAuth>> => {
+    const res = await request<LoginDTO>('/user/me', { method: 'GET' });
 
-    if (!dto) return null;
-
-    return mapUserAuth(dto);
+    if (!res.ok) return res;
+    return { ...res, data: mapUserAuth(res.data) };
 };
 
-export const fetchMe = async (): Promise<User> => {
-    const dto = await request<UserDTO>('/profile', {
-        method: 'GET'
-    });
+export const fetchMe = async (): Promise<ApiResponse<User>> => {
+    const res = await request<UserDTO>('/profile', { method: 'GET' });
 
-    if (!dto) throw new Error('Couldn\'t fetch current user');
-
-    return mapUser(dto);
+    if (!res.ok) return res;
+    return { ...res, data: mapUser(res.data) };
 };
 
-export const uploadAvatar = async (avatar: File): Promise<string> => {
+export const uploadAvatar = async (avatar: File): Promise<ApiResponse<string>> => {
     const formData = new FormData();
     formData.append('avatar', avatar);
 
-    const dto = await request<UserDTO>('/profile/avatar', {
+    const res = await request<UserDTO>('/profile/avatar', {
         method: 'POST',
         body: formData,
     });
 
-    if (!dto?.avatar_url) throw new Error('Could\'t upload avatar');
+    if (!res.ok) return res;
+    if (!res.data.avatar_url) {
+        return { ok: false, error: 'Сервер не вернул URL аватара', status: res.status };
+    }
 
-    return dto.avatar_url;
+    return { ...res, data: res.data.avatar_url };
 };
 
-export const updateUser = async (data: UpdateRequest): Promise<User> => {
-    const dto = await request<UserDTO>('/profile', {
+export const updateUser = async (data: UpdateRequest): Promise<ApiResponse<User>> => {
+    const res = await request<UserDTO>('/profile', {
         method: 'PUT',
         body: JSON.stringify(data),
     });
 
-    if (!dto) throw new Error('Couldn\'t update current user');
+    if (!res.ok) return res;
 
-    return mapUser(dto);
+    return {...res, data: mapUser(res.data)}
 };

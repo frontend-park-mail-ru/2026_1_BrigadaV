@@ -1,7 +1,7 @@
 import './style.scss';
 
 import { PlaceCard } from '@/entities/Place';
-import { getPlaces } from '@/entities/Place/api';
+import { fetchPlaces } from '@/entities/Place/api';
 import { Place } from '@/entities/Place/model/types';
 import { BaseList } from '@/shared/lib/component/BaseList';
 import { IComponent } from '@/shared/model';
@@ -15,11 +15,10 @@ export class RecommendedList extends BaseList<Place, RecommendedListProps> {
     protected itemClassName = 'recommended__item';
 
     protected async loadData() {
-        try {
-            const places = await getPlaces();
-            return getRandomElements(places, 8);
-
-        } catch { }
+        const placesRes = await fetchPlaces();
+        if (placesRes.ok) {
+            return getRandomElements(placesRes.data, 8);
+        }
 
         return [];
     }

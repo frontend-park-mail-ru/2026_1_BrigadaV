@@ -1,27 +1,30 @@
 import { request } from '@/shared/api';
-
+import { ApiResponse } from '@/shared/api/types';
 import { Review } from '../model/types';
 import { mapReview } from './mappers';
-import { CreateReviewRequest, DeleteReviewRequest, ReviewDTO } from './types';
+import { CreateReviewRequest, CreateReviewResponse, DeleteReviewRequest, ReviewDTO } from './types';
 
-export const fetchPlaceReviews = async (placeId: number): Promise<Review[]> => {
-    const dto = await request<ReviewDTO[]>(`/places/${placeId}/reviews`, {
+export const fetchPlaceReviews = async (placeId: number): Promise<ApiResponse<Review[]>> => {
+    const res = await request<ReviewDTO[]>(`/places/${placeId}/reviews`, {
         method: 'GET'
     });
 
-    if (!dto) return [];
+    if (!res.ok) return res;
 
-    return dto.map(mapReview);
+    return {
+        ...res,
+        data: (res.data || []).map(mapReview)
+    };
 };
 
-export const deleteReview = async (data: DeleteReviewRequest) => {
-    return await request(`/reviews/${data.id}`, {
+export const deleteReview = async (data: DeleteReviewRequest): Promise<ApiResponse<void>> => {
+    return await request<void>(`/reviews/${data.id}`, {
         method: 'DELETE',
     });
 };
 
-export const createReview = async (data: CreateReviewRequest) => {
-    return await request('/reviews', {
+export const createReview = async (data: CreateReviewRequest): Promise<ApiResponse<CreateReviewResponse>> => {
+    return await request<CreateReviewResponse>('/reviews', {
         method: 'POST',
         body: JSON.stringify({
             ...data,

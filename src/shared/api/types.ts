@@ -12,18 +12,7 @@ export type ApiError = {
 
 export type ApiResponse<T = void> = ApiSuccess<T> | ApiError;
 
-
-export type TripSummaryDTO = {
-    id: number;
-    title: string;
-    location: string;
-    start_date?: Date;
-    end_date?: Date;
-    preview: string;
-};
-
 export type ErrorDTO = {
     error: string;
-    field?: string;
     message: string;
 };

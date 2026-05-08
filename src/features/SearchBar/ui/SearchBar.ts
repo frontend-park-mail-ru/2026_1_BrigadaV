@@ -9,7 +9,7 @@ import template from './SearchBar.hbs?compiled';
 import { PlaceDropDownList } from './PlaceDropDownList/PlaceDropDownList';
 import { focusField } from '@/shared/lib';
 import { debounce } from '@/shared/utils/lib/debounce';
-import { getPlaces, searchPlace } from '@/entities/Place';
+import { fetchPlaces, searchPlace } from '@/entities/Place';
 import { navigate } from '@/shared/router';
 
 export class SearchBar extends BaseComponent {
@@ -51,12 +51,8 @@ export class SearchBar extends BaseComponent {
 
     private handleSearchRedirect = (event: Event) => {
         event.preventDefault();
-
         const query = this.children.searchField.getValue();
-
-        const url = new URL('/search', window.location.origin);
-        url.searchParams.set('q', query);
-        navigate(url.pathname + url.search);
+        navigate(`/search?q=${encodeURIComponent(query)}`);
     };
 
     private handleGlobalClick = (event: Event) => {
@@ -77,8 +73,10 @@ export class SearchBar extends BaseComponent {
         this.children.dropDownList.setState('empty');
         // todo add popular places handle
         if (!this.cachedSuggestions) {
-            const places = await getPlaces();
-            this.cachedSuggestions = getRandomElements(places, 7).map(place => ({ place }));
+            const placesRes = await fetchPlaces();
+            if (placesRes.ok) {
+                this.cachedSuggestions = getRandomElements(placesRes.data, 7).map(place => ({ place }));
+            }
         }
 
         this.children.dropDownList.setItems(this.cachedSuggestions);
@@ -95,16 +93,20 @@ export class SearchBar extends BaseComponent {
             return;
         }
 
-        const searchResults = await searchPlace(inputValue);
-        const topResults = searchResults.slice(0, 7);
-        if (topResults.length === 0) {
-            dropDownList.setState('no-results');
-            dropDownList.clear();
-            return;
-        }
+        const searchRes = await searchPlace(inputValue);
 
-        dropDownList.setState('prompt');
-        dropDownList.setItems(topResults.map(item => ({ place: item })));
+        if (searchRes.ok) {
+            const topResults = searchRes.data.slice(0, 7);
+
+            if (topResults.length === 0) {
+                dropDownList.setState('no-results');
+                dropDownList.clear();
+                return;
+            }
+
+            dropDownList.setState('prompt');
+            dropDownList.setItems(topResults.map(item => ({ place: item })));
+        }
     };
 
     protected override _render(): HTMLElement {

@@ -12,8 +12,6 @@ import { SettingsFields, SettingsModalProps } from '../model/types';
 import template from './SettingsModal.hbs?compiled';
 
 export class SettingsModal extends BaseForm<SettingsFields, HTMLDialogElement> {
-    private avatarPreviewUrl?: string;
-
     private get user() {
         return this.props.user;
     }
@@ -52,7 +50,7 @@ export class SettingsModal extends BaseForm<SettingsFields, HTMLDialogElement> {
                     value: this.user.login || '',
                     maxlength: 50,
                     placeholder: 'Почта',
-                    readonly: '',
+                    disabled: '',
                 }
             }),
 
@@ -115,7 +113,6 @@ export class SettingsModal extends BaseForm<SettingsFields, HTMLDialogElement> {
     protected override initListeners(): void {
         super.initListeners();
         this.element?.addEventListener('command', this.handleOpen);
-        this.element?.addEventListener('change', this.handleAvatarChange);
     }
 
     private handleOpen = (ev: Event) => {
@@ -142,40 +139,6 @@ export class SettingsModal extends BaseForm<SettingsFields, HTMLDialogElement> {
         }
     };
 
-    private handleAvatarChange = (event: Event): void => {
-        const target = event.target;
-        if (!(target instanceof HTMLInputElement)) return;
-
-        if (target.name !== 'avatar' || !target.files?.[0]) return;
-
-        const file = target.files[0];
-
-        if (file.size > 10 * 1024 * 1024) {
-            Toast({ message: 'Файл слишком большой! Лимит 10 Мб.', type: 'error' });
-            target.value = '';
-            return;
-        }
-
-        if (!file.type.startsWith('image/')) {
-            Toast({ message: 'Известный формат изображения', type: 'error' });
-            target.value = '';
-            return;
-        }
-
-        if (this.avatarPreviewUrl) {
-            URL.revokeObjectURL(this.avatarPreviewUrl);
-        }
-
-        this.avatarPreviewUrl = URL.createObjectURL(file);
-
-        const previewImage = this.element?.querySelector('[data-ref="avatar"]') as HTMLImageElement;
-
-        if (previewImage) {
-            previewImage.src = this.avatarPreviewUrl;
-            previewImage.classList.remove('avatar--default');
-        }
-    };
-
     public close() {
         this.element?.close();
     }
@@ -185,9 +148,5 @@ export class SettingsModal extends BaseForm<SettingsFields, HTMLDialogElement> {
             ...this.props,
             fields: Object.keys(this.children),
         }));
-    }
-
-    protected override _destroy(): void {
-        if (this.avatarPreviewUrl) URL.revokeObjectURL(this.avatarPreviewUrl);
     }
 }

@@ -1,4 +1,4 @@
-import { ApiError } from './lib/ApiError';
+import { ApiResponse, ErrorDTO } from "./types";
 
 export const BACKEND_ORIGIN = import.meta.env.DEV
     ? 'http://localhost:5173'
@@ -28,9 +28,11 @@ const getCSRFToken = async (): Promise<string> => {
     return '';
 };
 
-export const request = async <T = unknown>(path: string, options: RequestInit) => {
+export const request = async <T = unknown>(
+    path: string,
+    options: RequestInit
+): Promise<ApiResponse<T>> => {
     const url = `${API_URL}${path}`;
-
     const method = options.method?.toUpperCase() ?? 'GET';
     const needCSRF = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method);
 
@@ -39,35 +41,54 @@ export const request = async <T = unknown>(path: string, options: RequestInit) =
         ...(needCSRF ? { 'X-CSRF-Token': await getCSRFToken() } : {}),
     };
 
-
     if (options.body instanceof FormData) {
         delete headers['Content-Type'];
     }
 
-    const defaultOptions: RequestInit = {
-        credentials: 'include',
-        headers,
-        ...options,
-    };
-
-    // eslint-disable-next-line no-useless-catch
     try {
-        const response = await fetch(url, defaultOptions);
-
-        if (response.status === 204 || response.headers.get('content-length') === '0') {
-            return null;
-        }
-
-        const data = await response.json();
+        const response = await fetch(url, {
+            credentials: 'include',
+            ...options,
+            headers: {
+                ...headers,
+                ...options.headers
+            },
+        });
 
         if (!response.ok) {
-            const error = new ApiError(data);
-            throw error;
+            let errorMessage = 'Произошла непредвиденная ошибка';
+            try {
+                const errorData = await response.json() as ErrorDTO;
+                errorMessage = errorData.message || errorData.error || errorMessage;
+            } catch { }
+
+            return {
+                ok: false,
+                error: errorMessage,
+                status: response.status
+            };
         }
 
-        return data as T;
+        if (response.status === 204 || response.headers.get('content-length') === '0') {
+            return {
+                ok: true,
+                data: null as T,
+                status: response.status
+            };
+        }
+
+        const data = await response.json() as T;
+        return {
+            ok: true,
+            data,
+            status: response.status
+        };
+
     } catch (error) {
-        // TODO Сделать вывод ошибок тост сообщением
-        throw error;
+        return {
+            ok: false,
+            error: error instanceof Error ? error.message : 'Ошибка соединения',
+            status: 0
+        };
     }
 };

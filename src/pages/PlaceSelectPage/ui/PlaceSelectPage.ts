@@ -38,7 +38,10 @@ export class PlaceSelectPage extends BasePage {
     public static async create(appState: AppState, parameters: PlaceSelectPageParams) {
         const page = new PlaceSelectPage(appState);
 
-        page.addedPlaces = new Set(await fetchAddedPlaces(parameters.tripId));
+        const addedPlacesRes = await fetchAddedPlaces(parameters.tripId);
+        if (addedPlacesRes.ok) {
+            page.addedPlaces = new Set(addedPlacesRes.data);
+        }
 
         page.tripId = parameters.tripId;
 

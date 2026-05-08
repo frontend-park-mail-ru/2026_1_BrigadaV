@@ -1,14 +1,18 @@
 import { request } from "@/shared/api";
+import { ApiResponse } from "@/shared/api/types";
 import { Category } from "../model/types";
 import { CategoryDTO } from "./types";
 import { mapCategory } from "./mappers";
 
-export const fetchPlaceCategories = async (): Promise<Category[]> => {
-    const dto = await request<CategoryDTO[]>('/categories', {
+export const fetchPlaceCategories = async (): Promise<ApiResponse<Category[]>> => {
+    const res = await request<CategoryDTO[]>('/categories', {
         method: 'GET',
     });
 
-    if (!dto) return [];
+    if (!res.ok) return res;
 
-    return dto.map(mapCategory);
+    return {
+        ...res,
+        data: res.data.map(mapCategory)
+    };
 };

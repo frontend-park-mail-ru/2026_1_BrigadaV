@@ -6,7 +6,7 @@ import { PlaceList } from './PlaceList/PlaceList';
 import { AppState } from '@/shared/model';
 import { Field } from '@/shared/ui';
 import { focusField } from '@/shared/lib';
-import { getPlaces, Place, searchPlace } from '@/entities/Place';
+import { fetchPlaces, Place, searchPlace } from '@/entities/Place';
 import { debounce } from '@/shared/utils/lib/debounce';
 import { SearchPageParameters } from '../model/types';
 import { CategoryAccordion, fetchPlaceCategories } from '@/entities/Category';
@@ -39,11 +39,19 @@ export class SearchPage extends BasePage {
     public static async create(appState: AppState, parameters: SearchPageParameters): Promise<SearchPage> {
         const page = new SearchPage(appState);
 
-        page.randomPlaces = await getPlaces();
+        const [placesRes, categoriesRes] = await Promise.all([
+            fetchPlaces(),
+            fetchPlaceCategories()
+        ]);
 
-        page.currentQueryList = page.randomPlaces;
+        if (placesRes.ok) {
+            page.randomPlaces = placesRes.data;
+            page.currentQueryList = page.randomPlaces;
+        }
 
-        page.categoryList = await fetchPlaceCategories();
+        if (categoriesRes.ok) {
+            page.categoryList = categoriesRes.data;
+        }
 
         if (parameters.query) {
             page.query = parameters.query;
@@ -88,8 +96,12 @@ export class SearchPage extends BasePage {
             return;
         }
 
-        this.currentQueryList = await searchPlace(inputValue);
-        this.applyFilters();
+        const searchRes = await searchPlace(inputValue);
+
+        if (searchRes.ok) {
+            this.currentQueryList = searchRes.data;
+            this.applyFilters();
+        }
     };
 
     private applyFilters() {

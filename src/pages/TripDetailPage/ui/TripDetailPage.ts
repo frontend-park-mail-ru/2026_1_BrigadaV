@@ -44,8 +44,10 @@ export class TripDetailPage extends BasePage {
     public static async create(appState: AppState, parameters: TripDetailPageParams): Promise<TripDetailPage> {
         const page = new TripDetailPage(appState);
 
-        const trip = await fetchTrip(parameters.tripId);
-        page.trip = trip;
+        const fetchRes = await fetchTrip(parameters.tripId);
+        if (fetchRes.ok) {
+            page.trip = fetchRes.data;
+        }
 
         page.setupComponents();
         return page;

@@ -8,16 +8,12 @@ import { AuthForm } from '@/widgets/AuthForm';
 import { LoginPayload } from '../model/types';
 
 export const handleLogin = async ({ instance, data }: { instance: AuthForm, data: LoginPayload }) => {
-    try {
-        const result = await loginUser(data);
-        appState.currentUser = result;
+    const loginRes = await loginUser(data);
+
+    if (loginRes.ok) {
+        appState.currentUser = loginRes.data;
         navigate('/');
-
-    } catch (error) {
-        if (!(error instanceof ApiError) || error.error === 'SERVER_ERROR') {
-            Toast({ message: 'Наблюдаются проблемы со входом. Попробуйте зайти позже' });
-        }
-
-        instance.setFieldError('password', 'Введен неверный логин или пароль');
+    } else {
+        console.log(loginRes);
     }
 };

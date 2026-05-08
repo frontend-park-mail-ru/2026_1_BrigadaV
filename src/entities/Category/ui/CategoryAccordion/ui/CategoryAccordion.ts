@@ -67,9 +67,9 @@ export class CategoryAccordion extends BaseComponent {
 
                     extendedWrapper.style.display = 'grid';
 
-                    setTimeout(() => {
+                    requestAnimationFrame(() => {
                         this.element?.classList.add(styles['categories--content-open']);
-                    }, 0);
+                    })
                 }
             };
             this.element.addEventListener('transitionend', handleGapEnd);
