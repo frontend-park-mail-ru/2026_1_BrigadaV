@@ -31,7 +31,7 @@ export const handleReviewCreate = async ({ data, user, placeId }: { data: WriteR
         let toastMessage = 'Произошла непредвиденная ошибка. Пожалуйста, повторите попытку позже.';
         switch (createRes.error) {
         case 'rating must be between 1 and 5':
-            toastMessage = 'Оценка должна быть от 1 до 5';
+            toastMessage = 'Оценка должна быть числом от 1 до 5';
             break;
         }
 

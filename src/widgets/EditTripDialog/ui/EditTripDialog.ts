@@ -1,5 +1,6 @@
 import { eventBus, focusField } from '@/shared/lib';
 import { BaseForm } from '@/shared/lib/component/BaseForm';
+import { ValidationRule } from '@/shared/model';
 import { Field, Textarea } from '@/shared/ui';
 import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 import { stringToElement } from '@/shared/utils';
@@ -26,7 +27,9 @@ export class EditTripDialog extends BaseForm<EditTripDialogFields, HTMLDialogEle
                 type: 'text',
                 attributes: {
                     name: 'title',
-                    maxlength: 20,
+                    maxlength: 255,
+                    minlength: 1,
+                    required: '',
                 }
             }),
 
@@ -37,6 +40,7 @@ export class EditTripDialog extends BaseForm<EditTripDialogFields, HTMLDialogEle
                 attributes: {
                     name: 'location',
                     maxlength: 50,
+                    minlength: 1,
                     required: '',
                 },
                 leftIcon: '/icons/search.svg',
@@ -91,7 +95,7 @@ export class EditTripDialog extends BaseForm<EditTripDialogFields, HTMLDialogEle
         deleteButton?.addEventListener('click', this.handleDelete);
     }
 
-    protected override handleSubmit(data: EditTripDialogFields): void {
+    protected override async handleSubmit(data: EditTripDialogFields): Promise<void> {
         const payload: UpdateTripPayload = {
             id: this.tripId!,
             title: data.title,
@@ -101,7 +105,7 @@ export class EditTripDialog extends BaseForm<EditTripDialogFields, HTMLDialogEle
             startDate: data['start-date'] ? new Date(data['start-date']) : undefined,
             endDate: data['end-date'] ? new Date(data['end-date']) : undefined,
         };
-        eventBus.emit('EditTripDialog:submit', { instance: this, data: payload });
+        await eventBus.emit('EditTripDialog:submit', { instance: this, data: payload });
     }
 
     private handleDelete = async (event: Event): Promise<void> => {
@@ -115,9 +119,30 @@ export class EditTripDialog extends BaseForm<EditTripDialogFields, HTMLDialogEle
         });
 
         if (confirmed) {
-            eventBus.emit('EditTripDialog:delete', { instance: this, data: { id: this.tripId } });
+            this.setLoading(true);
+            await eventBus.emit('EditTripDialog:delete', { instance: this, data: { id: this.tripId } });
+            this.setLoading(false);
         }
     };
+
+    public override setFieldError(field: string, message: string): void {
+        if (field === 'date-range') {
+            const errorContainer = this.fields['date-error'];
+            const errorText = this.fields['date-error-text'];
+
+            if (errorText) errorText.textContent = message;
+
+            errorContainer?.classList.toggle(styles['is-visible'], !!message);
+            return;
+        }
+
+        super.setFieldError(field, message);
+    }
+
+    public override clearErrors(): void {
+        super.clearErrors();
+        this.setFieldError('date-range', '');
+    }
 
     public show(data: EditTripInitValues): void {
         if (!this.element) return;
@@ -138,6 +163,32 @@ export class EditTripDialog extends BaseForm<EditTripDialogFields, HTMLDialogEle
 
     public close(): void {
         this.element?.close();
+    }
+
+    protected override get validationRules(): ValidationRule<EditTripDialogFields>[] {
+        return [
+            {
+                isInvalid: ({ title }) => title.length < 1 || title.length > 255,
+                field: 'title',
+                message: 'Название поездки должно иметь от 1 до 255 символов',
+            },
+            {
+                isInvalid: ({ location }) => location.length < 1 || location.length > 50,
+                field: 'location',
+                message: 'Название места должно иметь от 1 до 50 символов',
+            },
+            {
+                isInvalid: ({ 'start-date': startDate, 'end-date': endDate }) =>
+                    Boolean(startDate && endDate && startDate > endDate),
+                field: 'date-range' as keyof EditTripDialogFields,
+                message: 'Дата начала поездки не может быть после даты окончания',
+            },
+            {
+                isInvalid: ({ description }) => description.length > 1000,
+                field: 'description',
+                message: 'Описание не может иметь более 1000 символов',
+            },
+        ];
     }
 
     protected override _render(): HTMLDialogElement {

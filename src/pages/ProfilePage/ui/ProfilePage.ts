@@ -30,7 +30,7 @@ export class ProfilePage extends BasePage {
         activeSection: BaseComponent;
     };
 
-    protected override get eventHandlers(): Record<string, Callback> {
+    protected override createHandlers(): Record<string, Callback> {
         return {
             'Tabs:change': this.handleTabChange,
             'SettingsModal:submit': injectHandlerContext(handleSettingsUpdate, { user: this.user }),

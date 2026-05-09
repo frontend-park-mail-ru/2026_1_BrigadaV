@@ -25,7 +25,7 @@ export class PlaceSelectPage extends BasePage {
         placeList: PlaceSelectList;
     };
 
-    protected override get eventHandlers(): Record<string, Callback> {
+    protected override createHandlers(): Record<string, Callback> {
         return {
             'PlaceCard:add': injectHandlerContext(handlePlaceAdd, { tripId: this.tripId, addedPlaces: this.addedPlaces }),
             'PlaceCard:remove': injectHandlerContext(handlePlaceRemove, { tripId: this.tripId, addedPlaces: this.addedPlaces }),

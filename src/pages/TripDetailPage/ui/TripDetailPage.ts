@@ -25,7 +25,7 @@ export class TripDetailPage extends BasePage {
         albumDialog: AlbumDialog;
     };
 
-    protected override get eventHandlers(): Record<string, Callback> {
+    protected override createHandlers(): Record<string, Callback> {
         return {
             'TripBanner:delete': handleTripDelete,
         };

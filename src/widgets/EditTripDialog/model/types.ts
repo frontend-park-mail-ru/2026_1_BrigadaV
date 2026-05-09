@@ -8,8 +8,8 @@ type TripEditableKeys = 'title' | 'location' | 'description' | 'startDate' | 'en
 
 type KebabCase<S extends string> = S extends `${infer T}${infer U}`
     ? U extends Uncapitalize<U>
-        ? `${Uncapitalize<T>}${KebabCase<U>}`
-        : `${Uncapitalize<T>}-${KebabCase<Uncapitalize<U>>}`
+    ? `${Uncapitalize<T>}${KebabCase<U>}`
+    : `${Uncapitalize<T>}-${KebabCase<Uncapitalize<U>>}`
     : S;
 
 export type EditTripDialogFields = {

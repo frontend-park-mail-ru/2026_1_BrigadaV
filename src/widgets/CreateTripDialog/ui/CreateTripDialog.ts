@@ -1,5 +1,6 @@
 import { eventBus, focusField } from '@/shared/lib';
 import { BaseForm } from '@/shared/lib/component/BaseForm';
+import { ValidationRule } from '@/shared/model';
 import { Field } from '@/shared/ui';
 import { stringToElement } from '@/shared/utils';
 
@@ -33,6 +34,7 @@ export class CreateTripDialog extends BaseForm<CreateTripDialogFields, HTMLDialo
                 attributes: {
                     name: 'location',
                     maxlength: 50,
+                    minlength: 1,
                     placeholder: 'Куда',
                     required: '',
                 },
@@ -45,33 +47,23 @@ export class CreateTripDialog extends BaseForm<CreateTripDialogFields, HTMLDialo
     protected override initListeners(): void {
         super.initListeners();
         this.element?.addEventListener('command', this.handleCommand);
-        this.element?.addEventListener('cancel', this.handleCommand);
     }
 
-    private handleCommand = (event: Event): void => {
+    private handleCommand = (ev: Event): void => {
         if (!this.element) return;
 
-        let command: string | undefined;
-
-        switch (true) {
-        case event.type === 'cancel':
-            command = 'close';
-            break;
-        case 'command' in event:
-            command = (event as CommandEvent).command;
-            break;
-        default: return;
-        }
+        const event = ev as CommandEvent;
 
         event.preventDefault();
 
-        switch (command) {
+        switch (event.command) {
         case 'show-modal':
             this.element.showModal();
             this.element.classList.add(styles['is-visible']);
             break;
 
         case 'close':
+            if (this.isSubmitting) return;
             this.close();
             break;
         }
@@ -86,8 +78,23 @@ export class CreateTripDialog extends BaseForm<CreateTripDialogFields, HTMLDialo
         this.element?.addEventListener('transitionend', handleTransitionEnd, { once: true });
     }
 
-    protected override handleSubmit(data: CreateTripDialogFields): void {
-        eventBus.emit('CreateTripDialog:submit', { instance: this, data });
+    protected override async handleSubmit(data: CreateTripDialogFields): Promise<void> {
+        await eventBus.emit('CreateTripDialog:submit', { instance: this, data });
+    }
+
+    protected override get validationRules(): ValidationRule<CreateTripDialogFields>[] {
+        return [
+            {
+                isInvalid: ({ title }) => title.length < 1 || title.length > 255,
+                field: 'title',
+                message: 'Название поездки должно иметь от 1 до 255 символов',
+            },
+            {
+                isInvalid: ({ location }) => location.length < 1 || location.length > 50,
+                field: 'title',
+                message: 'Название места должно иметь от 1 до 50 символов',
+            }
+        ];
     }
 
     protected override _render(): HTMLDialogElement {

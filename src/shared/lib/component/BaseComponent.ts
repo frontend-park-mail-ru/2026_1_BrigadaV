@@ -4,20 +4,22 @@ import { injectComponents } from '@/shared/utils';
 import { Callback, eventBus } from '../eventBus/eventBus';
 
 export abstract class BaseComponent<TElement extends HTMLElement = HTMLElement> implements IComponent {
+    private _activeHandlers: Record<string, Callback> = {};
+
     protected element?: TElement;
     protected children: Record<string, IComponent> = {};
     protected fields: Record<string, HTMLElement> = {};
-
     protected abstract _render(): TElement;
     protected _finalize(): void { };
     protected _destroy(): void { };
 
-    protected get eventHandlers(): Record<string, Callback> {
+    protected createHandlers(): Record<string, Callback> {
         return {};
-    }
+    };
 
     protected initListeners() {
-        Object.entries(this.eventHandlers).forEach(([eventName, handler]) => eventBus.on(eventName, handler));
+        this._activeHandlers = this.createHandlers();
+        Object.entries(this._activeHandlers).forEach(([eventName, handler]) => eventBus.on(eventName, handler));
     }
 
     protected initFields(element: HTMLElement) {
@@ -47,7 +49,7 @@ export abstract class BaseComponent<TElement extends HTMLElement = HTMLElement> 
 
     public destroy(): void {
         this._destroy();
-        Object.entries(this.eventHandlers).forEach(([eventName, handler]) => eventBus.off(eventName, handler));
+        Object.entries(this._activeHandlers).forEach(([eventName, handler]) => eventBus.off(eventName, handler));
         Object.values(this.children).forEach(child => child.destroy());
 
         this.children = {};

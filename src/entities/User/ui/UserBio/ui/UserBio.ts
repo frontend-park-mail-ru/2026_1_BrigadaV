@@ -8,7 +8,7 @@ import { UserBioProps } from '../model/types';
 import template from './UserBio.hbs?compiled';
 
 export class UserBio extends BaseComponent {
-    protected override get eventHandlers(): Record<string, Callback> {
+    protected override createHandlers(): Record<string, Callback> {
         return {
             'user:update': this.update,
         };

@@ -28,7 +28,7 @@ export class TripListPage extends BasePage {
         userTripList: UserTripList;
     };
 
-    protected override get eventHandlers(): Record<string, Callback> {
+    protected override createHandlers(): Record<string, Callback> {
         return {
             'TripCard:open-edit': this.handleEditOpen,
             'CreateTripDialog:submit': injectHandlerContext(handleTripCreate, { tripList: this.children.userTripList }),

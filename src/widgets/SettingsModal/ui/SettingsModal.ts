@@ -1,7 +1,8 @@
 import './style.scss';
 
-import { eventBus } from '@/shared/lib';
+import { eventBus, validateAvatar, validateNickname } from '@/shared/lib';
 import { BaseForm } from '@/shared/lib/component/BaseForm';
+import { ValidationRule } from '@/shared/model';
 import { Field, Textarea } from '@/shared/ui';
 import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 import { ImageInput } from '@/shared/ui/ImageInput';
@@ -36,6 +37,7 @@ export class SettingsModal extends BaseForm<SettingsFields, HTMLDialogElement> {
                     maxlength: 50,
                     minlength: 3,
                     placeholder: 'Никнейм',
+                    required: '',
                 }
             }),
 
@@ -106,7 +108,32 @@ export class SettingsModal extends BaseForm<SettingsFields, HTMLDialogElement> {
                 },
             }),
         };
+    }
 
+    protected override get validationRules(): ValidationRule<SettingsFields>[] {
+        return [
+            {
+                isInvalid: ({ avatar }) => avatar.size > 0 && !validateAvatar(avatar),
+                field: 'avatar',
+                message: 'Аватар должен быть изображением меньше 10Мб',
+            },
+            {
+                isInvalid: ({ nickname }) => !validateNickname(nickname ?? ''),
+                field: 'nickname',
+                message: 'Ник должен быть длиной от 3 до 50 символов',
+            },
+            {
+                isInvalid: ({ about }) => Boolean(about && about.length > 1000),
+                field: 'about',
+                message: 'Описание профиля не может превышать 1000 символов',
+            },
+            // {
+            // TODO wait for backend to update their API to return user login
+            //     isInvalid: !validateEmail(login ?? ''),
+            //     field: 'login',
+            //     message: 'Некорректный формат email',
+            // },
+        ];
     }
 
     protected override initListeners(): void {
@@ -134,7 +161,7 @@ export class SettingsModal extends BaseForm<SettingsFields, HTMLDialogElement> {
         });
 
         if (confirmed) {
-            eventBus.emit('SettingsModal:submit', { instance: this, data });
+            await eventBus.emit('SettingsModal:submit', { instance: this, data });
         }
     };
 

@@ -1,6 +1,9 @@
+import { LoginFields } from '@/pages/LoginPage/model/types';
+import { SignUpFields } from '@/pages/SignupPage/model/types';
+import { ValidationRule } from '@/shared/model';
 import { FieldProps } from '@/shared/ui';
 
-export type AuthFormProps = {
+export type AuthFormProps<T extends LoginFields | SignUpFields> = {
     className?: string;
     submitEventName: string;
     title: string;
@@ -8,4 +11,5 @@ export type AuthFormProps = {
     redirectText: string;
     redirectHref: string;
     fields: FieldProps[];
+    validationRules?: ValidationRule<T>[];
 };

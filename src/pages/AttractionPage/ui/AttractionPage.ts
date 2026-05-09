@@ -41,7 +41,8 @@ export class AttractionPage extends BasePage {
 
         mapWidget?: MapIframe;
     };
-    protected override get eventHandlers(): Record<string, Callback> {
+
+    protected override createHandlers(): Record<string, Callback> {
         return {
             'ReviewCard:show-details': this.handleShowDetails,
             'WriteReviewDialog:submit': injectHandlerContext(handleReviewCreate, { user: this.appState.currentUser, placeId: this.place.id }),
@@ -184,7 +185,7 @@ export class AttractionPage extends BasePage {
         this.fields['rating'].style.setProperty('--rating', this.place.rating!.toString());
     };
 
-    private updateLikeLabel = (): void => {
+    private updateLikeLabel() {
         if (window.innerWidth <= 1024) {
             this.children.likeButton?.setLabel('');
         } else {

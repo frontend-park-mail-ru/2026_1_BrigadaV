@@ -12,7 +12,7 @@ export class UserSession extends BaseComponent {
         menu?: UserMenu;
     };
 
-    protected override get eventHandlers() {
+    protected override createHandlers() {
         return {
             'user:update': this.update,
         };

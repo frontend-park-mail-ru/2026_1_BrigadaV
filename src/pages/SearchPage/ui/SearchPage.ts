@@ -25,7 +25,7 @@ export class SearchPage extends BasePage {
         categories: CategoryAccordion;
     };
 
-    protected override get eventHandlers(): Record<string, Callback> {
+    protected override createHandlers(): Record<string, Callback> {
         return {
             'CategoryAccordion:toggle-category': this.handleCategoryToggle
         };
@@ -94,15 +94,15 @@ export class SearchPage extends BasePage {
     private handleInput = async (inputValue: string) => {
         if (inputValue === '') {
             this.currentQueryList = this.randomPlaces;
-            return;
+
+        } else {
+            const searchRes = await searchPlace(inputValue);
+            if (searchRes.ok) {
+                this.currentQueryList = searchRes.data;
+            }
         }
 
-        const searchRes = await searchPlace(inputValue);
-
-        if (searchRes.ok) {
-            this.currentQueryList = searchRes.data;
-            this.applyFilters();
-        }
+        this.applyFilters();
     };
 
     private applyFilters() {
