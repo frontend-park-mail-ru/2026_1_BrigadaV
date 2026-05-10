@@ -203,4 +203,8 @@ export class SearchPage extends BasePage {
 
         window.history.replaceState(this.appState, '', url.pathname + url.search);
     }
+
+    protected override _destroy(): void {
+        window.removeEventListener('resize', this.handleResize);
+    }
 }

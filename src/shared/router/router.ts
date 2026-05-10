@@ -32,6 +32,7 @@ export const router = async (path = '/') => {
 
     if (pageInstance) {
         pageInstance.destroy();
+        pageInstance = null;
     }
 
     currentMatch = match;
