@@ -5,14 +5,9 @@
     <button class="{{s 'query__button'}}" disabled>Фильтры</button>
     <div data-slot="query" class="{{s 'query__field'}}"></div>
   </div>
-  <ul class="{{s 'filters'}}">
-    {{!-- <li class="{{s 'filters__item'}}"><button class="{{s 'filters__button'}}">Места</button></li>
-    <li class="{{s 'filters__item'}}"><button class="{{s 'filters__button'}}">Отели</button></li>
-    <li class="{{s 'filters__item'}}"><button class="{{s 'filters__button'}}">Рестораны</button></li> --}}
-  </ul>
 
   <aside class="{{s 'aside'}}">
-    <div data-slot="categories"></div>
+    <div data-slot="categories" class="js-categories"></div>
   </aside>
 
   <div data-slot="place-list" class="{{s 'place-list'}}"></div>

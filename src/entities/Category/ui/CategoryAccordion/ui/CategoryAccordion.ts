@@ -11,46 +11,52 @@ export class CategoryAccordion extends BaseComponent {
 
     constructor(private props: CategoryAccordionProps) { super(); }
 
-    private renderCategories(element: HTMLElement) {
-        const baseContainer = element.querySelector('[data-ref="category-base"]');
-        const extendedContainer = element.querySelector('[data-ref="category-extended"]');
+    private renderCategories() {
+        const baseContainer = this.fields['category-base']
+        const extendedContainer = this.fields['category-extended'];
 
         if (!baseContainer || !extendedContainer) return;
 
         const baseCategories = this.props.categories.slice(0, 4);
         const extendedCategories = this.props.categories.slice(4);
 
-        const createItem = (category: { id: number; name: string }) => {
-            const li = document.createElement('li');
-            li.className = styles['categories__item'];
-
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.className = styles['categories__input'];
-            checkbox.dataset.id = category.id.toString();
-
-            checkbox.addEventListener('change', () => {
-                const id = category.id;
-
-                if (checkbox.checked) {
-                    this.activeCategoryIds.push(id);
-                } else {
-                    this.activeCategoryIds = this.activeCategoryIds.filter(activeId => activeId !== id);
-                }
-
-                eventBus.emit('CategoryAccordion:toggle-category', {
-                    ids: this.activeCategoryIds
-                });
-            });
-
-            li.appendChild(checkbox);
-            li.append(category.name);
-            return li;
-        };
-
-        baseCategories.forEach(category => baseContainer.appendChild(createItem(category)));
-        extendedCategories.forEach(category => extendedContainer.appendChild(createItem(category)));
+        baseCategories.forEach(category => baseContainer.appendChild(this.createItem(category)));
+        extendedCategories.forEach(category => extendedContainer.appendChild(this.createItem(category)));
     }
+
+    private createItem = (category: { id: number; name: string }) => {
+        const li = document.createElement('li');
+        li.className = styles['categories__item'];
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = styles['categories__input'];
+        checkbox.dataset.id = category.id.toString();
+
+        checkbox.addEventListener('change', this.handleCheckboxToggle);
+
+        li.appendChild(checkbox);
+        li.append(category.name);
+        return li;
+    }
+
+    private handleCheckboxToggle = (event: Event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLInputElement)) return;
+
+        const id = Number(target.dataset.id);
+
+        if (target.checked) {
+            this.activeCategoryIds.push(id);
+        } else {
+            this.activeCategoryIds = this.activeCategoryIds.filter(activeId => activeId !== id);
+        }
+
+        eventBus.emit('CategorySidebar:toggle-category', {
+            ids: this.activeCategoryIds
+        });
+    }
+
 
     private handleToggleClick = () => {
         if (!this.element) return;
@@ -96,9 +102,26 @@ export class CategoryAccordion extends BaseComponent {
         toggle.addEventListener('click', this.handleToggleClick);
     }
 
+    public setSelectedIds(ids: number[]): void {
+        this.activeCategoryIds = ids;
+        const checkboxes = this.element?.querySelectorAll<HTMLInputElement>('input[type="checkbox"]');
+        checkboxes?.forEach(checkbox => {
+            const id = Number(checkbox.dataset.id);
+            checkbox.checked = ids.includes(id);
+        });
+    }
+
     protected override _render(): HTMLElement {
-        const element = stringToElement(template({ styles }));
-        this.renderCategories(element);
-        return element;
+        return stringToElement(template({ styles }));
+    }
+
+    public override render(): HTMLElement {
+        super.render();
+        this.renderCategories();
+        if (this.props.activeIds) {
+            this.setSelectedIds(this.props.activeIds);
+        }
+
+        return this.element!;
     }
 }

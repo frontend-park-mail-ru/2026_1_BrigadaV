@@ -1,4 +1,4 @@
-import { CategoryAccordion, fetchPlaceCategories } from '@/entities/Category';
+import { CategoryAccordion, CategorySidebar, fetchPlaceCategories } from '@/entities/Category';
 import { fetchPlaces, Place, searchPlace } from '@/entities/Place';
 import { focusField } from '@/shared/lib';
 import { Callback } from '@/shared/lib/eventBus/eventBus';
@@ -22,12 +22,13 @@ export class SearchPage extends BasePage {
         header: Header;
         query: Field;
         placeList: PlaceList;
-        categories: CategoryAccordion;
+        categories: CategoryAccordion | CategorySidebar;
     };
 
     protected override createHandlers(): Record<string, Callback> {
         return {
-            'CategoryAccordion:toggle-category': this.handleCategoryToggle
+            'CategoryAccordion:toggle-category': this.handleCategoryToggle,
+            'CategorySidebar:toggle-category': this.handleCategoryToggle,
         };
     }
 
@@ -36,6 +37,8 @@ export class SearchPage extends BasePage {
     private randomPlaces!: Place[];
     private query = '';
     private selectedCategoryIds: number[] = [];
+    private isMobile = window.innerWidth < 1024;
+    private startX = 0;
 
     public static async create(appState: AppState, parameters: SearchPageParameters): Promise<SearchPage> {
         const page = new SearchPage(appState);
@@ -85,10 +88,60 @@ export class SearchPage extends BasePage {
                 ...(!this.query && { defaultPlaces: this.randomPlaces })
             }),
 
-            categories: new CategoryAccordion({
-                categories: this.categoryList,
-            }),
+            categories: this.isMobile
+                ? new CategorySidebar({
+                    categories: this.categoryList,
+                })
+                : new CategoryAccordion({
+                    categories: this.categoryList,
+                }),
         };
+    }
+
+    protected override initListeners(): void {
+        super.initListeners();
+        window.addEventListener('resize', this.handleResize);
+
+        this.element?.addEventListener('touchstart', (event) => {
+            this.startX = event.touches[0].clientX;
+        });
+
+        this.element?.addEventListener('touchend', (event) => {
+            const endX = event.changedTouches[0].clientX;
+            if (this.isMobile && endX - this.startX > 80) {
+                (this.children.categories as CategorySidebar).open();
+            }
+        });
+    }
+
+    private handleResize = () => {
+        const currentlyMobile = window.innerWidth < 1024;
+
+        if (this.isMobile !== currentlyMobile) {
+            this.isMobile = currentlyMobile;
+            this.swapCategoryComponent();
+        }
+    };
+
+    private swapCategoryComponent() {
+        if (this.isMobile) {
+            this.children.categories = new CategorySidebar({
+                categories: this.categoryList,
+                activeIds: this.selectedCategoryIds,
+            });
+        } else {
+            this.children.categories = new CategoryAccordion({
+                categories: this.categoryList,
+                activeIds: this.selectedCategoryIds,
+            });
+        }
+
+        const container = this.element?.querySelector('.js-categories');
+        if (container) {
+            const renderedCategories = this.children.categories.render();
+            renderedCategories.classList.add('js-categories');
+            container.replaceWith(renderedCategories);
+        }
     }
 
     private handleInput = async (inputValue: string) => {

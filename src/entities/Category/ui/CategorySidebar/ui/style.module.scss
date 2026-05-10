@@ -1,0 +1,71 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    height: 100%;
+    padding: 1rem 2rem 0 1rem;
+    background: $white;
+
+    translate: -100%;
+    transition: translate $timing-animation-medium ease-out;
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    &__item {
+        @include typo-p;
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    &__input {
+        aspect-ratio: 1 / 1;
+        width: 24px;
+        margin: 0;
+        accent-color: $guidely-primary;
+    }
+
+    &__tab {
+        position: absolute;
+        top: 200px;
+        left: 100%;
+        display: flex;
+        width: 40px;
+        height: 40px;
+        align-items: center;
+        justify-content: center;
+        background-color: $white;
+        border: none;
+        border: 1px solid $color-border-button;
+        border-left: none;
+        border-radius: 0 8px 8px 0;
+    }
+
+    &__tab-img {
+        aspect-ratio: 1 / 1;
+        width: 24px;
+        rotate: -90deg;
+
+        transition:
+            rotate $timing-animation-short,
+            translate $timing-animation-short;
+
+
+        .sidebar--open & {
+            translate: -4px;
+            rotate: 90deg;
+        }
+    }
+
+    &--open {
+        box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
+        translate: 0;
+    }
+}

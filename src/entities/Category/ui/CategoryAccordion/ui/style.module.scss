@@ -7,9 +7,6 @@
     flex-direction: column;
     gap: 0;
     background-color: $white;
-    @media (max-width: 1024px) {
-        width: 200px;
-    }
 
     transition: gap 50ms;
 
@@ -28,8 +25,10 @@
     }
 
     &__input {
+        aspect-ratio: 1 / 1;
         width: 20px;
         margin: 0;
+        accent-color: $guidely-primary;
     }
 
     &__extended-wrapper {

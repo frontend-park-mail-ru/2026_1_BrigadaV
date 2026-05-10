@@ -10,20 +10,24 @@
 
 .main {
     display: grid;
-    padding-inline: 2.5rem 4.75rem;
+    padding-inline: 0.5rem;
     grid-template-areas:
         "query query"
-        "filters filters"
         "aside main";
-    grid-template-columns: 1fr 3fr;
-    grid-template-rows: max-content max-content 1fr;
-    column-gap: 4rem;
+    grid-template-columns: 0fr 1fr;
+    grid-template-rows: max-content 1fr;
+    row-gap: 1rem;
+
+    @media (min-width: 1024px) {
+        padding-inline: 2.5rem 4.75rem;
+        grid-template-columns: 1fr 3fr;
+        gap: 1.5rem 4rem;
+    }
 }
 
 .query {
     display: flex;
     height: 40px;
-    margin-bottom: 1.5rem;
     grid-area: query;
     justify-content: center;
     gap: 0.5rem;
@@ -33,18 +37,7 @@
     }
 
     &__field {
-        width: 40vw;
-    }
-}
-
-.filters {
-    display: flex;
-    // margin-bottom: 2.5rem;
-    grid-area: filters;
-    gap: 2rem;
-
-    &__button {
-        @include button-tertiary;
+        width: clamp(200px, 90%, 600px);
     }
 }
 
@@ -57,9 +50,13 @@
     grid-area: aside;
 }
 
-
 .place-list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem 2rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+
+    @media (min-width: 1024px) {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem 2rem;
+    }
 }
