@@ -22,5 +22,4 @@ export const mapUserAuth = (dto: LoginDTO | RegisterDTO): UserAuth => ({
         avatar_url: dto.avatar_url,
     }),
     login: dto.login,
-
 });

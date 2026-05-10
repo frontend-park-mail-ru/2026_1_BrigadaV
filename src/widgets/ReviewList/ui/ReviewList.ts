@@ -13,10 +13,10 @@ export class ReviewList extends BaseList<Review, ReviewListProps> {
     protected override itemClassName = 'review-list__item';
 
     protected override async loadData(): Promise<Review[]> {
-        try {
-            return await fetchPlaceReviews(this.props.placeId);
-
-        } catch { }
+        const placeReviewRes = await fetchPlaceReviews(this.props.placeId);
+        if (placeReviewRes.ok) {
+            return placeReviewRes.data;
+        }
 
         return [];
     }

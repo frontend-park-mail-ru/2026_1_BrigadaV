@@ -10,12 +10,9 @@ import { navigate } from '@/shared/router';
 export const App = async () => {
     registerHandlebarsHelpers();
 
-    try {
-        const user = await authMe();
-        appState.currentUser = user;
-    } catch {
-        // TODO check status code and show popup if no connection
-        appState.currentUser = null;
+    const response = await authMe();
+    if (response.ok) {
+        appState.currentUser = response.data;
     }
 
     document.addEventListener('click', (event) => {

@@ -1,5 +1,6 @@
 import { eventBus } from '@/shared/lib';
 import { BaseForm } from '@/shared/lib/component/BaseForm';
+import { ValidationRule } from '@/shared/model';
 import { Field, Textarea } from '@/shared/ui';
 import { stringToElement } from '@/shared/utils';
 
@@ -19,6 +20,7 @@ export class WriteReviewDialog extends BaseForm<WriteReviewFields, HTMLDialogEle
                 attributes: {
                     name: 'title',
                     maxlength: 20,
+                    minlength: 1,
                     placeholder: 'Поделитесь своим мнением',
                     required: '',
                 }
@@ -51,8 +53,28 @@ export class WriteReviewDialog extends BaseForm<WriteReviewFields, HTMLDialogEle
         };
     }
 
+    protected override get validationRules(): ValidationRule<WriteReviewFields>[] {
+        return [
+            {
+                isInvalid: ({ title }) => title.length > 20 || title.length < 1,
+                field: 'title',
+                message: 'Заголовок должен содержать от 1 до 20 символов',
+            },
+            {
+                isInvalid: ({ rating }) => isNaN(+rating) || +rating > 5 || +rating < 1,
+                field: 'rating',
+                message: 'Оценка должна быть числом от 1 до 5',
+            },
+            {
+                isInvalid: ({ content }) => content.length > 1000,
+                field: 'content',
+                message: 'Отзыв не может превышать 1000 символов',
+            },
+        ];
+    }
+
     protected override handleSubmit = async (data: WriteReviewFields): Promise<void> => {
-        eventBus.emit('WriteReviewDialog:submit', { instance: this, data });
+        await eventBus.emit('WriteReviewDialog:submit', { instance: this, data });
     };
 
     public close(): void {

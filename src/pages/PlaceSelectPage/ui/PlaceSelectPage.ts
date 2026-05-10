@@ -1,4 +1,5 @@
 import { fetchAddedPlaces } from '@/entities/Place';
+import { focusField } from '@/shared/lib';
 import { Callback } from '@/shared/lib/eventBus/eventBus';
 import { BasePage } from '@/shared/lib/page/BasePage';
 import { AppState } from '@/shared/model';
@@ -12,7 +13,6 @@ import { handlePlaceRemove } from '../handlers/handlePlaceRemove';
 import { PlaceSelectPageParams } from '../model/types';
 import template from './PlaceSelectPage.hbs?compiled';
 import styles from './style.module.scss';
-import { focusField } from '@/shared/lib';
 
 export class PlaceSelectPage extends BasePage {
     protected override template = template;
@@ -25,7 +25,7 @@ export class PlaceSelectPage extends BasePage {
         placeList: PlaceSelectList;
     };
 
-    protected override get eventHandlers(): Record<string, Callback> {
+    protected override createHandlers(): Record<string, Callback> {
         return {
             'PlaceCard:add': injectHandlerContext(handlePlaceAdd, { tripId: this.tripId, addedPlaces: this.addedPlaces }),
             'PlaceCard:remove': injectHandlerContext(handlePlaceRemove, { tripId: this.tripId, addedPlaces: this.addedPlaces }),
@@ -38,7 +38,10 @@ export class PlaceSelectPage extends BasePage {
     public static async create(appState: AppState, parameters: PlaceSelectPageParams) {
         const page = new PlaceSelectPage(appState);
 
-        page.addedPlaces = new Set(await fetchAddedPlaces(parameters.tripId));
+        const addedPlacesRes = await fetchAddedPlaces(parameters.tripId);
+        if (addedPlacesRes.ok) {
+            page.addedPlaces = new Set(addedPlacesRes.data);
+        }
 
         page.tripId = parameters.tripId;
 

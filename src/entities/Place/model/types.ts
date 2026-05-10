@@ -1,3 +1,5 @@
+import { CategorySummary } from '@/entities/Category/model/types';
+
 export type PlaceSummary = {
     id: number;
     name: string;
@@ -13,7 +15,7 @@ export type PlaceSummary = {
 }
 
 export type Place = PlaceSummary & {
-    categoryId: number;
+    category: CategorySummary;
     location: string;
     country: string;
 }

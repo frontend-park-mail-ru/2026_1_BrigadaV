@@ -5,6 +5,7 @@ import { AuthForm } from '@/widgets/AuthForm';
 import { Header } from '@/widgets/Header';
 
 import { handleLogin } from '../handlers/handleLogin';
+import { LoginFields } from '../model/types';
 import template from './LoginPage.hbs?compiled';
 import styles from './style.module.scss';
 
@@ -15,10 +16,10 @@ export class LoginPage extends BasePage {
 
     declare children: {
         header: Header;
-        loginForm: AuthForm;
+        loginForm: AuthForm<LoginFields>;
     };
 
-    protected override get eventHandlers() {
+    protected override createHandlers() {
         return {
             'auth:login': handleLogin,
         };

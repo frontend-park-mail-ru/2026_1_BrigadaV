@@ -19,3 +19,6 @@ export type DeleteReviewRequest = {
 }
 
 export type CreateReviewRequest = Omit<Review, 'author'>;
+export type CreateReviewResponse = {
+    id: number;
+}

@@ -5,7 +5,9 @@ type BaseSettings = {
     user: Pick<User & UserAuth, 'login' | 'nickname' | 'about' | 'city' | 'avatar'>;
 };
 
-export type SettingsFields = BaseSettings['user'];
+export type SettingsFields = Omit<BaseSettings['user'], 'avatar'> & {
+    avatar: File;
+};
 
 export type SettingsModalProps = BaseSettings & {
     id: string;

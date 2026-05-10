@@ -68,7 +68,7 @@ export class ImageInput extends BaseComponent {
         }
     }
 
-    public setValue(value?: string): void {
+    public setValue(value?: string | number): void {
         if (!this.element) return;
 
         const previewImg = this.element.querySelector('[data-ref="preview"]') as HTMLImageElement;
@@ -78,7 +78,7 @@ export class ImageInput extends BaseComponent {
                 this.previewUrl = undefined;
             }
 
-            previewImg.src = value;
+            previewImg.src = value.toString();
             previewImg.classList.remove('image-input__preview--default');
         }
     }

@@ -1,7 +1,8 @@
-import { BaseComponent } from '@/shared/lib/component/BaseComponent';
-import type { MapWidgetProps } from '@/widgets/MapIframe/model/types';
 import './style.scss';
 
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
+
+import type { MapWidgetProps } from '@/widgets/MapIframe/model/types';
 export class MapIframe extends BaseComponent<HTMLDivElement> {
     constructor(private readonly props: MapWidgetProps) {
         super();

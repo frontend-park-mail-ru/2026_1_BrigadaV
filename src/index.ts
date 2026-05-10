@@ -1,5 +1,5 @@
-import { App } from '@/app/app';
-
 import '@/shared/lib/leaflet';
+
+import { App } from '@/app/app';
 
 await App();

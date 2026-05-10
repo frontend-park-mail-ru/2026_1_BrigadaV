@@ -1,5 +1,6 @@
 import { fetchPlace } from '@/entities/Place';
 import { PlaceSummary } from '@/entities/Place/model/types';
+import { Review } from '@/entities/Review/model/types';
 import { ReviewCardPayload } from '@/entities/Review/ui/ReviewCard/model/types';
 import { Callback } from '@/shared/lib/eventBus/eventBus';
 import { BasePage } from '@/shared/lib/page/BasePage';
@@ -9,6 +10,7 @@ import { formatDate, pluralize } from '@/shared/utils';
 import { injectHandlerContext } from '@/shared/utils/lib/injectHandlerContext';
 import { Gallery } from '@/widgets/Gallery';
 import { Header } from '@/widgets/Header';
+import { MapIframe } from '@/widgets/MapIframe';
 import { ReviewDetailsModal } from '@/widgets/ReviewDetailsModal';
 import { ReviewList } from '@/widgets/ReviewList';
 import { WorkingHours } from '@/widgets/WorkingHours';
@@ -19,9 +21,6 @@ import { handleReviewDelete } from '../handlers/handleReviewDelete';
 import { AttractionPageParameters } from '../model/types';
 import template from './AttractionPage.hbs?compiled';
 import styles from './style.module.scss';
-import { Review } from '@/entities/Review/model/types';
-
-import { MapIframe } from '@/widgets/MapIframe';
 
 const WRITE_REVIEW_DIALOG_ID = 'write-review';
 const REVIEW_DETAILS_MODAL_ID = 'review-details';
@@ -42,10 +41,11 @@ export class AttractionPage extends BasePage {
 
         mapWidget?: MapIframe;
     };
-    protected override get eventHandlers(): Record<string, Callback> {
+
+    protected override createHandlers(): Record<string, Callback> {
         return {
             'ReviewCard:show-details': this.handleShowDetails,
-            'WriteReviewDialog:submit': injectHandlerContext(handleReviewCreate, { reviewList: this.children.reviewList, user: this.appState.currentUser, placeId: this.place.id }),
+            'WriteReviewDialog:submit': injectHandlerContext(handleReviewCreate, { user: this.appState.currentUser, placeId: this.place.id }),
             'ReviewDetailsModal:delete': handleReviewDelete,
 
             'ReviewCreate:success': this.reviewSubmitUpdate,
@@ -58,8 +58,10 @@ export class AttractionPage extends BasePage {
     public static async create(appState: AppState, parameters: AttractionPageParameters): Promise<AttractionPage> {
         const page = new AttractionPage(appState);
 
-        const place = await fetchPlace(parameters.placeId);
-        page.place = place;
+        const fetchRes = await fetchPlace(parameters.placeId);
+        if (fetchRes.ok) {
+            page.place = fetchRes.data;
+        }
 
         if (page.place.lat === null || page.place.lon === null) {
             page.place.lat = 55.751244;
@@ -172,8 +174,10 @@ export class AttractionPage extends BasePage {
             this.children.reviewDetailsModal.close();
         }
 
-        const place = await fetchPlace(this.place.id);
-        this.place = place;
+        const fetchRes = await fetchPlace(this.place.id);
+        if (fetchRes.ok) {
+            this.place = fetchRes.data;
+        }
 
         this.fields['review-count'].textContent = `(${this.makeReviewCountText()})`;
 
@@ -181,7 +185,7 @@ export class AttractionPage extends BasePage {
         this.fields['rating'].style.setProperty('--rating', this.place.rating!.toString());
     };
 
-    private updateLikeLabel = (): void => {
+    private updateLikeLabel() {
         if (window.innerWidth <= 1024) {
             this.children.likeButton?.setLabel('');
         } else {

@@ -1,4 +1,5 @@
 import { request } from '@/shared/api';
+import { ApiResponse } from '@/shared/api/types';
 
 import { Trip } from '../model/types';
 import { mapTrip } from './mappers';
@@ -11,36 +12,34 @@ import {
     UpdateTripRequest
 } from './types';
 
-export const getUserTripList = async (): Promise<Trip[]> => {
-    const dto = await request<TripDTO[]>('/trips', {
+export const getUserTripList = async (): Promise<ApiResponse<Trip[]>> => {
+    const res = await request<TripDTO[]>('/trips', {
         method: 'GET',
     });
 
-    if (!dto) return [];
+    if (!res.ok) return res;
 
-    return dto.map(mapTrip);
+    return {
+        ...res,
+        data: (res.data || []).map(mapTrip)
+    };
 };
 
-export const createTrip = async (data: CreateTripRequest): Promise<CreateTripResponse> => {
-    const dto = await request<CreateTripDTO>('/trips', {
+export const createTrip = async (data: CreateTripRequest): Promise<ApiResponse<CreateTripResponse>> => {
+    return await request<CreateTripDTO>('/trips', {
         method: 'POST',
         body: JSON.stringify(data),
     });
-
-    if (!dto) throw new Error('Couldn\'t create a new trip');
-
-    return dto;
 };
 
-export const deleteTrip = async (data: DeleteTripRequest): Promise<any> => {
-    return await request(`/trips/${data.id}`, {
+export const deleteTrip = async (data: DeleteTripRequest): Promise<ApiResponse<void>> => {
+    return await request<void>(`/trips/${data.id}`, {
         method: 'DELETE',
     });
 };
 
-
-export const updateTrip = async (data: UpdateTripRequest): Promise<any> => {
-    return await request(`/trips/${data.id}`, {
+export const updateTrip = async (data: UpdateTripRequest): Promise<ApiResponse<void>> => {
+    return await request<void>(`/trips/${data.id}`, {
         method: 'PUT',
         body: JSON.stringify({
             ...data,
@@ -50,29 +49,15 @@ export const updateTrip = async (data: UpdateTripRequest): Promise<any> => {
     });
 };
 
-
-export const fetchTrip = async (tripId: number): Promise<Trip> => {
-
-    // ВРЕМЕННО: мок для dev-режима – вернуть фейковую поездку по id = 999
-    if (import.meta.env.DEV && tripId === 999) {
-        return {
-            id: 999,
-            title: 'Тестовая поездка',
-            location: 'Где-то',
-            preview: '/images/test-bg.jpg',     // любой существующий или data:image
-            startDate: new Date(),
-            endDate: new Date(),
-            description: 'Для проверки альбома',
-            places: [],
-        };
-    }
-
-    
-    const dto = await request<TripDTO>(`/trips/${tripId}`, {
-        method: 'GET',
+export const fetchTrip = async (tripId: number): Promise<ApiResponse<Trip>> => {
+    const res = await request<TripDTO>(`/trips/${tripId}`, {
+        method: 'GET'
     });
 
-    if (!dto) throw new Error('Couldn\'t fetch trip');
+    if (!res.ok) return res;
 
-    return mapTrip(dto);
+    return {
+        ...res,
+        data: mapTrip(res.data)
+    };
 };

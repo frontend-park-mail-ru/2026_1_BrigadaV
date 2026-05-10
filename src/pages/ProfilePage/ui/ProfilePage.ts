@@ -30,7 +30,7 @@ export class ProfilePage extends BasePage {
         activeSection: BaseComponent;
     };
 
-    protected override get eventHandlers(): Record<string, Callback> {
+    protected override createHandlers(): Record<string, Callback> {
         return {
             'Tabs:change': this.handleTabChange,
             'SettingsModal:submit': injectHandlerContext(handleSettingsUpdate, { user: this.user }),
@@ -42,8 +42,11 @@ export class ProfilePage extends BasePage {
     public static async create(appState: AppState): Promise<ProfilePage> {
         const page = new ProfilePage(appState);
 
-        const user = await fetchMe();
-        page.user = user;
+        const meRes = await fetchMe();
+
+        if (meRes.ok) {
+            page.user = meRes.data;
+        }
 
         page.setupComponents();
 

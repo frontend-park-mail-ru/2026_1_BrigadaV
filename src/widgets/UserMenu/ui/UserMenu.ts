@@ -27,20 +27,17 @@ export class UserMenu extends BaseComponent {
         const logoutButton = target.closest('.js-logout');
 
         if (logoutButton) {
-            try {
-                const confirmed = await ConfirmPopup({
-                    prompt: 'Вы действительно хотите выйти из аккаунта?',
-                    cancelText: 'Отменить',
-                    confirmText: 'Выйти',
-                });
+            const confirmed = await ConfirmPopup({
+                prompt: 'Вы действительно хотите выйти из аккаунта?',
+                cancelText: 'Отменить',
+                confirmText: 'Выйти',
+            });
 
-                if (confirmed) {
-                    await logoutUser();
-                    appState.currentUser = null;
-                    navigate(window.location.pathname);
-                }
-            } catch {
-                // TODO Сделать вывод ошибок тост сообщением
+            if (confirmed) {
+                // todo check if logout successful
+                await logoutUser();
+                appState.currentUser = null;
+                navigate(window.location.pathname);
             }
         }
     };

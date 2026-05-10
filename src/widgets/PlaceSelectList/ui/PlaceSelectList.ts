@@ -1,6 +1,6 @@
 import './style.scss';
 
-import { getPlaces, Place, PlaceCard } from '@/entities/Place';
+import { fetchPlaces, Place, PlaceCard } from '@/entities/Place';
 import { eventBus } from '@/shared/lib';
 import { BaseList } from '@/shared/lib/component/BaseList';
 import { IComponent } from '@/shared/model';
@@ -14,16 +14,16 @@ export class PlaceSelectList extends BaseList<Place, SelectPlaceListProps> {
 
 
     protected override async loadData(): Promise<Place[]> {
-        try {
-            const places = await getPlaces();
-            const sortedPlaces = places.sort((a, b) => {
+        const placesRes = await fetchPlaces();
+        if (placesRes.ok) {
+            const sortedPlaces = placesRes.data.sort((a, b) => {
                 const aAdded = this.props.addedPlaces.has(a.id) ? 1 : 0;
                 const bAdded = this.props.addedPlaces.has(b.id) ? 1 : 0;
                 return bAdded - aAdded;
             });
-            return sortedPlaces;
 
-        } catch { }
+            return sortedPlaces;
+        }
 
         return [];
     }

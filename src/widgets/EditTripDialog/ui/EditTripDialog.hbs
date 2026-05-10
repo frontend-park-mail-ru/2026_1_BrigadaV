@@ -4,10 +4,17 @@
     <div class="{{s 'edit-trip__fields'}}">
       <div data-slot="title"></div>
       <div data-slot="location"></div>
+
       <div class="{{s 'edit-trip__date-wrapper'}}">
-        <div data-slot="start-date"></div>
-        <div data-slot="end-date"></div>
+        <div data-slot="start-date" class="{{s 'date-field'}}"></div>
+        <div data-slot="end-date" class="{{s 'date-field'}}"></div>
+
+        <div class="{{s 'edit-trip__date-error'}}" data-ref="date-error">
+          <img src="/icons/alert-error.svg" class="edit-trip__date-error-img">
+          <span class="{{s 'edit-trip__date-error-text'}}" data-ref="date-error-text"></span>
+        </div>
       </div>
+
       <div data-slot="description"></div>
     </div>
 

@@ -1,5 +1,5 @@
 import { UpdateRequest, updateUser, uploadAvatar, User } from '@/entities/User';
-import { eventBus, validateAvatar, validateNickname } from '@/shared/lib';
+import { eventBus } from '@/shared/lib';
 import { resolveStaticPath } from '@/shared/utils';
 import { SettingsModal } from '@/widgets/SettingsModal';
 import { SettingsModalPayload } from '@/widgets/SettingsModal/model/types';
@@ -7,48 +7,25 @@ import { SettingsModalPayload } from '@/widgets/SettingsModal/model/types';
 export const handleSettingsUpdate = async ({ instance, data, user }: { instance: SettingsModal, data: SettingsModalPayload, user: User }): Promise<void> => {
     const { avatar, nickname, login, city, about } = data;
 
-    if (nickname && !validateNickname(nickname)) {
-        instance.setFieldError('nickname', 'Ник должен быть длиной от 3 до 50 символов');
-        return;
-    }
-
-    // TODO wait for backend to update their API to return user login
-    // if (login && !validateEmail(login)) {
-    //     instance.setFieldError('login', 'Некорректный формат email');
-    //     return;
-    // }
-
-    if (avatar?.size && !validateAvatar(avatar)) {
-        // TODO Toast the error
-        return;
-    }
-
-    let avatarPromise: Promise<string | void> = Promise.resolve();
     const patch = {} as UpdateRequest;
-
-    if (avatar?.size) {
-        avatarPromise = uploadAvatar(avatar);
-    }
-
     if (user.nickname !== nickname) patch.nickname = nickname;
     // if (user.login !== login) patch.login = login;
     if (user.city !== city) patch.city = city;
     if (user.about !== about) patch.about = about;
 
 
-    try {
-        const [newAvatarUrl, userResult] = await Promise.all([
-            avatarPromise,
-            Object.keys(patch).length > 0 ? updateUser(patch) : Promise.resolve(null)
-        ]);
+    const avatarUpdate = avatar.size ? uploadAvatar(avatar) : Promise.resolve(null);
+    const userUpdate = Object.keys(patch).length > 0 ? updateUser(patch) : Promise.resolve(null);
 
+    const [avatarRes, userRes] = await Promise.all([avatarUpdate, userUpdate]);
 
-        if (newAvatarUrl || userResult) {
-            instance.close();
-            eventBus.emit('user:update', {
-                ...patch,
-                ...(newAvatarUrl ? { avatar: resolveStaticPath(newAvatarUrl) } : {})
-            });
-        }
-    } catch { }
+    const update = {
+        ...(avatarRes?.ok && { avatar: resolveStaticPath(avatarRes.data) }),
+        ...(userRes?.ok && userRes.data)
+    };
+
+    if (Object.keys(update).length > 0) {
+        instance.close();
+        eventBus.emit('user:update', update);
+    }
 };

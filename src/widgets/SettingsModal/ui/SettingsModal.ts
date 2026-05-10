@@ -1,19 +1,17 @@
 import './style.scss';
 
-import { eventBus } from '@/shared/lib';
+import { eventBus, validateAvatar, validateNickname } from '@/shared/lib';
 import { BaseForm } from '@/shared/lib/component/BaseForm';
+import { ValidationRule } from '@/shared/model';
 import { Field, Textarea } from '@/shared/ui';
 import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 import { ImageInput } from '@/shared/ui/ImageInput';
-import { Toast } from '@/shared/ui/Toast';
 import { stringToElement } from '@/shared/utils';
 
 import { SettingsFields, SettingsModalProps } from '../model/types';
 import template from './SettingsModal.hbs?compiled';
 
 export class SettingsModal extends BaseForm<SettingsFields, HTMLDialogElement> {
-    private avatarPreviewUrl?: string;
-
     private get user() {
         return this.props.user;
     }
@@ -39,6 +37,7 @@ export class SettingsModal extends BaseForm<SettingsFields, HTMLDialogElement> {
                     maxlength: 50,
                     minlength: 3,
                     placeholder: 'Никнейм',
+                    required: '',
                 }
             }),
 
@@ -52,7 +51,7 @@ export class SettingsModal extends BaseForm<SettingsFields, HTMLDialogElement> {
                     value: this.user.login || '',
                     maxlength: 50,
                     placeholder: 'Почта',
-                    readonly: '',
+                    disabled: '',
                 }
             }),
 
@@ -109,13 +108,37 @@ export class SettingsModal extends BaseForm<SettingsFields, HTMLDialogElement> {
                 },
             }),
         };
+    }
 
+    protected override get validationRules(): ValidationRule<SettingsFields>[] {
+        return [
+            {
+                isInvalid: ({ avatar }) => avatar.size > 0 && !validateAvatar(avatar),
+                field: 'avatar',
+                message: 'Аватар должен быть изображением меньше 10Мб',
+            },
+            {
+                isInvalid: ({ nickname }) => !validateNickname(nickname ?? ''),
+                field: 'nickname',
+                message: 'Ник должен быть длиной от 3 до 50 символов',
+            },
+            {
+                isInvalid: ({ about }) => Boolean(about && about.length > 1000),
+                field: 'about',
+                message: 'Описание профиля не может превышать 1000 символов',
+            },
+            // {
+            // TODO wait for backend to update their API to return user login
+            //     isInvalid: !validateEmail(login ?? ''),
+            //     field: 'login',
+            //     message: 'Некорректный формат email',
+            // },
+        ];
     }
 
     protected override initListeners(): void {
         super.initListeners();
         this.element?.addEventListener('command', this.handleOpen);
-        this.element?.addEventListener('change', this.handleAvatarChange);
     }
 
     private handleOpen = (ev: Event) => {
@@ -138,41 +161,7 @@ export class SettingsModal extends BaseForm<SettingsFields, HTMLDialogElement> {
         });
 
         if (confirmed) {
-            eventBus.emit('SettingsModal:submit', { instance: this, data });
-        }
-    };
-
-    private handleAvatarChange = (event: Event): void => {
-        const target = event.target;
-        if (!(target instanceof HTMLInputElement)) return;
-
-        if (target.name !== 'avatar' || !target.files?.[0]) return;
-
-        const file = target.files[0];
-
-        if (file.size > 10 * 1024 * 1024) {
-            Toast({ message: 'Файл слишком большой! Лимит 10 Мб.', type: 'error' });
-            target.value = '';
-            return;
-        }
-
-        if (!file.type.startsWith('image/')) {
-            Toast({ message: 'Известный формат изображения', type: 'error' });
-            target.value = '';
-            return;
-        }
-
-        if (this.avatarPreviewUrl) {
-            URL.revokeObjectURL(this.avatarPreviewUrl);
-        }
-
-        this.avatarPreviewUrl = URL.createObjectURL(file);
-
-        const previewImage = this.element?.querySelector('[data-ref="avatar"]') as HTMLImageElement;
-
-        if (previewImage) {
-            previewImage.src = this.avatarPreviewUrl;
-            previewImage.classList.remove('avatar--default');
+            await eventBus.emit('SettingsModal:submit', { instance: this, data });
         }
     };
 
@@ -185,9 +174,5 @@ export class SettingsModal extends BaseForm<SettingsFields, HTMLDialogElement> {
             ...this.props,
             fields: Object.keys(this.children),
         }));
-    }
-
-    protected override _destroy(): void {
-        if (this.avatarPreviewUrl) URL.revokeObjectURL(this.avatarPreviewUrl);
     }
 }

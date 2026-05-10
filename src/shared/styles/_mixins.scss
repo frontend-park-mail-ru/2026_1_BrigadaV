@@ -69,7 +69,7 @@
         background-color $timing-animation-medium,
         scale $timing-animation-medium;
 
-    &[disabled] {
+    &[disabled]:not([data-state="loading"]) {
         color: $guidely-primary;
         background-color: $color-interactable-disabled;
         opacity: 50%;
@@ -82,6 +82,40 @@
         &:focus-visible {
             background-color: $color-interactable-active;
             scale: 1.05;
+        }
+    }
+
+    &[data-state="loading"] {
+        position: relative;
+        background-color: $color-interactable-active;
+        cursor: wait;
+        overflow: hidden;
+
+        &::after {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg,
+                    transparent 25%,
+                    rgba($white, 0.2) 50%,
+                    transparent 75%);
+            animation-name: button-loading-sweep;
+            animation-duration: 1.2s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            content: "";
+        }
+    }
+
+    @keyframes button-loading-sweep {
+        from {
+            transform: translateX(0%);
+        }
+
+        to {
+            transform: translateX(200%);
         }
     }
 }
@@ -148,12 +182,6 @@
     gap: 0.75rem;
     border: none;
     border-radius: 8px;
-
-    // @media (max-height: 768px) {
-    //     .button-oauth__text {
-    //         display: none;
-    //     }
-    // }
 }
 
 @mixin field {

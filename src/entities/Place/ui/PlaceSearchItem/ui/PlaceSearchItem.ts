@@ -1,10 +1,10 @@
 import { BaseComponent } from '@/shared/lib/component/BaseComponent';
+import { navigate } from '@/shared/router';
 import { stringToElement } from '@/shared/utils';
 
-import styles from './style.module.scss';
-import template from './PlaceSearchItem.hbs?compiled';
 import { PlaceSearchItemProps } from '../model/types';
-import { navigate } from '@/shared/router';
+import template from './PlaceSearchItem.hbs?compiled';
+import styles from './style.module.scss';
 
 export class PlaceSearchItem extends BaseComponent {
     constructor(private props: PlaceSearchItemProps) { super(); }

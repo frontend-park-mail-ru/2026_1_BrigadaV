@@ -1,11 +1,17 @@
-import { togglePasswordVisibility } from '@/shared/lib';
+import {
+    togglePasswordVisibility,
+    validateEmail,
+    validateNickname,
+    validatePassword
+} from '@/shared/lib';
 import { Callback } from '@/shared/lib/eventBus/eventBus';
 import { BasePage } from '@/shared/lib/page/BasePage';
-import { AppState } from '@/shared/model';
+import { AppState, ValidationRule } from '@/shared/model';
 import { AuthForm } from '@/widgets/AuthForm';
 import { Header } from '@/widgets/Header';
 
 import { handleSignup } from '../handlers/handleSignup';
+import { SignUpFields } from '../model/types';
 import template from './SignupPage.hbs?compiled';
 import styles from './style.module.scss';
 
@@ -15,15 +21,38 @@ export class SignupPage extends BasePage {
     protected override pageClassName = 'signup-page';
 
     declare protected children: {
-        header: Header,
-        signupForm: AuthForm,
+        header: Header;
+        signupForm: AuthForm<SignUpFields>;
     };
 
-    protected override get eventHandlers(): Record<string, Callback> {
+    protected override createHandlers(): Record<string, Callback> {
         return {
             'auth:signup': handleSignup,
         };
     }
+
+    private validationRules: ValidationRule<SignUpFields>[] = [
+        {
+            isInvalid: ({ nickname }) => !validateNickname(nickname),
+            field: 'nickname',
+            message: 'Ник должен иметь от 3 до 50 символов',
+        },
+        {
+            isInvalid: ({ login }) => !validateEmail(login),
+            field: 'login',
+            message: 'Некорректный формат email',
+        },
+        {
+            isInvalid: ({ password }) => !validatePassword(password),
+            field: 'password',
+            message: 'Некорректный формат пароля',
+        },
+        {
+            isInvalid: ({ password, 'password-repeat': passwordRepeat }) => password !== passwordRepeat,
+            field: 'password-repeat',
+            message: 'Пароли не совпадают',
+        },
+    ];
 
     public static async create(appState: AppState): Promise<SignupPage> {
         const page = new SignupPage(appState);
@@ -49,6 +78,7 @@ export class SignupPage extends BasePage {
                 submitText: 'Создать аккаунт',
                 redirectText: 'Войти',
                 redirectHref: '/login',
+                validationRules: this.validationRules,
                 fields: [{
                     id: 'nickname-input',
                     label: 'Введите никнейм',

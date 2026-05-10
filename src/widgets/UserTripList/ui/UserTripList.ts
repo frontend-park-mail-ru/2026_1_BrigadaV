@@ -17,10 +17,10 @@ export class UserTripList extends BaseList<Trip, UserTripListProps> {
     }
 
     protected async loadData(): Promise<Trip[]> {
-        try {
-            return await getUserTripList();
-
-        } catch { }
+        const tripListRes = await getUserTripList();
+        if (tripListRes.ok) {
+            return tripListRes.data;
+        }
 
         return [];
     }

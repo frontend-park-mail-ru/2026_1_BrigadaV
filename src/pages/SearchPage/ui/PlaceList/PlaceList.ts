@@ -1,7 +1,8 @@
 import { Place, PlaceCard } from '@/entities/Place';
 import { BaseComponent } from '@/shared/lib/component/BaseComponent';
-import { PlaceListProps } from './types';
 import { LikeButton } from '@/shared/ui';
+
+import { PlaceListProps } from './types';
 
 export class PlaceList extends BaseComponent {
     constructor(private props: PlaceListProps) { super(); }

@@ -6,11 +6,11 @@
   }}
   <div class="bio__meta">
     <h3 class="bio__nickname" data-ref="nickname">{{user.nickname}}</h3>
-    {{#if location}}
-    <p class="bio__location" data-ref="location">{{location}}</p>
-    {{/if}}
+    <p class="bio__location {{#unless location}}hidden{{/unless}}" data-ref="location">
+      {{location}}
+    </p>
   </div>
-  {{#if user.about}}
-  <p class="bio__about" data-ref="about">{{user.about}}</p>
-  {{/if}}
+  <p class="bio__about {{#unless user.about}}hidden{{/unless}}" data-ref="about">
+    {{user.about}}
+  </p>
 </div>

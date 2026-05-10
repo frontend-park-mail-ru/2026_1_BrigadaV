@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Callback<T = any> = (data: T) => void;
+export type Callback<T = any> = (data: T) => Promise<void> | void;
 
 class EventBus {
     events: Record<string, Callback[]> = {};
@@ -20,8 +20,12 @@ class EventBus {
         this.events[eventName] = this.events[eventName].filter(item => item !== callback);
     }
 
-    public emit<T>(eventName: string, data?: T): void {
-        this.events[eventName]?.forEach(callback => callback(data));
+    public async emit<T>(eventName: string, data?: T): Promise<void> {
+        if (!this.events[eventName]) return;
+
+        await Promise.all(
+            this.events[eventName].map(callback => callback(data))
+        );
     }
 }
 

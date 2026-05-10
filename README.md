@@ -2,17 +2,17 @@
 Репозиторий фронтенда команды Бригада V с проектом TripAdvisor
 
 ### Участники команды
- 1. [Павлов Егор]()
+ 1. [Павлов Егор](https://github.com/TOOSTEER)
  2. [Маркарова Юлия](https://github.com/jmark1518)
  3. [Лазунин Артём](https://github.com/cielnumerique)
  4. [Степан Бурматов](https://github.com/BurmatovStepan)
 
 
 ### Внешние ссылки
- - [Figma](https://www.figma.com/design/TuvbJqnQeBLsmuGjyBXAQC/vk?node-id=10-11&p=f&t=ZhmD7aUVjqrpzeNs-0)
- - [Backend]()
- - [Deploy]()
- - [Jira](https://ru.yougile.com/team/947473cd578d/TripAdvisor#TADV-1)
+ - [Figma](https://www.figma.com/design/TuvbJqnQeBLsmuGjyBXAQC/Tripadvisor-Guidely)
+ - [Backend](https://github.com/go-park-mail-ru/2026_1_BrigadaV)
+ - [Deploy](http://guidely.ru)
+ - [Jira](https://ru.yougile.com/team/947473cd578d/TripAdvisor)
 
 ### Правила оформления Pull Requests
   1. Ветка создается с названием `TADV-###`, где ### - номер задачи в jira.

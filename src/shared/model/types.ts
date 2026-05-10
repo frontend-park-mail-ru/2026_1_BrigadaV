@@ -22,3 +22,9 @@ export type FormSubmitPayload<TInstance, TData> = {
     instance: TInstance;
     data: TData;
 };
+
+export type ValidationRule<T> = {
+    field: keyof T;
+    message: string;
+    isInvalid: (data: T) => boolean;
+};

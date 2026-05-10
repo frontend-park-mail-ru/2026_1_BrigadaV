@@ -1,13 +1,12 @@
 import { TripBanner } from '@/entities/Trip';
 import { fetchTrip } from '@/entities/Trip/api';
 import { Trip } from '@/entities/Trip/model/types';
+import { AlbumDialog } from '@/entities/Trip/ui/AlbumDialog';
 import { Callback } from '@/shared/lib/eventBus/eventBus';
 import { BasePage } from '@/shared/lib/page/BasePage';
 import { AppState } from '@/shared/model';
 import { Header } from '@/widgets/Header';
 import { TripPlaceList } from '@/widgets/TripPlaceList/ui/TripPlaceList';
-
-import { AlbumDialog } from '@/entities/Trip/ui/AlbumDialog';
 
 import { handleTripDelete } from '../handler/handleTripDelete';
 import { TripDetailPageParams } from '../model/types';
@@ -26,7 +25,7 @@ export class TripDetailPage extends BasePage {
         albumDialog: AlbumDialog;
     };
 
-    protected override get eventHandlers(): Record<string, Callback> {
+    protected override createHandlers(): Record<string, Callback> {
         return {
             'TripBanner:delete': handleTripDelete,
         };
@@ -44,8 +43,10 @@ export class TripDetailPage extends BasePage {
     public static async create(appState: AppState, parameters: TripDetailPageParams): Promise<TripDetailPage> {
         const page = new TripDetailPage(appState);
 
-        const trip = await fetchTrip(parameters.tripId);
-        page.trip = trip;
+        const fetchRes = await fetchTrip(parameters.tripId);
+        if (fetchRes.ok) {
+            page.trip = fetchRes.data;
+        }
 
         page.setupComponents();
         return page;
