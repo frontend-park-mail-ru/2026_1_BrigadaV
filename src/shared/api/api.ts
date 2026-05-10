@@ -1,12 +1,6 @@
 import { ApiResponse, ErrorDTO } from './types';
 
-export const BACKEND_ORIGIN = import.meta.env.DEV
-    ? 'http://localhost:5173'
-    : 'http://guidely.ru:8080';
-// export const BACKEND_ORIGIN = 'http://localhost:8080';
-
-
-export const API_URL = `${BACKEND_ORIGIN}/api`;
+export const API_PATH = '/api';
 
 let cachedCSRFToken: string | null = null;
 
@@ -14,10 +8,10 @@ const getCSRFToken = async (): Promise<string> => {
     if (cachedCSRFToken) return cachedCSRFToken;
 
     try {
-        let response = await fetch(`${API_URL}/csrf-token`, { credentials: 'include' });
+        let response = await fetch(`${API_PATH}/csrf-token`, { credentials: 'include' });
         if (!response.ok && cachedCSRFToken) {
             cachedCSRFToken = null;
-            response = await fetch(`${API_URL}/csrf-token`, { credentials: 'include' });
+            response = await fetch(`${API_PATH}/csrf-token`, { credentials: 'include' });
         }
 
         const data = await response.json();
@@ -32,7 +26,7 @@ export const request = async <T = unknown>(
     path: string,
     options: RequestInit
 ): Promise<ApiResponse<T>> => {
-    const url = `${API_URL}${path}`;
+    const url = `${API_PATH}${path}`;
     const method = options.method?.toUpperCase() ?? 'GET';
     const needCSRF = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method);
 
