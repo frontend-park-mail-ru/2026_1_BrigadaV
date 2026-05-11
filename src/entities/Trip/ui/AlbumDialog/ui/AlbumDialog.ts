@@ -1,4 +1,3 @@
-import { BACKEND_ORIGIN } from '@/shared/api/api';
 import { BaseForm } from '@/shared/lib/component/BaseForm';
 import { ConfirmPopup } from '@/shared/ui/ConfirmPopup';
 import { Toast } from '@/shared/ui/Toast';
@@ -45,9 +44,7 @@ export class AlbumDialog extends BaseForm<{}, HTMLDialogElement> {
             const album = await fetchAlbumByTripId(tripId);
             if (album) {
                 this.maxPhotos = album.MaxPhotos || 50;
-                const serverPhotos = await fetchAlbumPhotos(tripId);
-
-                this.photos = serverPhotos.map(p => ({ id: p.id, url: import.meta.env.DEV ? p.url : BACKEND_ORIGIN + p.url }));
+                this.photos = await fetchAlbumPhotos(tripId);
 
             } else {
                 this.photos = [];

@@ -1,6 +1,5 @@
 import { UpdateRequest, updateUser, uploadAvatar, User } from '@/entities/User';
 import { eventBus } from '@/shared/lib';
-import { resolveStaticPath } from '@/shared/utils';
 import { SettingsModal } from '@/widgets/SettingsModal';
 import { SettingsModalPayload } from '@/widgets/SettingsModal/model/types';
 
@@ -20,7 +19,7 @@ export const handleSettingsUpdate = async ({ instance, data, user }: { instance:
     const [avatarRes, userRes] = await Promise.all([avatarUpdate, userUpdate]);
 
     const update = {
-        ...(avatarRes?.ok && { avatar: resolveStaticPath(avatarRes.data) }),
+        ...(avatarRes?.ok && { avatar: avatarRes.data }),
         ...(userRes?.ok && userRes.data)
     };
 
