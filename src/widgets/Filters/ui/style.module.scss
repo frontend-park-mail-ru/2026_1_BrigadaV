@@ -1,0 +1,76 @@
+@use '@/shared/styles/variables' as *;
+@use '@/shared/styles/mixins' as *;
+
+@mixin is-view($view) {
+    &[data-view="#{$view}"] {
+        @content;
+    }
+}
+
+@mixin in-view($view) {
+    .filters[data-view="#{$view}"] & {
+        @content;
+    }
+}
+
+.filters {
+    display: flex;
+    width: clamp(200px, 90%, 350px);
+    height: 100%;
+    flex-direction: column;
+    gap: 2.5rem;
+
+    @include is-view(mobile) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        height: 100%;
+        padding: 1rem 2rem 0 1rem;
+        gap: 1rem;
+        background: $white;
+        translate: -100%;
+        transition: translate $timing-animation-medium ease-out;
+    }
+
+    &__tab {
+        display: none;
+
+        @include in-view(mobile) {
+            position: absolute;
+            top: 200px;
+            left: 100%;
+            display: flex;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            background-color: $white;
+            border: none;
+            border: 1px solid $color-border-button;
+            border-left: none;
+            border-radius: 0 8px 8px 0;
+        }
+    }
+
+    &__tab-img {
+        @include in-view(mobile) {
+            aspect-ratio: 1 / 1;
+            width: 24px;
+            rotate: -90deg;
+            transition: rotate $timing-animation-short, translate $timing-animation-short;
+        }
+    }
+
+    &--open {
+        @include is-view(mobile) {
+            box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
+            translate: 0;
+
+            .filters__tab-img {
+                translate: -4px;
+                rotate: 90deg;
+            }
+        }
+    }
+}

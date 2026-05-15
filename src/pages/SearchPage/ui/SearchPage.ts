@@ -1,4 +1,4 @@
-import { CategoryAccordion, CategorySidebar, fetchPlaceCategories } from '@/entities/Category';
+import { CategoryAccordion, fetchPlaceCategories } from '@/entities/Category';
 import { fetchPlaces, Place, searchPlace } from '@/entities/Place';
 import { focusField } from '@/shared/lib';
 import { Callback } from '@/shared/lib/eventBus/eventBus';
@@ -12,6 +12,7 @@ import { SearchPageParameters } from '../model/types';
 import { PlaceList } from './PlaceList/PlaceList';
 import template from './SearchPage.hbs?compiled';
 import styles from './style.module.scss';
+import { Filters } from '@/widgets/Filters';
 
 export class SearchPage extends BasePage {
     protected template = template;
@@ -22,13 +23,12 @@ export class SearchPage extends BasePage {
         header: Header;
         query: Field;
         placeList: PlaceList;
-        categories: CategoryAccordion | CategorySidebar;
+        filters: Filters;
     };
 
     protected override createHandlers(): Record<string, Callback> {
         return {
             'CategoryAccordion:toggle-category': this.handleCategoryToggle,
-            'CategorySidebar:toggle-category': this.handleCategoryToggle,
         };
     }
 
@@ -88,13 +88,9 @@ export class SearchPage extends BasePage {
                 ...(!this.query && { defaultPlaces: this.randomPlaces })
             }),
 
-            categories: this.isMobile
-                ? new CategorySidebar({
-                    categories: this.categoryList,
-                })
-                : new CategoryAccordion({
-                    categories: this.categoryList,
-                }),
+            filters: new Filters({
+                categories: this.categoryList,
+            }),
         };
     }
 
@@ -109,40 +105,14 @@ export class SearchPage extends BasePage {
         this.element?.addEventListener('touchend', (event) => {
             const endX = event.changedTouches[0].clientX;
             if (this.isMobile && endX - this.startX > 80) {
-                (this.children.categories as CategorySidebar).open();
+                (this.children.filters).open();
             }
         });
     }
 
     private handleResize = () => {
-        const currentlyMobile = window.innerWidth < 1024;
-
-        if (this.isMobile !== currentlyMobile) {
-            this.isMobile = currentlyMobile;
-            this.swapCategoryComponent();
-        }
+        this.isMobile = window.innerWidth < 1024;
     };
-
-    private swapCategoryComponent() {
-        if (this.isMobile) {
-            this.children.categories = new CategorySidebar({
-                categories: this.categoryList,
-                activeIds: this.selectedCategoryIds,
-            });
-        } else {
-            this.children.categories = new CategoryAccordion({
-                categories: this.categoryList,
-                activeIds: this.selectedCategoryIds,
-            });
-        }
-
-        const container = this.element?.querySelector('.js-categories');
-        if (container) {
-            const renderedCategories = this.children.categories.render();
-            renderedCategories.classList.add('js-categories');
-            container.replaceWith(renderedCategories);
-        }
-    }
 
     private handleInput = async (inputValue: string) => {
         if (inputValue === '') {
