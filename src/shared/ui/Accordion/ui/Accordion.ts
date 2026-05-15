@@ -1,6 +1,7 @@
-import { BaseComponent } from "@/shared/lib/component/BaseComponent";
-import { AccordionProps } from "../model/types";
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
 import { stringToElement } from '@/shared/utils';
+
+import { AccordionProps } from '../model/types';
 import template from './Accordion.hbs?compiled';
 import styles from './style.module.scss';
 
