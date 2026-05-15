@@ -1,7 +1,8 @@
 import { eventBus } from '@/shared/lib/eventBus/eventBus';
 import { Accordion } from '@/shared/ui/Accordion';
-import styles from './style.module.scss';
+
 import { RatingAccordionProps, SingleRatingItem } from '../model/types';
+import styles from './style.module.scss';
 
 export class RatingAccordion extends Accordion<SingleRatingItem, RatingAccordionProps> {
     protected override baseCount: number = 3;
@@ -26,7 +27,7 @@ export class RatingAccordion extends Accordion<SingleRatingItem, RatingAccordion
         return li;
     }
 
-    private makeRatingName({name, threshold}: SingleRatingItem) {
+    private makeRatingName({ name, threshold }: SingleRatingItem) {
         return `${name}: ${threshold}+`;
     }
 
@@ -43,7 +44,7 @@ export class RatingAccordion extends Accordion<SingleRatingItem, RatingAccordion
         eventBus.emit('RatingAccordion:toggle-rating', {
             ids: this.activeRatingIds
         });
-    }
+    };
 
     public setSelectedIds(ids: number[]): void {
         this.activeRatingIds = ids;

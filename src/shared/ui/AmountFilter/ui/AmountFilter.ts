@@ -1,14 +1,16 @@
-import { BaseComponent } from "@/shared/lib/component/BaseComponent";
-import template from './AmountFilter.hbs?compiled';
-import { Field } from "../../Field";
-import { stringToElement } from "@/shared/utils";
-import { AmountFilterProps } from "../model/types";
 import './style.scss';
+
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
+import { stringToElement } from '@/shared/utils';
+
+import { Field } from '../../Field';
+import { AmountFilterProps } from '../model/types';
+import template from './AmountFilter.hbs?compiled';
 
 export class AmountFilter extends BaseComponent {
     declare children: {
         numberField: Field;
-    }
+    };
 
     constructor(private props: AmountFilterProps) {
         super();
@@ -22,7 +24,7 @@ export class AmountFilter extends BaseComponent {
                 },
                 onInput: props.onInput,
             }),
-        }
+        };
     }
 
     protected override _render(): HTMLElement {

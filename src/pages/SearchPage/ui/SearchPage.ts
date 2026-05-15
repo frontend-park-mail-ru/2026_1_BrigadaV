@@ -1,4 +1,4 @@
-import { CategoryAccordion, fetchPlaceCategories } from '@/entities/Category';
+import { fetchPlaceCategories } from '@/entities/Category';
 import { fetchPlaces, Place, searchPlace } from '@/entities/Place';
 import { focusField } from '@/shared/lib';
 import { Callback } from '@/shared/lib/eventBus/eventBus';
@@ -6,13 +6,13 @@ import { BasePage } from '@/shared/lib/page/BasePage';
 import { AppState } from '@/shared/model';
 import { Field } from '@/shared/ui';
 import { debounce } from '@/shared/utils/lib/debounce';
+import { Filters } from '@/widgets/Filters';
 import { Header } from '@/widgets/Header';
 
 import { SearchPageParameters } from '../model/types';
 import { PlaceList } from './PlaceList/PlaceList';
 import template from './SearchPage.hbs?compiled';
 import styles from './style.module.scss';
-import { Filters } from '@/widgets/Filters';
 
 export class SearchPage extends BasePage {
     protected template = template;

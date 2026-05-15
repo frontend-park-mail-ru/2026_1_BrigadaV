@@ -1,25 +1,25 @@
-import { BaseComponent } from "@/shared/lib/component/BaseComponent";
-import { FiltersProps } from "../model/types";
+import { CategoryAccordion } from '@/entities/Category';
+import { RatingAccordion } from '@/entities/Review/ui/RatingAccordion';
+import { BaseComponent } from '@/shared/lib/component/BaseComponent';
+import { AmountFilter } from '@/shared/ui/AmountFilter';
+import { stringToElement } from '@/shared/utils';
+
+import { FiltersProps } from '../model/types';
 import template from './Filters.hbs?compiled';
 import styles from './style.module.scss';
-import { stringToElement } from "@/shared/utils";
-import { IComponent } from "@/shared/model";
-import { CategoryAccordion } from "@/entities/Category";
-import { RatingAccordion } from "@/entities/Review/ui/RatingAccordion";
-import { AmountFilter } from "@/shared/ui/AmountFilter";
 
 export class Filters extends BaseComponent {
     declare children: {
         categoryFilter: CategoryAccordion;
         ratingFilter: RatingAccordion;
         reviewCountFilter: AmountFilter;
-    }
+    };
 
     private isMobile = window.innerWidth < 1024;
     private startX = 0;
 
     constructor(props: FiltersProps) {
-        super()
+        super();
 
         this.children = {
             categoryFilter: new CategoryAccordion({
@@ -61,7 +61,7 @@ export class Filters extends BaseComponent {
             reviewCountFilter: new AmountFilter({
                 title: 'Отзывы',
             })
-        }
+        };
     }
 
     protected override initListeners(): void {
@@ -94,8 +94,8 @@ export class Filters extends BaseComponent {
         this.element?.classList.toggle(styles['filters--open'], force);
     }
 
-    public open() { this.toggle(true) }
-    public close() { this.toggle(false) }
+    public open() { this.toggle(true); }
+    public close() { this.toggle(false); }
 
     protected override _render(): HTMLElement {
         const element = stringToElement(template({ styles }));

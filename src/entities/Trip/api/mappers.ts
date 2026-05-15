@@ -1,4 +1,5 @@
 import { mapPlaceSummary } from '@/entities/Place';
+
 import defaultPreview from '../assets/trip-preview.jpg';
 import { Trip } from '../model/types';
 import { TripDTO } from './types';

@@ -1,7 +1,8 @@
 import { eventBus } from '@/shared/lib/eventBus/eventBus';
 import { Accordion } from '@/shared/ui/Accordion';
-import styles from './style.module.scss';
+
 import { CategoryAccordionProps, SingleCategoryItem } from '../model/types';
+import styles from './style.module.scss';
 
 export class CategoryAccordion extends Accordion<SingleCategoryItem, CategoryAccordionProps> {
     protected override baseCount: number = 3;
@@ -39,7 +40,7 @@ export class CategoryAccordion extends Accordion<SingleCategoryItem, CategoryAcc
         eventBus.emit('CategoryAccordion:toggle-category', {
             ids: this.activeCategoryIds
         });
-    }
+    };
 
     public setSelectedIds(ids: number[]): void {
         this.activeCategoryIds = ids;
