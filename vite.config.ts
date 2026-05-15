@@ -27,7 +27,7 @@ export default defineConfig({
             },
 
             '/uploads': {
-                target: 'https://guidely.ru:8080',
+                target: 'https://guidely.ru',
                 changeOrigin: true,
                 secure: true,
             }

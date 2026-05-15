@@ -1,0 +1,45 @@
+@use '@/shared/styles/mixins' as *;
+@use '@/shared/styles/variables' as *;
+
+.amount-filter {
+    display: flex;
+    width: 100%;
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    background-color: $white;
+
+    &__input-wrapper {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    &__prefix {
+        @include typo-p;
+        flex-shrink: 0;
+    }
+
+    &__field {
+        min-width: 0;
+    }
+
+    & input {
+        min-width: 0;
+        max-width: 10ch;
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        & {
+            appearance: textfield;
+            -moz-appearance: textfield;
+        }
+    }
+
+
+}
