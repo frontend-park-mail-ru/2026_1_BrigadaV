@@ -6,3 +6,4 @@ export { validatePassword } from './validation/validatePassword';
 export { validateNickname } from './validation/validateNickname';
 export { registerHandlebarsHelpers } from './handlebars/registerHandlebarsHelpers';
 export { validateAvatar } from './validation/validateAvatar';
+export { registerServiceWorker } from './sw/registerServiceWorker';

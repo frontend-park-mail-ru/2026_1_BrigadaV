@@ -5,9 +5,10 @@
     "scripts": {
         "dev": "vite",
         "mobile": "vite --host",
-        "build": "vite build",
+        "build": "npm run manifest && vite build",
         "lint": "eslint .",
-        "lint:fix": "eslint . --fix"
+        "lint:fix": "eslint . --fix",
+        "manifest": "node generate-assets.js"
     },
     "keywords": [],
     "author": "",
