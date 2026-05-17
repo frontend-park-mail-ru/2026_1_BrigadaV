@@ -1,10 +1,12 @@
 import { CategoryAccordion } from '@/entities/Category';
 import { RatingAccordion } from '@/entities/Review/ui/RatingAccordion';
 import { BaseComponent } from '@/shared/lib/component/BaseComponent';
+import { Callback, eventBus } from '@/shared/lib/eventBus/eventBus';
 import { AmountFilter } from '@/shared/ui/AmountFilter';
 import { stringToElement } from '@/shared/utils';
+import { debounce } from '@/shared/utils/lib/debounce';
 
-import { FiltersProps } from '../model/types';
+import { FiltersProps, FiltersState } from '../model/types';
 import template from './Filters.hbs?compiled';
 import styles from './style.module.scss';
 
@@ -18,6 +20,12 @@ export class Filters extends BaseComponent {
     private isMobile = window.innerWidth < 1024;
     private startX = 0;
 
+    private state: FiltersState = {
+        categoryIds: [],
+        ratingIds: [],
+        reviewCount: 0,
+    };
+
     constructor(props: FiltersProps) {
         super();
 
@@ -30,38 +38,45 @@ export class Filters extends BaseComponent {
             ratingFilter: new RatingAccordion({
                 title: 'Оценка',
                 items: [
-                    {
-                        id: 1,
-                        name: 'Превосходно',
-                        threshold: 4.5,
-                    },
-                    {
-                        id: 2,
-                        name: 'Очень хорошо',
-                        threshold: 4.0,
-                    },
-                    {
-                        id: 3,
-                        name: 'Хорошо',
-                        threshold: 3.5,
-                    },
-                    {
-                        id: 4,
-                        name: 'Достаточно хорошо',
-                        threshold: 3.0,
-                    },
-                    {
-                        id: 5,
-                        name: 'Удовлетворительно',
-                        threshold: 2.5,
-                    },
+                    { id: 1, name: 'Превосходно', threshold: 4.5 },
+                    { id: 2, name: 'Очень хорошо', threshold: 4.0 },
+                    { id: 3, name: 'Хорошо', threshold: 3.5 },
+                    { id: 4, name: 'Достаточно хорошо', threshold: 3.0 },
+                    { id: 5, name: 'Удовлетворительно', threshold: 2.5 },
                 ],
             }),
 
             reviewCountFilter: new AmountFilter({
                 title: 'Отзывы',
+                onInput: debounce(this.handleReviewCountChange),
             })
         };
+    }
+
+    protected override createHandlers(): Record<string, Callback> {
+        return {
+            'CategoryAccordion:toggle-category': this.handleCategoryToggle,
+            'RatingAccordion:toggle-rating': this.handleRatingToggle,
+        };
+    }
+
+    private handleCategoryToggle = (data: { ids: number[] }) => {
+        this.state.categoryIds = data.ids;
+        this.emitFilterChange();
+    };
+
+    private handleRatingToggle = (data: { ids: number[] }) => {
+        this.state.ratingIds = data.ids;
+        this.emitFilterChange();
+    };
+
+    private handleReviewCountChange = (value: string) => {
+        this.state.reviewCount = Number(value) || 0;
+        this.emitFilterChange();
+    };
+
+    private emitFilterChange() {
+        eventBus.emit('Filters:change', this.state);
     }
 
     protected override initListeners(): void {
