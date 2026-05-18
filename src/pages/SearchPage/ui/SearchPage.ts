@@ -1,4 +1,4 @@
-import { CategoryAccordion, CategorySidebar, fetchPlaceCategories } from '@/entities/Category';
+import { fetchPlaceCategories } from '@/entities/Category';
 import { fetchPlaces, Place, searchPlace } from '@/entities/Place';
 import { focusField } from '@/shared/lib';
 import { Callback } from '@/shared/lib/eventBus/eventBus';
@@ -6,6 +6,8 @@ import { BasePage } from '@/shared/lib/page/BasePage';
 import { AppState } from '@/shared/model';
 import { Field } from '@/shared/ui';
 import { debounce } from '@/shared/utils/lib/debounce';
+import { Filters } from '@/widgets/Filters';
+import { FiltersState } from '@/widgets/Filters/model/types';
 import { Header } from '@/widgets/Header';
 
 import { SearchPageParameters } from '../model/types';
@@ -22,23 +24,28 @@ export class SearchPage extends BasePage {
         header: Header;
         query: Field;
         placeList: PlaceList;
-        categories: CategoryAccordion | CategorySidebar;
+        filters: Filters;
     };
-
-    protected override createHandlers(): Record<string, Callback> {
-        return {
-            'CategoryAccordion:toggle-category': this.handleCategoryToggle,
-            'CategorySidebar:toggle-category': this.handleCategoryToggle,
-        };
-    }
 
     private categoryList: { id: number; name: string }[] = [];
     private currentQueryList: Place[] = [];
     private randomPlaces!: Place[];
     private query = '';
-    private selectedCategoryIds: number[] = [];
+
+    private currentFilters: FiltersState = {
+        categoryIds: [],
+        ratingIds: [],
+        reviewCount: 0,
+    };
+
     private isMobile = window.innerWidth < 1024;
     private startX = 0;
+
+    protected override createHandlers(): Record<string, Callback> {
+        return {
+            'Filters:change': this.handleFiltersChange,
+        };
+    }
 
     public static async create(appState: AppState, parameters: SearchPageParameters): Promise<SearchPage> {
         const page = new SearchPage(appState);
@@ -69,32 +76,19 @@ export class SearchPage extends BasePage {
         const authorized = Boolean(this.appState.currentUser);
 
         this.children = {
-            header: new Header({
-                user: this.appState.currentUser,
-            }),
-
+            header: new Header({ user: this.appState.currentUser }),
             query: new Field({
                 type: 'text',
                 rightIcon: '/icons/search.svg',
                 onRightIconClick: focusField,
                 onInput: debounce(this.handleInput),
-                attributes: {
-                    value: this.query,
-                }
+                attributes: { value: this.query }
             }),
-
             placeList: new PlaceList({
                 authorized,
                 ...(!this.query && { defaultPlaces: this.randomPlaces })
             }),
-
-            categories: this.isMobile
-                ? new CategorySidebar({
-                    categories: this.categoryList,
-                })
-                : new CategoryAccordion({
-                    categories: this.categoryList,
-                }),
+            filters: new Filters({ categories: this.categoryList }),
         };
     }
 
@@ -109,45 +103,18 @@ export class SearchPage extends BasePage {
         this.element?.addEventListener('touchend', (event) => {
             const endX = event.changedTouches[0].clientX;
             if (this.isMobile && endX - this.startX > 80) {
-                (this.children.categories as CategorySidebar).open();
+                (this.children.filters).open();
             }
         });
     }
 
     private handleResize = () => {
-        const currentlyMobile = window.innerWidth < 1024;
-
-        if (this.isMobile !== currentlyMobile) {
-            this.isMobile = currentlyMobile;
-            this.swapCategoryComponent();
-        }
+        this.isMobile = window.innerWidth < 1024;
     };
-
-    private swapCategoryComponent() {
-        if (this.isMobile) {
-            this.children.categories = new CategorySidebar({
-                categories: this.categoryList,
-                activeIds: this.selectedCategoryIds,
-            });
-        } else {
-            this.children.categories = new CategoryAccordion({
-                categories: this.categoryList,
-                activeIds: this.selectedCategoryIds,
-            });
-        }
-
-        const container = this.element?.querySelector('.js-categories');
-        if (container) {
-            const renderedCategories = this.children.categories.render();
-            renderedCategories.classList.add('js-categories');
-            container.replaceWith(renderedCategories);
-        }
-    }
 
     private handleInput = async (inputValue: string) => {
         if (inputValue === '') {
             this.currentQueryList = this.randomPlaces;
-
         } else {
             const searchRes = await searchPlace(inputValue);
             if (searchRes.ok) {
@@ -155,29 +122,32 @@ export class SearchPage extends BasePage {
             }
         }
 
-        this.applyFilters();
+        this.fetchFilteredData();
     };
+
+    private handleFiltersChange = async (filtersState: FiltersState) => {
+        this.currentFilters = filtersState;
+        await this.fetchFilteredData();
+    };
+
+    private async fetchFilteredData() {
+        // TODO add search with filters
+        this.applyFilters();
+    }
 
     private applyFilters() {
         if (!this.element) return;
 
-        if (this.selectedCategoryIds.length === 0) {
-            this.children.placeList.setItems(this.currentQueryList);
-            return;
-        }
+        let filtered = this.currentQueryList;
 
-        const filtered = this.currentQueryList.filter(place =>
-            this.selectedCategoryIds.includes(place.category.id)
-        );
+        if (this.currentFilters.categoryIds.length > 0) {
+            filtered = filtered.filter(place =>
+                this.currentFilters.categoryIds.includes(place.category.id)
+            );
+        }
 
         this.children.placeList.setItems(filtered);
     }
-
-
-    private handleCategoryToggle = (data: { ids: number[] }) => {
-        this.selectedCategoryIds = data.ids;
-        this.applyFilters();
-    };
 
     public override render(): HTMLElement {
         super.render();
